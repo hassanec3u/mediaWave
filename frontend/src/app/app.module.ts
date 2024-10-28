@@ -8,10 +8,11 @@ import {HttpClientModule} from "@angular/common/http";
 import {RegisterComponent} from "./account/register/register.component";
 import {CookieService} from "ngx-cookie-service";
 import {LogoutComponent} from './account/logout/logout.component';
+import { ReactiveFormsModule } from '@angular/forms';
 
 @NgModule({
     declarations: [AppComponent, LoginComponent,RegisterComponent,LogoutComponent],
-    imports: [BrowserModule, AppRoutingModule, FormsModule,HttpClientModule],
+    imports: [BrowserModule, AppRoutingModule, FormsModule,HttpClientModule,ReactiveFormsModule],
     providers: [CookieService],
     bootstrap: [AppComponent]
 })
