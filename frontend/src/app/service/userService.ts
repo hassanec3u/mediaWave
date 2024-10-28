@@ -1,11 +1,11 @@
-import { Injectable } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
-import { Observable } from 'rxjs';
-import { CookieService } from 'ngx-cookie-service';
+import {Injectable} from '@angular/core';
+import {HttpClient} from '@angular/common/http';
+import {Observable, tap} from 'rxjs';
+import {CookieService} from 'ngx-cookie-service';
 
 
 interface LoginResponse {
-  token: string;
+  access_token: string;
 }
 
 @Injectable({
@@ -17,18 +17,20 @@ export class UserService {
   constructor(private http: HttpClient, private cookieService: CookieService) {}
 
   login(username: string, password: string): Observable<LoginResponse> {
-
-    console.log(`${this.apiUrl}/login`);
-    return this.http.post<LoginResponse>(`${this.apiUrl}/login`, { username, password });
+    return this.http.post<LoginResponse>(`${this.apiUrl}/login`, {username, password}).pipe(
+      tap(response => {
+        this.cookieService.set('access_token', response.access_token);
+     })
+    );
   }
 
 
-  register(username: string, email: string, password: string,passwordConfirm : string): Observable<LoginResponse> {
-    return this.http.post<any>(`${this.apiUrl}/register`, { username,email, password,passwordConfirm });
+  register(username: string, email: string, password: string, passwordConfirm: string): Observable<LoginResponse> {
+    return this.http.post<any>(`${this.apiUrl}/register`, {username, email, password, passwordConfirm});
   }
 
   logout() {
-    this.cookieService.delete('authToken');
+    this.cookieService.delete('access_token');
     window.location.href = '/login';
   }
 

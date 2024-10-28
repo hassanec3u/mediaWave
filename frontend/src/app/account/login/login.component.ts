@@ -13,14 +13,12 @@ export class LoginComponent {
   password: string = '';
   errorMessage: string = '';
 
-  constructor(private userService: UserService,private cookieService :CookieService) {}
+  constructor(private userService: UserService) {}
 
   login() {
     this.userService.login(this.username, this.password).subscribe(
       response => {
-        console.log('Login successful, token:', response.token);
-
-        this.cookieService.set('authToken', response.token);
+        console.log('Login successful, token:', response.access_token);
         window.location.href = '/';
       },
       error => {
