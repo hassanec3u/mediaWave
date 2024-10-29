@@ -11,6 +11,11 @@ import {passwordMatchValidator} from '../validators/passwordMatchValidator';
   styleUrls: ['./register.component.css']
 })
 export class RegisterComponent implements OnInit {
+  registerForm!: FormGroup;
+  submitted: boolean = false;
+
+  constructor(private fb: FormBuilder, private userService: UserService) {
+  }
 
   /**
    * Hide the password input
@@ -20,12 +25,6 @@ export class RegisterComponent implements OnInit {
     this.hide = !this.hide;
     event.preventDefault();
     event.stopPropagation();
-  }
-
-  registerForm!: FormGroup;
-  submitted: boolean = false;
-
-  constructor(private fb: FormBuilder, private userService: UserService) {
   }
 
   ngOnInit(): void {
