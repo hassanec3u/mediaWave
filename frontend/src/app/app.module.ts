@@ -9,11 +9,12 @@ import {RegisterComponent} from "./account/register/register.component";
 import {CookieService} from "ngx-cookie-service";
 import {LogoutComponent} from './account/logout/logout.component';
 import { ReactiveFormsModule } from '@angular/forms';
+import { provideAnimationsAsync } from '@angular/platform-browser/animations/async';
 
 @NgModule({
     declarations: [AppComponent, LoginComponent,RegisterComponent,LogoutComponent],
     imports: [BrowserModule, AppRoutingModule, FormsModule,HttpClientModule,ReactiveFormsModule],
-    providers: [CookieService],
+    providers: [CookieService,provideAnimationsAsync()],
     bootstrap: [AppComponent]
 })
 export class AppModule {}
