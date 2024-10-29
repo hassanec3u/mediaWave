@@ -1,7 +1,9 @@
-import { Component, OnInit } from '@angular/core';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { UserService } from '../../service/userService';
-import { passwordSecurityValidator } from '../validators/password-match.validator';
+import {Component, OnInit} from '@angular/core';
+import {FormBuilder, FormGroup, Validators} from '@angular/forms';
+import {UserService} from '../../service/userService';
+import {passwordSecurityValidator} from '../validators/passwordSecurityValidator';
+import {passwordMatchValidator} from '../validators/passwordMatchValidator';
+
 
 @Component({
   selector: 'app-register',
@@ -9,29 +11,40 @@ import { passwordSecurityValidator } from '../validators/password-match.validato
   styleUrls: ['./register.component.css']
 })
 export class RegisterComponent implements OnInit {
+
+  /**
+   * Hide the password input
+   */
+  hide: boolean = true;
+  clickEvent(event: MouseEvent) {
+    this.hide = !this.hide;
+    event.preventDefault();
+    event.stopPropagation();
+  }
+
   registerForm!: FormGroup;
-  errorMessage: string = '';
   submitted: boolean = false;
 
-  constructor(private fb: FormBuilder, private userService: UserService) {}
+  constructor(private fb: FormBuilder, private userService: UserService) {
+  }
 
   ngOnInit(): void {
     this.registerForm = this.fb.group({
       username: ['', [Validators.required, Validators.minLength(3)]],
       email: ['', [Validators.required, Validators.email]],
-      password: ['', [Validators.required]],
+      password: ['', [Validators.required, passwordSecurityValidator()]],
       passwordConfirm: ['', [Validators.required]]
-    }, { validators: passwordSecurityValidator });
+    },{ validators: passwordMatchValidator });
   }
 
 
   register() {
     this.submitted = true;
     if (this.registerForm.invalid) {
-      this.errorMessage = "Veuillez remplir tous les champs correctement.";
       return;
     }
 
+    // Register the user  with the UserService
     this.userService.register(
       this.registerForm.value.username.toLowerCase(),
       this.registerForm.value.email.toLowerCase(),
@@ -43,32 +56,40 @@ export class RegisterComponent implements OnInit {
         window.location.href = '/';
       },
       error => {
-        this.errorMessage = "Échec de l'inscription. Veuillez vérifier vos informations.";
+
+        //check if the error is a 409 (Conflict) error
+        if (error.status === 409) {
+          this.registerForm.setErrors({ conflict: 'Username or email already exists.' });
+          return;
+        }
+
         console.error('Registration failed', error);
       }
     );
   }
 
-  getFirstError(): string | null {
-    if (!this.submitted || !this.registerForm.errors) {
-      return null;
-    }
+  getPasswordErrorMessage() {
+    const passwordControl = this.registerForm.get('password');
 
-    const errorKeys = Object.keys(this.registerForm.errors);
-    if (errorKeys.length > 0) {
-      const firstErrorKey = errorKeys[0];
-      const errorMessages: { [key: string]: string } = {
-        passwordMismatch: 'Les mots de passe ne correspondent pas.',
-        passwordTooShort: 'Le mot de passe doit contenir au moins 8 caractères.',
-        passwordNoUpperCase: 'Le mot de passe doit contenir au moins une lettre majuscule.',
-        passwordNoLowerCase: 'Le mot de passe doit contenir au moins une lettre minuscule.',
-        passwordNoNumber: 'Le mot de passe doit contenir au moins un chiffre.',
-        passwordNoSpecialChar: 'Le mot de passe doit contenir au moins un caractère spécial.'
-      };
-      return errorMessages[firstErrorKey];
+    if (passwordControl?.hasError('required')) {
+      return 'Ce champ est requis.';
     }
-
-    return null;
+    if (passwordControl?.hasError('passwordTooShort')) {
+      return 'Le mot de passe doit contenir au moins 8 caractères.';
+    }
+    if (passwordControl?.hasError('passwordNoUpperCase')) {
+      return 'Le mot de passe doit contenir au moins une lettre majuscule.';
+    }
+    if (passwordControl?.hasError('passwordNoLowerCase')) {
+      return 'Le mot de passe doit contenir au moins une lettre minuscule.';
+    }
+    if (passwordControl?.hasError('passwordNoNumber')) {
+      return 'Le mot de passe doit contenir au moins un chiffre.';
+    }
+    if (passwordControl?.hasError('passwordNoSpecialChar')) {
+      return 'Le mot de passe doit contenir au moins un caractère spécial.';
+    }
+    return '';
   }
 
 }

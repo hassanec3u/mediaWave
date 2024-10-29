@@ -1,6 +1,5 @@
 import { Component } from '@angular/core';
 import { UserService } from '../../service/userService';
-import {CookieService} from 'ngx-cookie-service';
 
 
 @Component({
