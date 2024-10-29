@@ -1,0 +1,16 @@
+
+<div class="login-container">
+    <h2>Connexion</h2>
+    <form (ngSubmit)="login()" #loginForm="ngForm">
+        <div>
+            <label for="username">Username: </label>
+            <input type="text" id="username" required [(ngModel)]="username" name="username" />
+        </div>
+        <div>
+            <label for="password">Mot de passe: </label>
+            <input type="password" id="password" required [(ngModel)]="password" name="password" />
+        </div>
+        <button type="submit" [disabled]="!loginForm.form.valid">Se connecter</button>
+        <div *ngIf="errorMessage" class="error">{{ errorMessage }}</div>
+    </form>
+</div>
