@@ -4,10 +4,10 @@
             <img src="https://cdn.pixabay.com/photo/2015/05/31/16/03/teddy-bear-792273_1280.jpg" alt="profile-image"
                  class="w-16 h-16 object-cover rounded-full mr-4">
             <div>
-                <span class="text-blue-500 text-lg block">USERNAME USERNAME</span>
+                <span class="text-blue-500 text-lg block">{{ userInfo.username }}</span>
                 <div class="flex">
                     <mat-icon class="text-sm text-blue-500">email</mat-icon>
-                    <span class="text-gray-700 text-sm">hello&#64;gmail.com</span>
+                    <span class="text-gray-700 text-sm">{{ userInfo.email }}</span>
                 </div>
                 <div class="flex">
                     <mat-icon class="text-sm text-blue-500">cake</mat-icon>
@@ -22,7 +22,7 @@
         <div class="mb-4">
             <span>BIO :</span>
             <p class="text-justify font-extralight">
-                description bio description bio description bio description bio description bio description bio
+                {{userInfo.bio}}
             </p>
         </div>
     </div>

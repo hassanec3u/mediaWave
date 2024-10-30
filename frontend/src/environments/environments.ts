@@ -5,6 +5,8 @@ export const environment = {
         host: 'localhost',
         port: '3000',
         endpoints: {
+            userInfo: `/user/`,
+            updateUserInfo: `/user/`
         },
     },
 };

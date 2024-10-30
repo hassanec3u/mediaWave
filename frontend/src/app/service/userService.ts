@@ -2,6 +2,8 @@ import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { CookieService } from 'ngx-cookie-service';
+import {environment} from "../../environments/environments";
+import {User} from "../shared/types/user.type";
 
 
 interface LoginResponse {
@@ -12,6 +14,7 @@ interface LoginResponse {
   providedIn: 'root'
 })
 export class UserService {
+  private apiBackendUrl = `${environment.backend.protocol}://${environment.backend.host}:${environment.backend.port}`;
   private apiUrl = 'http://localhost:3000/auth';
 
   constructor(private http: HttpClient, private cookieService: CookieService) {}
@@ -32,4 +35,7 @@ export class UserService {
     window.location.href = '/login';
   }
 
+  getUserInfos(id: string): Observable<User> {
+    return this.http.get<User>(this.apiBackendUrl+environment.backend.endpoints.userInfo + id);
+  }
 }
