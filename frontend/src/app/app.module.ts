@@ -8,12 +8,27 @@ import {HttpClientModule} from "@angular/common/http";
 import {RegisterComponent} from "./account/register/register.component";
 import {CookieService} from "ngx-cookie-service";
 import {LogoutComponent} from './account/logout/logout.component';
+import { ReactiveFormsModule } from '@angular/forms';
 import { provideAnimationsAsync } from '@angular/platform-browser/animations/async';
+import { MatFormFieldModule} from '@angular/material/form-field';
+import { MatButtonModule} from '@angular/material/button';
+import { MatInputModule} from '@angular/material/input';
+import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
+import {MatIconModule} from '@angular/material/icon';
 
 @NgModule({
     declarations: [AppComponent, LoginComponent,RegisterComponent,LogoutComponent],
-    imports: [BrowserModule, AppRoutingModule, FormsModule,HttpClientModule],
-    providers: [CookieService, provideAnimationsAsync()],
+  imports: [BrowserModule,
+    AppRoutingModule,
+    FormsModule,
+    HttpClientModule,
+    ReactiveFormsModule
+    , BrowserModule,
+    BrowserAnimationsModule,
+    MatFormFieldModule,
+    MatInputModule,
+    MatButtonModule, MatIconModule],
+    providers: [CookieService,provideAnimationsAsync()],
     bootstrap: [AppComponent]
 })
 export class AppModule {}
