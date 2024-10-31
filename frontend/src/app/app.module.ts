@@ -17,6 +17,7 @@ import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
 import {MatIconModule} from '@angular/material/icon';
 import {HeaderComponent} from './shared/header/header.component';
 
+
 @NgModule({
     declarations: [AppComponent, LoginComponent,RegisterComponent,LogoutComponent],
   imports: [BrowserModule,
