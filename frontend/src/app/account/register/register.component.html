@@ -1,23 +1,75 @@
-<div class="register-container">
-  <h2>Inscription</h2>
-  <form (ngSubmit)="register()" #registerForm="ngForm">
-    <div>
-      <label for="username">Username: </label>
-      <input type="text" id="username" required [(ngModel)]="username" name="username" />
-    </div>
-    <div>
-      <label for="email">Email: </label>
-      <input type="email" id="email" required [(ngModel)]="email" name="email" />
-    </div>
-    <div>
-      <label for="password">Mot de passe: </label>
-      <input type="password" id="password" required [(ngModel)]="password" name="password" />
-    </div>
-    <div>
-      <label for="passwordConfirm">Confirmer le mot de passe: </label>
-      <input type="password" id="passwordConfirm" required [(ngModel)]="passwordConfirm" name="passwordConfirm" />
-    </div>
-    <button type="submit" [disabled]="!registerForm.form.valid">S'inscrire</button>
-    <div *ngIf="errorMessage" class="error">{{ errorMessage }}</div>
-  </form>
-</div>
+<form [formGroup]="registerForm" (ngSubmit)="register()" class="max-w-md mx-auto p-6 bg-white shadow-lg rounded-lg">
+  <h4 class="text-xl font-semibold text-gray-800 mb-6 text-center">Créer un compte</h4>
+
+  <!-- Champ Username -->
+  <mat-form-field class="w-full mb-4">
+    <mat-label>Nom d'utilisateur</mat-label>
+    <input matInput id="username" formControlName="username" type="text" placeholder="Votre nom d'utilisateur">
+    <mat-error *ngIf="submitted && registerForm.get('username')?.hasError('required')">
+      Ce champ est requis.
+    </mat-error>
+    <mat-error *ngIf="submitted && registerForm.get('username')?.hasError('minlength')">
+      Ce champ doit contenir au moins 3 caractères.
+    </mat-error>
+  </mat-form-field>
+
+  <!-- Champ Email -->
+  <mat-form-field  class="w-full mb-4">
+    <mat-label>Email</mat-label>
+    <input matInput id="email" formControlName="email" type="email" placeholder="Votre adresse email">
+    <mat-error *ngIf="submitted && registerForm.get('email')?.hasError('required')">
+      Ce champ est requis.
+    </mat-error>
+    <mat-error *ngIf="submitted && registerForm.get('email')?.hasError('email')">
+      Veuillez entrer une adresse email valide.
+    </mat-error>
+  </mat-form-field>
+
+
+  <mat-form-field class="w-full mb-4">
+    <mat-label>Mot de passe</mat-label>
+    <input matInput [type]="hide ? 'password' : 'text'" formControlName="password" placeholder="Votre mot de passe">
+    <button mat-icon-button matSuffix (click)="clickEvent($event)" [attr.aria-label]="'Hide password'" [attr.aria-pressed]="hide">
+      <mat-icon>{{hide ? 'visibility_off' : 'visibility'}}</mat-icon>
+    </button>
+
+    <mat-error *ngIf="submitted">
+      {{ getPasswordErrorMessage() }}
+    </mat-error>
+  </mat-form-field>
+
+  <!-- Champ Confirm Password -->
+  <mat-form-field class="w-full mb-4">
+    <mat-label>Confirmez le mot de passe</mat-label>
+    <input matInput [type]="hide ? 'password' : 'text'" formControlName="passwordConfirm" placeholder="Confirmez votre mot de passe">
+    <mat-error *ngIf="submitted && registerForm.get('passwordConfirm')?.hasError('required')">
+      Ce champ est requis.
+    </mat-error>
+    <mat-error *ngIf="submitted && registerForm.hasError('passwordMismatch')">
+      Les mots de passe ne correspondent pas.
+    </mat-error>
+  </mat-form-field>
+
+  <mat-error *ngIf="submitted && registerForm.hasError('passwordMismatch')">
+    Les mots de passe ne correspondent pas.
+  </mat-error>
+
+  <!-- Display conflict error -->
+  <mat-error *ngIf="submitted && registerForm.hasError('conflict')">
+    {{ registerForm.getError('conflict') }}
+  </mat-error>
+
+  <!-- Bouton Register -->
+  <button mat-flat-button color="primary" type="submit" class="w-full py-2 mt-2 text-white bg-blue-600 hover:bg-blue-700">
+    Register
+  </button>
+
+
+
+  <!-- Lien vers la connexion -->
+  <div class="text-center mt-4">
+    <span>Déjà inscrit ?</span>
+    <a routerLink="/login" class="text-blue-600 hover:underline">Connectez-vous</a>
+  </div>
+
+</form>
