@@ -38,4 +38,8 @@ export class UserService {
   getUserInfos(id: string): Observable<User> {
     return this.http.get<User>(this.apiBackendUrl+environment.backend.endpoints.userInfo + id);
   }
+
+  updateUserInfos(id: string, userInfo: User): Observable<User> {
+    return this.http.put<User>(this.apiBackendUrl+environment.backend.endpoints.updateUserInfo + id, userInfo);
+  }
 }
