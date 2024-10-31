@@ -1,0 +1,24 @@
+<app-header></app-header>
+<div class="home-container flex flex-col items-center justify-center min-h-screen bg-blue-50 text-center px-6">
+  <!-- Logo ou Titre principal -->
+  <h1 class="text-4xl font-bold text-primary mb-4">Bienvenue sur MediaWave</h1>
+  <p class="text-lg text-gray-700 max-w-lg mb-8">
+    Gérez vos publications et suivez les dernières tendances avec simplicité.
+  </p>
+
+  <div class="flex space-x-4">
+    <ng-container *ngIf="!isAuthenticated(); else profileButton">
+      <button mat-raised-button  class="custom-button" color="primary" (click)="navigateToLogin()">
+        Se connecter
+      </button>
+      <button mat-raised-button class="custom-button" color="accent" (click)="navigateToRegister()">
+        S'inscrire
+      </button>
+    </ng-container>
+    <ng-template #profileButton>
+      <button mat-raised-button class="custom-button" color="primary" (click)="navigateToProfile()">
+       Mon  Profil
+      </button>
+    </ng-template>
+  </div>
+</div>
