@@ -16,6 +16,10 @@
     </mat-menu>
   </div>
 
-  <!-- Bouton Se connecter pour utilisateur non authentifié -->
-  <button *ngIf="!isAuthenticated" mat-button class="text-white mr-5" (click)="login()">Se connecter</button>
+  <!-- Boutons pour utilisateur non authentifié -->
+  <div class="auth-buttons" *ngIf="!isAuthenticated">
+    <button mat-button class="text-white mr-5" (click)="login()">Se connecter</button>
+    <button mat-button class="text-white mr-5" (click)="register()">S'inscrire</button>
+  </div>
+
 </header>

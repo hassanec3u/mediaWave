@@ -2,3 +2,9 @@ header {
     margin-bottom: 20px;
     padding: 10px;
 }
+
+.auth-buttons {
+  display: flex;
+  gap: 10px; /* Adjust the gap as needed */
+  margin-right: 20px; /* Adjust the margin as needed */
+}

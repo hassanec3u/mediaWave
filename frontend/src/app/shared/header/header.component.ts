@@ -37,6 +37,11 @@ export class HeaderComponent {
     this.router.navigate(['/login']);
   }
 
+
+  register(): void {
+    this.router.navigate(['/register']);
+  }
+
   navigateHome(): void {
     this.router.navigate(['/']);
   }
