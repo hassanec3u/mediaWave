@@ -7,7 +7,7 @@ import {User} from "../shared/types/user.type";
 
 
 interface LoginResponse {
-  token: string;
+  access_token: string;
 }
 
 @Injectable({
@@ -27,18 +27,20 @@ export class UserService {
   }
 
   login(username: string, password: string): Observable<LoginResponse> {
-
-    console.log(`${this.apiUrl}/login`);
-    return this.http.post<LoginResponse>(`${this.apiUrl}/login`, { username, password });
+    return this.http.post<LoginResponse>(`${this.apiUrl}/login`, {username, password}).pipe(
+      tap(response => {
+        this.cookieService.set('access_token', response.access_token);
+     })
+    );
   }
 
 
-  register(username: string, email: string, password: string,passwordConfirm : string): Observable<LoginResponse> {
-    return this.http.post<any>(`${this.apiUrl}/register`, { username,email, password,passwordConfirm });
+  register(username: string, email: string, password: string, passwordConfirm: string): Observable<LoginResponse> {
+    return this.http.post<any>(`${this.apiUrl}/register`, {username, email, password, passwordConfirm});
   }
 
   logout() {
-    this.cookieService.delete('authToken');
+    this.cookieService.delete('access_token');
     window.location.href = '/login';
   }
 

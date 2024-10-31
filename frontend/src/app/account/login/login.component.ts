@@ -1,32 +1,47 @@
-import { Component } from '@angular/core';
-import { UserService } from '../../service/userService';
-import {CookieService} from 'ngx-cookie-service';
-
+import {Component, OnInit} from '@angular/core';
+import {FormBuilder, FormGroup, Validators} from '@angular/forms';
+import {UserService} from '../../service/userService';
 
 @Component({
   selector: 'app-login',
   templateUrl: './login.component.html',
   styleUrls: ['./login.component.css']
 })
-export class LoginComponent {
-  username: string = '';
-  password: string = '';
-  errorMessage: string = '';
+export class LoginComponent implements OnInit {
+  loginForm!: FormGroup;
 
-  constructor(private userService: UserService,private cookieService :CookieService) {}
+  constructor(private fb: FormBuilder, private userService: UserService) {
+  }
 
-  login() {
-    this.userService.login(this.username, this.password).subscribe(
-      response => {
-        console.log('Login successful, token:', response.token);
+  ngOnInit(): void {
+    this.loginForm = this.fb.group({
+      username: ['', Validators.required],
+      password: ['', Validators.required]
+    });
+  }
 
-        this.cookieService.set('authToken', response.token);
-        window.location.href = '/';
-      },
-      error => {
-        this.errorMessage = "Échec de la connexion. Veuillez vérifier vos identifiants."
-        console.error('Login failed', error);
-      }
-    );
+  /**
+   * Hide the password input
+   */
+  hide: boolean = true;
+  clickEvent(event: MouseEvent) {
+    this.hide = !this.hide;
+    event.preventDefault();
+    event.stopPropagation();
+  }
+
+  login(): void {
+    if (this.loginForm.valid) {
+      const {username, password} = this.loginForm.value;
+      this.userService.login(username, password).subscribe(
+        response => {
+          console.log('Login successful, token:', response.access_token);
+          window.location.href = '/';
+        },
+        error => {
+          this.loginForm.setErrors({loginFailed: "Verifier vos identifiants"});
+          console.error('Login failed', error);
+        })
+    }
   }
 }
