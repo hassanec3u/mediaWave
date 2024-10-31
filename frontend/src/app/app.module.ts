@@ -15,6 +15,7 @@ import { MatButtonModule} from '@angular/material/button';
 import { MatInputModule} from '@angular/material/input';
 import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
 import {MatIconModule} from '@angular/material/icon';
+import {HeaderComponent} from './shared/header/header.component';
 
 @NgModule({
     declarations: [AppComponent, LoginComponent,RegisterComponent,LogoutComponent],
@@ -27,7 +28,7 @@ import {MatIconModule} from '@angular/material/icon';
     BrowserAnimationsModule,
     MatFormFieldModule,
     MatInputModule,
-    MatButtonModule, MatIconModule],
+    MatButtonModule, MatIconModule, HeaderComponent],
     providers: [CookieService,provideAnimationsAsync()],
     bootstrap: [AppComponent]
 })
