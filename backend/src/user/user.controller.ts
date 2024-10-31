@@ -11,7 +11,7 @@ export class UserController {
     constructor(private readonly userService: UserService) {
     }
 
-    @Get(":username")
+    @Get("username/:username")
     findUserByUsername(@Param('username') username: string): Observable<UserEntity> {
         console.log(username);
         return this.userService.findUserByUsername(username);
@@ -21,5 +21,10 @@ export class UserController {
     updateUserInfo(@Param('id') id: string, @Body() updateUserInfoDto: UpdateUserInfoDto): Observable<UserEntity> {
         console.log(id);
         return this.userService.updateUserInfo(id, updateUserInfoDto);
+    }
+
+    @Get(":id")
+    findUserById(@Param('id') id: string): Observable<UserEntity> {
+        return this.userService.findUserById(id);
     }
 }

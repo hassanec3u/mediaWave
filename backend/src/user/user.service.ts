@@ -22,4 +22,11 @@ export class UserService {
                 (userUpdated) => !!userUpdated ? of(new UserEntity(userUpdated))
                     : throwError(() => new NotFoundException(`User with ID '${id}' not found`))));
     }
+
+    findUserById(id: string): Observable<UserEntity> {
+        return this.userDao.findUserById(id).pipe(
+            mergeMap(
+                (user) => !!user ? of(new UserEntity(user))
+                    : throwError(() => new NotFoundException(`User with ID '${id}' not found`))));
+    }
 }

@@ -1,6 +1,6 @@
 import {Injectable} from '@nestjs/common';
 import {InjectModel} from '@nestjs/mongoose';
-import {Model} from 'mongoose';
+import {Model, Types} from 'mongoose';
 import {User} from "../schema/userSchema";
 import {CreateUserDto} from "../dto/createUserDto.";
 import {from, Observable} from "rxjs";
@@ -36,5 +36,9 @@ export class UserDao {
 
     findByIdAndUpdate(id: string, user: UpdateUserInfoDto) : Observable<User> {
         return from(this._personModel.findByIdAndUpdate(id, user, {new: true, runValidators: true}).lean());
+    }
+
+    findUserById(id: string): Observable<User | null> {
+        return from(this._personModel.findById(id).lean());
     }
 }
