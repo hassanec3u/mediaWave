@@ -24,6 +24,10 @@ export class UserService {
     );
   }
 
+  isAuthenticated(): boolean {
+    return this.cookieService.check('access_token');
+  }
+
 
   register(username: string, email: string, password: string, passwordConfirm: string): Observable<LoginResponse> {
     return this.http.post<any>(`${this.apiUrl}/register`, {username, email, password, passwordConfirm});

@@ -1,6 +1,7 @@
 import {Component, OnInit} from '@angular/core';
 import {FormBuilder, FormGroup, Validators} from '@angular/forms';
 import {UserService} from '../../service/userService';
+import {Router} from '@angular/router';
 
 @Component({
   selector: 'app-login',
@@ -10,7 +11,7 @@ import {UserService} from '../../service/userService';
 export class LoginComponent implements OnInit {
   loginForm!: FormGroup;
 
-  constructor(private fb: FormBuilder, private userService: UserService) {
+  constructor(private fb: FormBuilder, private userService: UserService, private router: Router) {
   }
 
   ngOnInit(): void {
@@ -36,7 +37,7 @@ export class LoginComponent implements OnInit {
       this.userService.login(username, password).subscribe(
         response => {
           console.log('Login successful, token:', response.access_token);
-          window.location.href = '/';
+          this.router.navigate(['/']);
         },
         error => {
           this.loginForm.setErrors({loginFailed: "Verifier vos identifiants"});
