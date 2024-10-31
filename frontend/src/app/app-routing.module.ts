@@ -11,7 +11,7 @@ const routes: Routes = [
   { path: 'register', component: RegisterComponent },
   { path: 'logout', component: LogoutComponent },
   { path: 'login', component: LoginComponent },
-  { path: 'profile/:id', component: UserProfileComponent}
+  { path: 'profile/:username', component: UserProfileComponent}
 ];
 @NgModule({
   imports: [RouterModule.forRoot(routes)],

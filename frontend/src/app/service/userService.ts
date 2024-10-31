@@ -35,8 +35,8 @@ export class UserService {
     window.location.href = '/login';
   }
 
-  getUserInfos(id: string): Observable<User> {
-    return this.http.get<User>(this.apiBackendUrl+environment.backend.endpoints.userInfo + id);
+  getUserInfos(username: string): Observable<User> {
+    return this.http.get<User>(this.apiBackendUrl+environment.backend.endpoints.userInfo + username);
   }
 
   updateUserInfos(id: string, userInfo: User): Observable<User> {
