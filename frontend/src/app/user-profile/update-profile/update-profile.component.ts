@@ -3,9 +3,10 @@ import {MAT_DIALOG_DATA, MatDialogActions, MatDialogContent, MatDialogRef} from 
 import {MatFormField, MatError} from "@angular/material/form-field";
 import {MatInput} from "@angular/material/input";
 import {User} from "../../shared/types/user.type";
-import {FormBuilder, FormControl, FormGroup, FormsModule, ReactiveFormsModule, Validators} from "@angular/forms";
+import {FormControl, FormGroup, FormsModule, ReactiveFormsModule, Validators} from "@angular/forms";
 import {NgIf} from "@angular/common";
 import {UserService} from "../../service/userService";
+import {Subject} from "rxjs";
 
 @Component({
   selector: 'app-update-profile',
@@ -26,14 +27,19 @@ import {UserService} from "../../service/userService";
 export class UpdateProfileComponent implements OnInit {
   private _open!: boolean;
   private _form: FormGroup;
+  private _refreshRequest: Subject<void>;
 
   constructor(private _dialogRef: MatDialogRef<UpdateProfileComponent, User>,
               private userService: UserService,
               @Optional() @Inject(MAT_DIALOG_DATA) private _user: User) {
     this._open = false;
     this._form = this.buildUpdateForm();
+    this._refreshRequest = new Subject<void>();
   }
 
+  get refreshRequest(): Subject<void> {
+    return this._refreshRequest;
+  }
 
   get user(): User {
     return this._user;
@@ -61,9 +67,8 @@ export class UpdateProfileComponent implements OnInit {
 
   onSubmit() {
     if(this._form.valid) {
-      console.log(this._form.value)
       this.userService.updateUserInfos(this._user._id, this._form.value).subscribe(
-          next => {
+          updatedUser => {
             this.onCancel();
           },
           error => console.log(error)

@@ -29,19 +29,24 @@ import {User} from "../../shared/types/user.type";
 })
 export class UserProfileComponent implements OnInit{
   private _user!: User;
-  private username!: string;
+  private id!: string;
 
   constructor(private userService: UserService, private route: ActivatedRoute) {
   }
 
   ngOnInit(): void {
-    this.username = this.route.snapshot.params['username'];
-    this.userService.getUserInfos(this.username).subscribe(
-        response => this._user = response,
-        error => console.log(error))
+    this.id = this.route.snapshot.params['id'];
+    this.getUserInfo(this.id);
+    this.userService.refreshRequest.subscribe((res) => this.getUserInfo(this.id))
   }
 
   get user(): User {
     return this._user;
+  }
+
+  getUserInfo(id: string) {
+    this.userService.getUserInfos(id).subscribe(
+        response => this._user = response,
+        error => console.log(error));
   }
 }
