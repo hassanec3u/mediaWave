@@ -16,6 +16,7 @@ import { MatInputModule} from '@angular/material/input';
 import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
 import {MatIconModule} from '@angular/material/icon';
 import {HeaderComponent} from './shared/header/header.component';
+import {HomeComponent} from './home/home.component';
 
 
 @NgModule({
@@ -26,6 +27,7 @@ import {HeaderComponent} from './shared/header/header.component';
     HttpClientModule,
     ReactiveFormsModule
     , BrowserModule,
+    HomeComponent,
     BrowserAnimationsModule,
     MatFormFieldModule,
     MatInputModule,

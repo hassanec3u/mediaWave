@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { MatIconButton } from "@angular/material/button";
+import {MatButton, MatIconButton} from "@angular/material/button";
 import { MatMenu, MatMenuItem, MatMenuTrigger } from "@angular/material/menu";
 import { MatToolbarRow } from "@angular/material/toolbar";
 import { Router } from '@angular/router';
@@ -9,14 +9,15 @@ import { CommonModule } from '@angular/common'; // Import CommonModule
 @Component({
   selector: 'app-header',
   standalone: true,
-    imports: [
-        MatIconButton,
-        MatMenu,
-        MatMenuItem,
-        MatToolbarRow,
-        MatMenuTrigger,
-        CommonModule
-    ],
+  imports: [
+    MatIconButton,
+    MatMenu,
+    MatMenuItem,
+    MatToolbarRow,
+    MatMenuTrigger,
+    CommonModule,
+    MatButton
+  ],
   templateUrl: './header.component.html',
   styleUrl: './header.component.css'
 })
@@ -29,11 +30,14 @@ export class HeaderComponent {
     this.isAuthenticated = this.userService.isAuthenticated(); // Check authentication status
   }
 
-  logout(): void {
-    this.userService.logout();
-  }
+
 
   login(): void {
+    this.router.navigate(['/login']);
+  }
+
+  logout() {
+    this.userService.logout();
     this.router.navigate(['/login']);
   }
 
@@ -42,7 +46,12 @@ export class HeaderComponent {
     this.router.navigate(['/register']);
   }
 
-  navigateHome(): void {
+  //TODO : get the user profile to display it like /profile/:id
+  navigateToProfile() {
+    this.router.navigate(['/profile']);
+  }
+
+  navigateHome() {
     this.router.navigate(['/']);
   }
 }
