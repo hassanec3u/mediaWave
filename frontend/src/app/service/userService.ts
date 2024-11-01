@@ -8,6 +8,7 @@ import {User} from "../shared/types/user.type";
 
 interface LoginResponse {
   access_token: string;
+  userId: string;
 }
 
 @Injectable({
@@ -30,6 +31,8 @@ export class UserService {
     return this.http.post<LoginResponse>(`${this.apiUrl}/login`, {username, password}).pipe(
       tap(response => {
         this.cookieService.set('access_token', response.access_token);
+        this.cookieService.set('userId', response.userId);
+
      })
     );
   }
@@ -45,11 +48,16 @@ export class UserService {
 
   logout() {
     this.cookieService.delete('access_token');
+    this.cookieService.delete('userId');
     window.location.href = '/login';
   }
 
   getUserInfos(id: string): Observable<User> {
     return this.http.get<User>(this.apiBackendUrl+environment.backend.endpoints.userInfo + id);
+  }
+
+  getUserId(): string | null {
+    return this.cookieService.get('userId');
   }
 
   updateUserInfos(id: string, userInfo: User): Observable<User> {

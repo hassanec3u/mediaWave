@@ -46,9 +46,14 @@ export class HeaderComponent {
     this.router.navigate(['/register']);
   }
 
-  //TODO : get the user profile to display it like /profile/:id
   navigateToProfile() {
-    this.router.navigate(['/profile']);
+    const userId = this.userService.getUserId();
+    console.log('User ID:', userId);
+    if (userId) {
+      this.router.navigate([`/profile/${userId}`]);
+    } else {
+      console.error('User ID not found');
+    }
   }
 
   navigateHome() {
