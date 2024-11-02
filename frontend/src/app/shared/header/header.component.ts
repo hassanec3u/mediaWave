@@ -56,6 +56,10 @@ export class HeaderComponent {
     }
   }
 
+  navigateToFriend() {
+    this.router.navigate(['/friend']);
+  }
+
   navigateHome() {
     this.router.navigate(['/']);
   }
