@@ -2,3 +2,14 @@ header {
     margin-bottom: 20px;
     padding: 10px;
 }
+
+.auth-buttons {
+  display: flex;
+  gap: 10px;
+  margin-right: 20px;
+}
+
+.custom-button {
+  background-color: white;
+  color: blue;
+}
