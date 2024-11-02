@@ -39,6 +39,7 @@ export class UserService {
     );
   }
 
+
   isAuthenticated(): boolean {
     return this.cookieService.check('access_token');
   }

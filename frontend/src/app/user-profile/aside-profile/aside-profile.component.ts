@@ -6,13 +6,15 @@ import {MatDialog} from "@angular/material/dialog";
 import {UserService} from "../../service/userService";
 import {Observable} from "rxjs";
 import {Picture} from "../../shared/types/Picture.type";
+import {NgIf} from '@angular/common';
 
 @Component({
   selector: 'app-aside-profile',
   standalone: true,
   imports: [
     MatIcon,
-    UpdateProfileComponent
+    UpdateProfileComponent,
+    NgIf
   ],
   templateUrl: './aside-profile.component.html',
   styleUrl: './aside-profile.component.css'
@@ -34,6 +36,10 @@ export class AsideProfileComponent {
   @Input()
   set userInfo(value: User) {
     this._userInfo = value;
+  }
+
+  isMyProfile() {
+    return this.userService.getUserId() === this._userInfo._id;
   }
 
   openFormUpdate() {
