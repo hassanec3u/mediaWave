@@ -1,21 +1,14 @@
-import {
-    Body,
-    ClassSerializerInterceptor,
-    Controller, Delete,
-    Get,
-    Param,
-    Post,
-    Put,
-    Query,
-    UseInterceptors
-} from "@nestjs/common";
-import {mergeMap, Observable} from "rxjs";
+import {Body, ClassSerializerInterceptor, Controller, Delete, Get, Param, Post, Put, Query, UseGuards, UseInterceptors} from "@nestjs/common";
+import {Observable} from "rxjs";
 import {UserEntity} from "./entity/UserEntity";
 import {UserService} from "./user.service";
 import {UpdateUserInfoDto} from "./dto/UpdateUserInfoDto";
+import {AuthGuard} from "../auth/AuthGuard";
 
 @UseInterceptors(ClassSerializerInterceptor)
 @Controller('user')
+@UseGuards(AuthGuard)
+
 export class UserController {
 
     constructor(private readonly userService: UserService) {

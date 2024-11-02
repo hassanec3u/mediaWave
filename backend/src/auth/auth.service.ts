@@ -22,7 +22,6 @@ export class AuthService {
             throw new BadRequestException('Passwords do not match');
         }
 
-
         const user = await this.userDao.findByUsername(createUserDto.username);
         if (user) {
             throw new ConflictException('User already exists');

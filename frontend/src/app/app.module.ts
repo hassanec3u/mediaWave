@@ -4,7 +4,7 @@ import {FormsModule} from '@angular/forms';
 import { AppComponent } from './app.component';
 import { LoginComponent } from './account/login/login.component';
 import { AppRoutingModule } from './app-routing.module';
-import {HttpClientModule} from "@angular/common/http";
+import {HTTP_INTERCEPTORS, HttpClientModule} from "@angular/common/http";
 import {RegisterComponent} from "./account/register/register.component";
 import {CookieService} from "ngx-cookie-service";
 import {LogoutComponent} from './account/logout/logout.component';
@@ -18,6 +18,7 @@ import {MatIconModule} from '@angular/material/icon';
 import {HeaderComponent} from './shared/header/header.component';
 import {HomeComponent} from './home/home.component';
 import {FriendSearchComponent} from './friend/friend-search.component';
+import {AuthInterceptor} from './authInterceptor/AuthInterceptor';
 
 
 @NgModule({
@@ -33,7 +34,11 @@ import {FriendSearchComponent} from './friend/friend-search.component';
     MatFormFieldModule,
     MatInputModule,
     MatButtonModule, MatIconModule, HeaderComponent],
-    providers: [CookieService,provideAnimationsAsync()],
+    providers: [CookieService,provideAnimationsAsync(),{
+      provide: HTTP_INTERCEPTORS,
+      useClass: AuthInterceptor,
+      multi: true
+    }],
     bootstrap: [AppComponent]
 })
 export class AppModule {}
