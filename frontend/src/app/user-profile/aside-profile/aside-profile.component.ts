@@ -1,8 +1,11 @@
-import {Component, Input} from '@angular/core';
+import {Component, ElementRef, Input, ViewChild} from '@angular/core';
 import {MatIcon} from "@angular/material/icon";
 import {User} from "../../shared/types/user.type";
 import {UpdateProfileComponent} from "../update-profile/update-profile.component";
 import {MatDialog} from "@angular/material/dialog";
+import {UserService} from "../../service/userService";
+import {Observable} from "rxjs";
+import {Picture} from "../../shared/types/Picture.type";
 
 @Component({
   selector: 'app-aside-profile',
@@ -17,8 +20,10 @@ import {MatDialog} from "@angular/material/dialog";
 export class AsideProfileComponent {
   private _userInfo!: User;
   private _formUpdateOpen!: boolean;
+  @ViewChild('fileInput') fileInput!: ElementRef;
+  profilePicture!: string | undefined;
 
-  constructor(private _dialog: MatDialog) {
+  constructor(private _dialog: MatDialog, private userService: UserService) {
     this._formUpdateOpen = false;
   }
 
@@ -37,5 +42,30 @@ export class AsideProfileComponent {
       disableClose: true,
       data: this._userInfo
     })
+  }
+
+  onProfileImageClick() {
+    this.fileInput.nativeElement.click();
+  }
+
+  onFileSelected(event: Event) {
+    const input = event.target as HTMLInputElement;
+    if (input.files && input.files[0]) {
+      const file = input.files[0];
+      this.uploadProfileImage(file);
+      console.log(file.name)
+    }
+  }
+
+  uploadProfileImage(file: File) {
+    this.userService.uploadProfilePicture(this._userInfo._id, file).subscribe(
+        response => {
+          console.log("UPLOAD IMAGE!")
+          console.log(response);
+          this.userService.getProfilePicture(response.profilePicture).subscribe(
+              (res) => this.profilePicture = URL.createObjectURL(res));
+        },
+        error => console.log(error)
+    );
   }
 }
