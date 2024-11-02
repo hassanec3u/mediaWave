@@ -6,7 +6,9 @@ export const environment = {
         port: '3000',
         endpoints: {
             userInfo: `/user/`,
-            updateUserInfo: `/user/`
+            updateUserInfo: `/user/`,
+            uploadPicture: '/upload',
+            updateProfilePicture: '/user/picture/'
         },
     },
 };

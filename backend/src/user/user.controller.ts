@@ -27,4 +27,9 @@ export class UserController {
     findUserById(@Param('id') id: string): Observable<UserEntity> {
         return this.userService.findUserById(id);
     }
+
+    @Put("/picture/:id")
+    updateProfilePicture(@Param('id') id: string, @Body() body: {profilePicture: string}) {
+        return this.userService.updateProfilePicture(id, body.profilePicture);
+    }
 }

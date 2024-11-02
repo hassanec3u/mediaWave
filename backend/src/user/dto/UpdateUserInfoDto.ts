@@ -12,4 +12,6 @@ export class UpdateUserInfoDto {
     @IsNotEmpty()
     @IsString()
     bio: string;
+
+    profilePicture: string;
 }
