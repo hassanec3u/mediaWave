@@ -31,10 +31,11 @@ export class UserController {
         console.log(username);
         return this.userService.findUserByUsername(username);
     }
-  
-      @Put("/picture/:id")
-    updateProfilePicture(@Param('id') id: string, @Body() body: {profilePicture: string}) {
+
+    @Put("/picture/:id")
+    updateProfilePicture(@Param('id') id: string, @Body() body: { profilePicture: string }) {
         return this.userService.updateProfilePicture(id, body.profilePicture);
+    }
 
     @Put(":id")
     updateUserInfo(@Param('id') id: string, @Body() updateUserInfoDto: UpdateUserInfoDto): Observable<UserEntity> {
@@ -48,8 +49,8 @@ export class UserController {
 
 
     @Post(':userId/friends/:friendId')
-    sendFriendRequest(@Param('userId') userId: string, @Param('friendId') friendId: string):  void{
-          this.userService.sendFriendRequest(userId, friendId);
+    sendFriendRequest(@Param('userId') userId: string, @Param('friendId') friendId: string): void {
+        this.userService.sendFriendRequest(userId, friendId);
     }
 
     //route pour accepter une demande d'ami
@@ -65,8 +66,8 @@ export class UserController {
     }
 
     @Delete(':userId/friends/:friendId')
-    removeFriend(@Param('userId') userId: string, @Param('friendId') friendId: string): void{
-         this.userService.removeFriend(userId, friendId);
+    removeFriend(@Param('userId') userId: string, @Param('friendId') friendId: string): void {
+        this.userService.removeFriend(userId, friendId);
     }
 
     @Get(':userId/friends')

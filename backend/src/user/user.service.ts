@@ -100,6 +100,7 @@ export class UserService {
             next: () => console.log('Friend request declined'),
             error: (err) => console.error('Error declining friend:', err)
         });
+    }
       
     updateProfilePicture(id: string, profilePicture: string) {
         const updateData : Partial<UpdateUserInfoDto> = {profilePicture};
