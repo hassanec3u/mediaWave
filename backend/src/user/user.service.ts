@@ -1,4 +1,4 @@
-import {Injectable, NotFoundException, UnprocessableEntityException} from "@nestjs/common";
+import {ConflictException, Injectable, NotFoundException, UnprocessableEntityException} from "@nestjs/common";
 import {catchError, mergeMap, Observable, of, throwError} from "rxjs";
 import {UserEntity} from "./entity/UserEntity";
 import {UserDao} from "./dao/UserDao";
@@ -17,10 +17,20 @@ export class UserService {
     }
 
     updateUserInfo(id: string, updateUserInfoDto: UpdateUserInfoDto): Observable<UserEntity> {
-        return this.userDao.findByIdAndUpdate(id, updateUserInfoDto).pipe(
-            mergeMap(
-                (userUpdated) => !!userUpdated ? of(new UserEntity(userUpdated))
-                    : throwError(() => new NotFoundException(`User with ID '${id}' not found`))));
+        updateUserInfoDto.username = updateUserInfoDto.username.toLowerCase();
+
+        return this.userDao.findByUsername1(updateUserInfoDto.username).pipe(
+            mergeMap(existingUser => {
+                if(existingUser) {
+                    return throwError(() =>
+                        new ConflictException(`Username ${updateUserInfoDto.username} already exists`));
+                }
+                return this.userDao.findByIdAndUpdate(id, updateUserInfoDto).pipe(
+                    mergeMap(
+                        (userUpdated) => !!userUpdated ? of(new UserEntity(userUpdated))
+                            : throwError(() => new NotFoundException(`User with ID '${id}' not found`))));
+            })
+        )
     }
 
     findUserById(id: string): Observable<UserEntity> {
