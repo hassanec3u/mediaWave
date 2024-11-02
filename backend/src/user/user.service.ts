@@ -29,4 +29,12 @@ export class UserService {
                 (user) => !!user ? of(new UserEntity(user))
                     : throwError(() => new NotFoundException(`User with ID '${id}' not found`))));
     }
+
+    updateProfilePicture(id: string, profilePicture: string) {
+        const updateData : Partial<UpdateUserInfoDto> = {profilePicture};
+        return this.userDao.findByIdAndUpdate(id, updateData).pipe(
+            mergeMap(
+                (userUpdated) => !!userUpdated ? of(new UserEntity(userUpdated))
+                    : throwError(() => new NotFoundException(`User with ID '${id}' not found`))));
+    }
 }

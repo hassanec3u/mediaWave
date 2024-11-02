@@ -1,4 +1,4 @@
-import {Controller, Get, Post, StreamableFile, UploadedFile, UseInterceptors} from '@nestjs/common';
+import {Controller, Get, Post, Query, StreamableFile, UploadedFile, UseInterceptors} from '@nestjs/common';
 import {FileInterceptor} from "@nestjs/platform-express";
 import { createReadStream } from 'fs';
 import { join } from 'path';
@@ -18,8 +18,9 @@ export class FilesUploadController {
   }
 
   @Get('')
-  getFile(): StreamableFile {
-    const file = createReadStream(join(process.cwd(), 'uploads\\\\1730417745190-Photo pe.png'));
+  getFile(@Query('filePath') filePath: string): StreamableFile {
+    console.log(filePath)
+    const file = createReadStream(join(process.cwd(), filePath));
     return new StreamableFile(file);
   }
 }
