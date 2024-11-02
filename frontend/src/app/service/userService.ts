@@ -1,7 +1,7 @@
-import { Injectable } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
+import {Injectable} from '@angular/core';
+import {HttpClient} from '@angular/common/http';
 import {Observable, Subject, tap} from 'rxjs';
-import { CookieService } from 'ngx-cookie-service';
+import {CookieService} from 'ngx-cookie-service';
 import {environment} from "../../environments/environments";
 import {User} from "../shared/types/user.type";
 
@@ -33,7 +33,7 @@ export class UserService {
         this.cookieService.set('access_token', response.access_token);
         this.cookieService.set('userId', response.userId);
 
-     })
+      })
     );
   }
 
@@ -52,17 +52,44 @@ export class UserService {
     window.location.href = '/login';
   }
 
-  getUserInfos(id: string): Observable<User> {
-    return this.http.get<User>(this.apiBackendUrl+environment.backend.endpoints.userInfo + id);
+  searchUsers(query: string): Observable<User[]> {
+    return this.http.get<User[]>(`${this.apiBackendUrl}/user/search`, {params: {query}});
   }
 
-  getUserId(): string | null {
+  sendFriendRequest(myId: String, friendId: string): Observable<any> {
+    return this.http.post<any>(`${this.apiBackendUrl}/user/${myId}/friends/${friendId}`, {});
+  }
+
+  removeFriend(myId: String,friendIdToRemove: string): Observable<void> {
+    return this.http.delete<any>(`${this.apiBackendUrl}/user/${myId}/friends/${friendIdToRemove}`);
+  }
+
+  getFriends(myId: string): Observable<User[]> {
+    return this.http.get<User[]>(`${this.apiBackendUrl}/user/${myId}/friends`);
+  }
+
+  getPendingRequests(myId:string): Observable<User[]> {
+    return this.http.get<User[]>(`${this.apiBackendUrl}/user/${myId}/friends/pending`);
+  }
+  acceptFriend(myId: string, userId: string) {
+    return this.http.post<any>(`${this.apiBackendUrl}/user/${myId}/friends/${userId}/accept`, {});
+  }
+
+  refuseFriend(myId: string, userId: string) {
+    return this.http.delete<any>(`${this.apiBackendUrl}/user/${myId}/friends/${userId}/refuse`);
+  }
+
+  getUserInfos(id: string): Observable<User> {
+    return this.http.get<User>(this.apiBackendUrl + environment.backend.endpoints.userInfo + id);
+  }
+
+  getUserId(): string {
     return this.cookieService.get('userId');
   }
 
   updateUserInfos(id: string, userInfo: User): Observable<User> {
-    return this.http.put<User>(this.apiBackendUrl+environment.backend.endpoints.updateUserInfo + id, userInfo).pipe(
-        tap(() => this.refreshRequest.next())
+    return this.http.put<User>(this.apiBackendUrl + environment.backend.endpoints.updateUserInfo + id, userInfo).pipe(
+      tap(() => this.refreshRequest.next())
     );
   }
 }

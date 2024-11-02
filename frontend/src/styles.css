@@ -2,7 +2,7 @@
 @tailwind components;
 @tailwind utilities;
 html, body { height: 100%; }
-body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
+body { margin-top: 0px; font-family: Roboto, "Helvetica Neue", sans-serif; }
 
 .error-snackbar {
     background-color: #d32f2f;
