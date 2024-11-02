@@ -46,7 +46,11 @@ export class UserProfileComponent implements OnInit{
 
   getUserInfo(id: string) {
     this.userService.getUserInfos(id).subscribe(
-        response => this._user = response,
+        response => {
+          this._user = response;
+          this.userService.getProfilePicture(this._user.profilePicture).subscribe(
+              (res) => this._user.profilePicture = URL.createObjectURL(res));
+          },
         error => console.log(error));
   }
 }

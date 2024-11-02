@@ -1,9 +1,11 @@
-import {Injectable} from '@angular/core';
-import {HttpClient} from '@angular/common/http';
-import {Observable, Subject, tap} from 'rxjs';
-import {CookieService} from 'ngx-cookie-service';
+
+import { Injectable } from '@angular/core';
+import {HttpClient, HttpHeaders, HttpParams} from '@angular/common/http';
+import {Observable, Subject, switchMap, tap} from 'rxjs';
+import { CookieService } from 'ngx-cookie-service';
 import {environment} from "../../environments/environments";
 import {User} from "../shared/types/user.type";
+import {Picture} from "../shared/types/Picture.type";
 
 
 interface LoginResponse {
@@ -91,5 +93,26 @@ export class UserService {
     return this.http.put<User>(this.apiBackendUrl + environment.backend.endpoints.updateUserInfo + id, userInfo).pipe(
       tap(() => this.refreshRequest.next())
     );
+  }
+
+  uploadProfilePicture(id: string, profilePicture: File): Observable<User> {
+    const formData = new FormData();
+    formData.append('file', profilePicture);
+    return this.http.post<Picture>(this.apiBackendUrl+environment.backend.endpoints.uploadPicture, formData, {
+      headers: new HttpHeaders({'enctype': 'multipart/form-data'})}).pipe(
+          switchMap((response) => this.updateProfilePicture(id, response.filePath))
+    );
+  }
+
+  updateProfilePicture(id: string, profilePicture: string): Observable<any> {
+    console.log("Update profile picture");
+    console.log(profilePicture);
+    return this.http.put(this.apiBackendUrl+environment.backend.endpoints.updateProfilePicture+id, {profilePicture});
+  }
+
+  getProfilePicture(profilePicturePath: string | undefined): Observable<any> {
+    console.log("GET PROFILE PICTURE");
+    const params = new HttpParams().set('filePath', profilePicturePath+'');
+    return this.http.get<any>(this.apiBackendUrl+environment.backend.endpoints.uploadPicture, {params, responseType: 'blob' as 'json'});
   }
 }

@@ -31,6 +31,10 @@ export class UserController {
         console.log(username);
         return this.userService.findUserByUsername(username);
     }
+  
+      @Put("/picture/:id")
+    updateProfilePicture(@Param('id') id: string, @Body() body: {profilePicture: string}) {
+        return this.userService.updateProfilePicture(id, body.profilePicture);
 
     @Put(":id")
     updateUserInfo(@Param('id') id: string, @Body() updateUserInfoDto: UpdateUserInfoDto): Observable<UserEntity> {
@@ -41,7 +45,6 @@ export class UserController {
     findUserById(@Param('id') id: string): Observable<UserEntity> {
         return this.userService.findUserById(id);
     }
-
 
 
     @Post(':userId/friends/:friendId')
@@ -74,5 +77,6 @@ export class UserController {
     @Get(':userId/friends/pending')
     getFriendRequest(@Param('userId') userId: string): Observable<UserEntity[]> {
         return this.userService.getFriendRequest(userId);
+
     }
 }

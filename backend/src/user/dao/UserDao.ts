@@ -35,7 +35,9 @@ export class UserDao {
         return from(this._personModel.findOne({username}).lean())
     }
 
-    findByIdAndUpdate(id: string, user: UpdateUserInfoDto): Observable<User> {
+
+    findByIdAndUpdate(id: string, user: Partial<UpdateUserInfoDto>) : Observable<User> {
+      
         return from(this._personModel.findByIdAndUpdate(id, user, {new: true, runValidators: true}).lean());
     }
 
