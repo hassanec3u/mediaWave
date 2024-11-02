@@ -17,10 +17,11 @@ import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
 import {MatIconModule} from '@angular/material/icon';
 import {HeaderComponent} from './shared/header/header.component';
 import {HomeComponent} from './home/home.component';
+import {FriendSearchComponent} from './friend/friend-search.component';
 
 
 @NgModule({
-    declarations: [AppComponent, LoginComponent,RegisterComponent,LogoutComponent],
+    declarations: [AppComponent, LoginComponent,RegisterComponent,LogoutComponent,FriendSearchComponent],
   imports: [BrowserModule,
     AppRoutingModule,
     FormsModule,
