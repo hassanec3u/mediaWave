@@ -35,13 +35,22 @@ export class PostService {
         }
     }
 
-    updatePost(updatedPost: Post): Observable<Post> {
+    updatePost(postId: string | undefined, updatedPost: Post, picturePost: File | null): Observable<Post> {
         updatedPost.publisher = this.userId;
-        return this.http.put<Post>(this.backendUrl + environment.backend.endpoints.updatePost, updatedPost);
+        if(picturePost != null) {
+            return this.picturesService.uploadPicture(picturePost).pipe(
+                switchMap((response) => {
+                    updatedPost.postPicture = response.filePath;
+                    return this.http.put<Post>(this.backendUrl + environment.backend.endpoints.updatePost+postId, updatedPost);
+                })
+            )
+        } else {
+            return this.http.put<Post>(this.backendUrl + environment.backend.endpoints.updatePost+postId, updatedPost);
+        }
     }
 
-    deletePost(postId: string): void {
-        this.http.delete(this.backendUrl + environment.backend.endpoints.deletePost + postId);
+    deletePost(postId: string | undefined): Observable<any> {
+        return this.http.delete(this.backendUrl + environment.backend.endpoints.deletePost + postId);
     }
 
     getUserPosts(): Observable<Post[]> {

@@ -5,6 +5,7 @@ export type Post = {
     title?: string;
     content?: string;
     postDate?: Date;
-    publisher: any;
+    publisher?: any;
     postPicture?: string;
+    image?: string;
 }

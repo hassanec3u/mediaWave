@@ -1,0 +1,11 @@
+<div class="bg-white rounded-lg shadow-lg max-w-md mx-auto">
+    <mat-dialog-content class="text-gray-600 mb-6">Voulez-vous vraiment supprimer ce post ?</mat-dialog-content>
+    <mat-dialog-actions align="end" class="flex justify-end space-x-4">
+        <button (click)="onCancel()" class="px-2 py-1 bg-gray-200 text-gray-700 rounded-md hover:bg-gray-300 transition duration-200">
+            Annuler
+        </button>
+        <button (click)="onConfirm()" class="px-2 py-1 bg-red-500 text-white rounded-md hover:bg-red-600 transition duration-200">
+            Supprimer
+        </button>
+    </mat-dialog-actions>
+</div>

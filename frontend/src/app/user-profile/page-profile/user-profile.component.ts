@@ -81,4 +81,15 @@ export class UserProfileComponent implements OnInit{
         error => console.log(error)
     )
   }
+
+  onPostDeleted(postId: string) {
+      this.userPosts = this.userPosts.filter(post => post._id !== postId);
+  }
+
+  onPostUpdated(updatePost: Post) {
+      const postIndex = this.userPosts.findIndex(post => post._id === updatePost._id);
+      if(postIndex !== -1) {
+          this.userPosts[postIndex] = updatePost;
+      }
+  }
 }
