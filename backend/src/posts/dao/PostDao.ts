@@ -28,11 +28,11 @@ export class PostDao {
     }
 
     findByIdAndUpdate(id: string, createPostDto: CreatePostDto): Observable<Post> {
-        return from(this._postModel.findByIdAndUpdate(id, createPostDto, {new: true, runValidators: true}).lean());
+        return from(this._postModel.findByIdAndUpdate(id, createPostDto, {new: true, runValidators: true}).populate('publisher').lean());
     }
 
-    deletePost(id: string): void {
-        this._postModel.findByIdAndDelete(id);
+    deletePost(id: string): Observable<any> {
+        return from(this._postModel.findByIdAndDelete(id));
     }
 
     getPostsByUser(userId: string): Observable<any> {

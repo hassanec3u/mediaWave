@@ -21,8 +21,8 @@ export class PostsService {
             mergeMap(updatedPost => of(new PostEntity(updatedPost))));
     }
 
-    deletePost(id: string): void {
-        this.postDao.deletePost(id);
+    deletePost(id: string): Observable<void> {
+        return this.postDao.deletePost(id);
     }
 
     getPostsByUser(userId: string): Observable<PostEntity> {

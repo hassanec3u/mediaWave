@@ -9,7 +9,7 @@ import {PostsService} from "../posts/posts.service";
 
 @UseInterceptors(ClassSerializerInterceptor)
 @Controller('user')
-//@UseGuards(AuthGuard)
+@UseGuards(AuthGuard)
 
 export class UserController {
 
