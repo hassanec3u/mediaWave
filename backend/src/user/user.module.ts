@@ -7,6 +7,7 @@ import {UserDao} from "./dao/UserDao";
 import {AuthController} from "../auth/auth.controller";
 import {UserController} from "./user.controller";
 import {UserService} from "./user.service";
+import {PostsModule} from "../posts/posts.module";
 
 @Module({
     imports: [
@@ -15,6 +16,7 @@ import {UserService} from "./user.service";
             signOptions: { expiresIn: '1h' },
         }),
         MongooseModule.forFeature([{ name: User.name, schema: UserSchema }]),
+        PostsModule
     ],
     providers: [UserService, UserDao],
     controllers: [UserController],

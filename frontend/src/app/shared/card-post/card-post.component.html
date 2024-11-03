@@ -4,10 +4,10 @@
             <img src="https://cdn.pixabay.com/photo/2015/05/31/16/03/teddy-bear-792273_1280.jpg"
                  alt="profile-image"
                  class="w-8 h-8 object-cover items-center rounded-full mr-2">
-            <span class="font-medium text-sm items-center text-gray-700">username username</span>
+            <span class="font-medium text-sm items-center text-gray-700">{{ post.publisher.username }}</span>
         </div>
         <div class="flex">
-            <span class="font-extralight text-sm">12-08-2024</span>
+            <span class="font-extralight text-sm">{{ post.postDate | date: 'dd-MM-yyyy' }}</span>
             <mat-icon [matMenuTriggerFor]="menuPost" class="text-sm text-blue-500 cursor-pointer ml-2">more</mat-icon>
             <mat-menu #menuPost="matMenu" class="cursor-pointer bg-white">
                         <span class="text-sm font-extralight block p-1 hover:bg-white">
@@ -17,46 +17,9 @@
             </mat-menu>
         </div>
     </div>
-    <h5 class="text-sm font-bold mb-0">POST TITLE</h5>
-    <p class="font-light text-base text-justify">In addition to fetching data from a server, HttpClient supports
-        other HTTP
-        methods such as PUT, POST, and
-        DELETE, which you can use to modify the remote data.</p>
-    <img src="https://cdn-icons-png.flaticon.com/512/6320/6320540.png"
-         class="w-full rounded mb-3 h-72"
-         alt="post-image">
-    <p class="flex items-center">
-        <mat-icon class="text-red-500 cursor-pointer">favorite</mat-icon>
-        <span class="ml-1">142</span>
-        <mat-icon class="text-gray-800 cursor-pointer ml-2">message</mat-icon>
-        <span class="ml-1">142</span>
-    </p>
-</div>
-<div class="mx-auto my-5 p-4 shadow-lg w-1/2">
-    <div class="flex justify-between items-end mb-4">
-        <div class="flex items-center">
-            <img src="https://cdn.pixabay.com/photo/2015/05/31/16/03/teddy-bear-792273_1280.jpg"
-                 alt="profile-image"
-                 class="w-8 h-8 object-cover items-center rounded-full mr-2">
-            <span class="font-medium text-sm items-center text-gray-700">username username</span>
-        </div>
-        <div class="flex">
-            <span class="font-extralight text-sm">12-08-2024</span>
-            <mat-icon [matMenuTriggerFor]="menuPost" class="text-sm text-blue-500 cursor-pointer ml-2">more</mat-icon>
-            <mat-menu #menuPost="matMenu" class="cursor-pointer bg-white">
-                        <span class="text-sm font-extralight block p-1 hover:bg-white">
-                            <mat-icon class="text-sm p-2">delete</mat-icon>Delete this post</span>
-                <span class="text-sm font-extralight block p-1 hover:bg-white">
-                            <mat-icon class="text-sm p-2">edit</mat-icon>Update this post</span>
-            </mat-menu>
-        </div>
-    </div>
-    <h5 class="text-sm font-bold mb-0">POST TITLE</h5>
-    <p class="font-light text-base text-justify">In addition to fetching data from a server, HttpClient supports
-        other HTTP
-        methods such as PUT, POST, and
-        DELETE, which you can use to modify the remote data.</p>
-    <img src="https://cdn-icons-png.flaticon.com/512/6320/6320540.png"
+    <h6 class="text-sm font-bold mb-0">{{ post.title }}</h6>
+    <p class="font-light text-base text-justify">{{ post.content }}</p>
+    <img [src]="post.postPicture"
          class="w-full rounded mb-3 h-72"
          alt="post-image">
     <p class="flex items-center">
