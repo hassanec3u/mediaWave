@@ -9,6 +9,10 @@ import {AsideProfileComponent} from "../aside-profile/aside-profile.component";
 import {UserService} from "../../service/userService";
 import {ActivatedRoute} from "@angular/router";
 import {User} from "../../shared/types/user.type";
+import {Post} from "../../shared/types/post.type";
+import {PostService} from "../../service/postService";
+import {NgForOf} from "@angular/common";
+import {catchError, forkJoin, map, mergeMap, of, switchMap} from "rxjs";
 
 @Component({
   selector: 'app-user-profile',
@@ -22,7 +26,8 @@ import {User} from "../../shared/types/user.type";
     MatMenuItem,
     HeaderComponent,
     CardPostComponent,
-    AsideProfileComponent
+    AsideProfileComponent,
+    NgForOf
   ],
   templateUrl: './user-profile.component.html',
   styleUrl: './user-profile.component.css'
@@ -30,14 +35,18 @@ import {User} from "../../shared/types/user.type";
 export class UserProfileComponent implements OnInit{
   private _user!: User;
   private id!: string;
+  userPosts!: Post[]
 
-  constructor(private userService: UserService, private route: ActivatedRoute) {
+  constructor(private userService: UserService,
+              private route: ActivatedRoute,
+              private postService: PostService) {
   }
 
   ngOnInit(): void {
     this.id = this.route.snapshot.params['id'];
     this.getUserInfo(this.id);
-    this.userService.refreshRequest.subscribe((res) => this.getUserInfo(this.id))
+    this.userService.refreshRequest.subscribe((res) => this.getUserInfo(this.id));
+    this.getUserPosts();
   }
 
   get user(): User {
@@ -52,5 +61,24 @@ export class UserProfileComponent implements OnInit{
               (res) => this._user.profilePicture = URL.createObjectURL(res));
           },
         error => console.log(error));
+  }
+
+  getUserPosts() {
+    this.postService.getUserPosts().pipe(
+        switchMap(posts => {
+          const postsWithImages$ = posts.map(post =>
+              this.userService.getProfilePicture(post.postPicture).pipe(
+                  map(image => ({...post, postPicture: URL.createObjectURL(image)})),
+                  catchError(error => {
+                    console.error(`Erreur pour le post ${post._id}:`, error);
+                    return of(post);
+                  })
+              )
+          );
+          return forkJoin(postsWithImages$);
+        })).subscribe(
+        response => this.userPosts = response,
+        error => console.log(error)
+    )
   }
 }

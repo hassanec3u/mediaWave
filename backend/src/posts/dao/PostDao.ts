@@ -34,4 +34,12 @@ export class PostDao {
     deletePost(id: string): void {
         this._postModel.findByIdAndDelete(id);
     }
+
+    getPostsByUser(userId: string): Observable<any> {
+        return from(this._postModel.find({ publisher: userId }).populate('publisher').sort({ postDate: -1 }).lean());
+    }
+
+    findPostById(id: string): Observable<Post> {
+        return from(this._postModel.findById(id).lean());
+    }
 }

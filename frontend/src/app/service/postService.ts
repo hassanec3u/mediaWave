@@ -43,4 +43,8 @@ export class PostService {
     deletePost(postId: string): void {
         this.http.delete(this.backendUrl + environment.backend.endpoints.deletePost + postId);
     }
+
+    getUserPosts(): Observable<Post[]> {
+        return this.http.get<Post[]>(`${this.backendUrl}/user/${this.userId}/posts`);
+    }
 }

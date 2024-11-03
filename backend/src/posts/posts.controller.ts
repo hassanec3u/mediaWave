@@ -1,4 +1,4 @@
-import {Body, Controller, Delete, Param, Post, Put} from '@nestjs/common';
+import {Body, Controller, Delete, Get, Param, Post, Put, Req} from '@nestjs/common';
 import { PostsService } from './posts.service';
 import {CreatePostDto} from "./dto/createPostDto";
 import {Observable} from "rxjs";
@@ -21,5 +21,10 @@ export class PostsController {
   @Delete('/:id')
   deletePost(@Param('id') id: string): void {
     this.postsService.deletePost(id);
+  }
+
+  @Get('/:id')
+  findPostById(@Param('id') id: string): Observable<PostEntity> {
+    return this.postsService.findPostById(id);
   }
 }

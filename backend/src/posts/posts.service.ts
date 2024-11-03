@@ -1,7 +1,7 @@
-import { Injectable } from '@nestjs/common';
+import {Injectable, NotFoundException, UnprocessableEntityException} from '@nestjs/common';
 import {PostDao} from "./dao/PostDao";
 import {CreatePostDto} from "./dto/createPostDto";
-import {map, mergeMap, Observable, of} from "rxjs";
+import {catchError, map, mergeMap, Observable, of, throwError} from "rxjs";
 import {Post} from "./schema/postSchema";
 import {PostEntity} from "./entity/PostEntity";
 
@@ -23,5 +23,18 @@ export class PostsService {
 
     deletePost(id: string): void {
         this.postDao.deletePost(id);
+    }
+
+    getPostsByUser(userId: string): Observable<PostEntity> {
+        return this.postDao.getPostsByUser(userId).pipe(
+            mergeMap((posts) => of(posts.map(post => new PostEntity(post)))),
+            catchError((e) => throwError(() => new UnprocessableEntityException(e.message))));
+    }
+
+    findPostById(id: string): Observable<PostEntity> {
+        return this.postDao.findPostById(id).pipe(
+            mergeMap((post) => of(new PostEntity(post))),
+            catchError((e) => throwError(() => new NotFoundException(`Post with ID ${id} not found`)))
+        );
     }
 }

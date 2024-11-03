@@ -11,7 +11,7 @@ export const environment = {
             updateProfilePicture: '/user/picture/',
             addPost: '/posts/',
             updatePost: '/posts/',
-            deletePost: '/posts/'
+            deletePost: '/posts/',
         },
     },
 };

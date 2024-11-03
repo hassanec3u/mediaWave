@@ -1,5 +1,6 @@
 import {Exclude, Expose, Type} from "class-transformer";
 import {User} from "../../user/schema/userSchema";
+import {UserEntity} from "../../user/entity/UserEntity";
 
 
 @Exclude()
@@ -21,7 +22,11 @@ export class PostEntity {
     postPicture: string;
 
     @Expose()
-    publisher: User;
+    @Type(() => Date)
+    postDate: Date;
+
+    @Expose()
+    publisher: UserEntity;
 
     constructor(partial: Partial<PostEntity>) {
         Object.assign(this, partial);

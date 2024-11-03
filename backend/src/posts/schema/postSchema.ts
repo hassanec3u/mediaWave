@@ -25,7 +25,7 @@ export class Post {
     @Prop({ type: Date, default: Date.now })
     postDate: Date;
 
-    @Prop({ type: [{ type: mongoose.Schema.Types.ObjectId, ref: 'User' }] })
+    @Prop({ type: mongoose.Schema.Types.ObjectId, ref: 'User' })
     publisher: User;
 }
 

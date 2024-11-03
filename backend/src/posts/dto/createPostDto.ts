@@ -10,8 +10,4 @@ export class CreatePostDto {
     content: string;
 
     postPicture: string;
-
-    @IsNotEmpty()
-    @IsString()
-    publisher: string;
 }
