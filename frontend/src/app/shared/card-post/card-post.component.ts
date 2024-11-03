@@ -9,6 +9,7 @@ import {PostService} from "../../service/postService";
 import {catchError, map, Observable, of} from "rxjs";
 import {PostsComponent} from "../../posts/posts.component";
 import {UserService} from "../../service/userService";
+import {PicturesService} from "../../service/picturesService";
 
 @Component({
   selector: 'app-card-post',
@@ -30,7 +31,8 @@ export class CardPostComponent {
 
     constructor(private dialog: MatDialog,
                 private postService: PostService,
-                private userService: UserService) {
+                private userService: UserService,
+                private picturesService: PicturesService) {
         this.onPostDeleted = new EventEmitter<string>();
         this.onPostEdited = new EventEmitter<Post>();
     }
@@ -68,7 +70,7 @@ export class CardPostComponent {
         editDialogRef.afterClosed().subscribe((result) => {
             if(result) {
                 console.log(result.postPicture)
-                this.userService.getProfilePicture(result.postPicture).subscribe(
+                this.picturesService.getPicture(result.postPicture).subscribe(
                     res => result.postPicture = URL.createObjectURL(res),
                     catchError(error => {
                         console.error(`Erreur pour le post ${result._id}:`, error);

@@ -13,6 +13,7 @@ import {Post} from "../../shared/types/post.type";
 import {PostService} from "../../service/postService";
 import {NgForOf} from "@angular/common";
 import {catchError, forkJoin, map, mergeMap, of, switchMap} from "rxjs";
+import {PicturesService} from "../../service/picturesService";
 
 @Component({
   selector: 'app-user-profile',
@@ -39,7 +40,8 @@ export class UserProfileComponent implements OnInit{
 
   constructor(private userService: UserService,
               private route: ActivatedRoute,
-              private postService: PostService) {
+              private postService: PostService,
+              private pictureService: PicturesService) {
   }
 
   ngOnInit(): void {
@@ -57,7 +59,7 @@ export class UserProfileComponent implements OnInit{
     this.userService.getUserInfos(id).subscribe(
         response => {
           this._user = response;
-          this.userService.getProfilePicture(this._user.profilePicture).subscribe(
+          this.pictureService.getPicture(this._user.profilePicture).subscribe(
               (res) => this._user.profilePicture = URL.createObjectURL(res));
           },
         error => console.log(error));
@@ -67,7 +69,7 @@ export class UserProfileComponent implements OnInit{
     this.postService.getUserPosts().pipe(
         switchMap(posts => {
           const postsWithImages$ = posts.map(post =>
-              this.userService.getProfilePicture(post.postPicture).pipe(
+              this.pictureService.getPicture(post.postPicture).pipe(
                   map(image => ({...post, postPicture: URL.createObjectURL(image)})),
                   catchError(error => {
                     console.error(`Erreur pour le post ${post._id}:`, error);

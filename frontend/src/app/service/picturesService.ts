@@ -21,7 +21,7 @@ export class PicturesService {
             headers: new HttpHeaders({'enctype': 'multipart/form-data'})});
     }
 
-    getProfilePicture(profilePicturePath: string | undefined): Observable<any> {
+    getPicture(profilePicturePath: string | undefined): Observable<any> {
         console.log("GET PROFILE PICTURE");
         const params = new HttpParams().set('filePath', profilePicturePath+'');
         return this.http.get<any>(this.backendUrl+environment.backend.endpoints.uploadPicture, {params, responseType: 'blob' as 'json'});
