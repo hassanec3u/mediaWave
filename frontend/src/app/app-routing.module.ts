@@ -10,7 +10,7 @@ import {FriendSearchComponent} from './friend/friend-search.component';
 import {PostsComponent} from "./posts/posts.component";
 
 const routes: Routes = [
-  { path: '', component: HomeComponent },
+  { path: '', component: HomeComponent ,canActivate: [AuthGuard]},
   { path: 'register', component: RegisterComponent },
   { path: 'logout', component: LogoutComponent },
   { path: 'profile/:id', component: UserProfileComponent, canActivate: [AuthGuard] },

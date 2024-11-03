@@ -22,7 +22,7 @@ import {AuthInterceptor} from './authInterceptor/AuthInterceptor';
 
 
 @NgModule({
-    declarations: [AppComponent, LoginComponent,RegisterComponent,LogoutComponent,FriendSearchComponent],
+  declarations: [AppComponent, LoginComponent, RegisterComponent, LogoutComponent, FriendSearchComponent],
   imports: [BrowserModule,
     AppRoutingModule,
     FormsModule,
@@ -34,11 +34,11 @@ import {AuthInterceptor} from './authInterceptor/AuthInterceptor';
     MatFormFieldModule,
     MatInputModule,
     MatButtonModule, MatIconModule, HeaderComponent],
-    providers: [CookieService,provideAnimationsAsync(),{
-      provide: HTTP_INTERCEPTORS,
-      useClass: AuthInterceptor,
-      multi: true
-    }],
-    bootstrap: [AppComponent]
+  providers: [CookieService, provideAnimationsAsync(), {
+    provide: HTTP_INTERCEPTORS,
+    useClass: AuthInterceptor,
+    multi: true
+  }],
+  bootstrap: [AppComponent]
 })
 export class AppModule {}

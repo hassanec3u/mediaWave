@@ -4,6 +4,7 @@ import { AuthModule } from './auth/auth.module';
 import {UserModule} from "./user/user.module";
 import { FilesUploadModule } from './files-upload/files-upload.module';
 import { PostsModule } from './posts/posts.module';
+import {CommentsModule} from "./comment/comment.module";
 
 @Module({
     imports: [
@@ -11,6 +12,7 @@ import { PostsModule } from './posts/posts.module';
         AuthModule,
         UserModule,
         PostsModule,
+        CommentsModule,
         UserModule,
         FilesUploadModule
     ]
