@@ -8,7 +8,10 @@ export const environment = {
             userInfo: `/user/`,
             updateUserInfo: `/user/`,
             uploadPicture: '/upload',
-            updateProfilePicture: '/user/picture/'
+            updateProfilePicture: '/user/picture/',
+            addPost: '/posts/',
+            updatePost: '/posts/',
+            deletePost: '/posts/',
         },
     },
 };

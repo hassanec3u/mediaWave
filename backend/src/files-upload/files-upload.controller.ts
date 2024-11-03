@@ -19,7 +19,7 @@ export class FilesUploadController {
 
   @Get('')
   getFile(@Query('filePath') filePath: string): StreamableFile {
-    console.log(filePath)
+    console.log("GET: "+filePath)
     const file = createReadStream(join(process.cwd(), filePath));
     return new StreamableFile(file);
   }

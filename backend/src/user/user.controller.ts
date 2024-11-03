@@ -4,6 +4,8 @@ import {UserEntity} from "./entity/UserEntity";
 import {UserService} from "./user.service";
 import {UpdateUserInfoDto} from "./dto/UpdateUserInfoDto";
 import {AuthGuard} from "../auth/AuthGuard";
+import {PostEntity} from "../posts/entity/PostEntity";
+import {PostsService} from "../posts/posts.service";
 
 @UseInterceptors(ClassSerializerInterceptor)
 @Controller('user')
@@ -11,7 +13,8 @@ import {AuthGuard} from "../auth/AuthGuard";
 
 export class UserController {
 
-    constructor(private readonly userService: UserService) {
+    constructor(private readonly userService: UserService,
+                private readonly postService: PostsService) {
     }
 
     @Get('search')
@@ -72,5 +75,11 @@ export class UserController {
     getFriendRequest(@Param('userId') userId: string): Observable<UserEntity[]> {
         return this.userService.getFriendRequest(userId);
 
+    }
+
+    @Get(':userId/posts')
+    getUserPosts(@Param('userId') userId: string): Observable<PostEntity> {
+        console.log(userId);
+        return this.postService.getPostsByUser(userId);
     }
 }

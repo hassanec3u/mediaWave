@@ -4,15 +4,19 @@ import { MatButton } from '@angular/material/button';
 import { HeaderComponent } from '../shared/header/header.component';
 import { UserService } from '../service/userService';
 import {NgIf} from '@angular/common';
+import {PostsComponent} from "../posts/posts.component";
+import {CardPostComponent} from "../shared/card-post/card-post.component";
 
 @Component({
   selector: 'app-home',
   standalone: true,
-  imports: [
-    MatButton,
-    HeaderComponent,
-    NgIf
-  ],
+    imports: [
+        MatButton,
+        HeaderComponent,
+        NgIf,
+        PostsComponent,
+        CardPostComponent
+    ],
   templateUrl: './home.component.html',
   styleUrls: ['./home.component.css']
 })

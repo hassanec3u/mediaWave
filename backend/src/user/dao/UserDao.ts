@@ -137,4 +137,8 @@ export class UserDao {
             )
         );
     }
+
+    findUserByIdWithPosts(id: string): Observable<User | null> {
+        return from(this._personModel.findById(id).populate('posts').lean());
+    }
 }
