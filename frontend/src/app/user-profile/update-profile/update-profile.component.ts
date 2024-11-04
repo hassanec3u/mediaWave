@@ -27,18 +27,12 @@ import {Subject} from "rxjs";
 export class UpdateProfileComponent implements OnInit {
   private _open!: boolean;
   private _form: FormGroup;
-  private _refreshRequest: Subject<void>;
 
   constructor(private _dialogRef: MatDialogRef<UpdateProfileComponent, User>,
               private userService: UserService,
               @Optional() @Inject(MAT_DIALOG_DATA) private _user: User) {
     this._open = false;
     this._form = this.buildUpdateForm();
-    this._refreshRequest = new Subject<void>();
-  }
-
-  get refreshRequest(): Subject<void> {
-    return this._refreshRequest;
   }
 
   get user(): User {

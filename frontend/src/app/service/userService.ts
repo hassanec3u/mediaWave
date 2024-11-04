@@ -1,7 +1,7 @@
 
 import { Injectable } from '@angular/core';
 import {HttpClient, HttpHeaders, HttpParams} from '@angular/common/http';
-import {Observable, Subject, switchMap, tap} from 'rxjs';
+import {BehaviorSubject, mergeMap, Observable, Subject, switchMap, tap} from 'rxjs';
 import { CookieService } from 'ngx-cookie-service';
 import {environment} from "../../environments/environments";
 import {User} from "../shared/types/user.type";
@@ -18,16 +18,19 @@ interface LoginResponse {
 })
 export class UserService {
   private apiBackendUrl = `${environment.backend.protocol}://${environment.backend.host}:${environment.backend.port}`;
-  private readonly _refreshRequest: Subject<void>;
+  //private readonly _refreshRequest: Subject<void>;
   private apiUrl = 'http://localhost:3000/auth';
 
+  userSubject = new BehaviorSubject<User>({_id: "0"});
+  public user = this.userSubject.asObservable();
+
   constructor(private http: HttpClient, private cookieService: CookieService) {
-    this._refreshRequest = new Subject<void>();
+    //this._refreshRequest = new Subject<void>();
   }
 
-  get refreshRequest(): Subject<void> {
+  /*get refreshRequest(): Subject<void> {
     return this._refreshRequest;
-  }
+  }*/
 
   login(username: string, password: string): Observable<LoginResponse> {
     return this.http.post<LoginResponse>(`${this.apiUrl}/login`, {username, password}).pipe(
@@ -96,7 +99,10 @@ export class UserService {
 
   updateUserInfos(id: string, userInfo: User): Observable<User> {
     return this.http.put<User>(this.apiBackendUrl + environment.backend.endpoints.updateUserInfo + id, userInfo).pipe(
-      tap(() => this.refreshRequest.next())
+      tap((user) => {
+        user.profilePicture = this.userSubject.value.profilePicture;
+        this.userSubject.next(user)
+      })
     );
   }
 
@@ -119,5 +125,19 @@ export class UserService {
     console.log("GET PROFILE PICTURE");
     const params = new HttpParams().set('filePath', profilePicturePath+'');
     return this.http.get<any>(this.apiBackendUrl+environment.backend.endpoints.uploadPicture, {params, responseType: 'blob' as 'json'});
+  }
+
+
+  loadUserInfo() {
+    this.getUserInfos(this.getUserId()).subscribe(
+        res => {
+          this.getProfilePicture(res.profilePicture).subscribe(
+              picture => {
+                res.profilePicture = URL.createObjectURL(picture)
+                this.userSubject.next(res)
+              }
+          )
+        }
+    );
   }
 }

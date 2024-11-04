@@ -1,7 +1,7 @@
 <div class="w-full mx-auto my-5 p-6 bg-white rounded-lg shadow-lg">
     <div class="flex justify-between items-end mb-4">
         <div class="flex items-center">
-            <img src="https://cdn.pixabay.com/photo/2015/05/31/16/03/teddy-bear-792273_1280.jpg"
+            <img [src]="userProfilePicture || defaultImage"
                  alt="profile-image"
                  class="w-8 h-8 object-cover items-center rounded-full mr-2">
             <span class="font-medium text-sm items-center text-gray-700">{{ post.publisher.username }}</span>

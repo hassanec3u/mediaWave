@@ -7,6 +7,7 @@ import {UserService} from "../../service/userService";
 import {Observable} from "rxjs";
 import {Picture} from "../../shared/types/Picture.type";
 import {NgIf} from '@angular/common';
+import {environment} from "../../../environments/environments";
 
 @Component({
   selector: 'app-aside-profile',
@@ -23,7 +24,7 @@ export class AsideProfileComponent {
   private _userInfo!: User;
   private _formUpdateOpen!: boolean;
   @ViewChild('fileInput') fileInput!: ElementRef;
-  profilePicture!: string | undefined;
+  defaultImage: string = environment.defaultImageProfile;
 
   constructor(private _dialog: MatDialog, private userService: UserService) {
     this._formUpdateOpen = false;
@@ -69,7 +70,11 @@ export class AsideProfileComponent {
           console.log("UPLOAD IMAGE!")
           console.log(response);
           this.userService.getProfilePicture(response.profilePicture).subscribe(
-              (res) => this.profilePicture = URL.createObjectURL(res));
+              (res) => {
+                response.profilePicture = URL.createObjectURL(res)
+                this._userInfo = response
+                this.userService.userSubject.next(this._userInfo)
+              });
         },
         error => console.log(error)
     );

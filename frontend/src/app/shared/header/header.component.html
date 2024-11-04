@@ -6,7 +6,7 @@
   <!-- Menu pour utilisateur authentifié -->
   <div *ngIf="isAuthenticated">
     <button mat-icon-button [matMenuTriggerFor]="menuHeader">
-      <img src="https://cdn.pixabay.com/photo/2015/05/31/16/03/teddy-bear-792273_1280.jpg" alt="profile-image"
+      <img [src]="user?.profilePicture || defaultImage" alt="profile-image"
            class="w-8 h-8 object-cover rounded-full mr-4">
     </button>
     <mat-menu #menuHeader="matMenu" class="cursor-pointer bg-white">

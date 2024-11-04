@@ -47,7 +47,7 @@ export class UserProfileComponent implements OnInit{
   ngOnInit(): void {
     this.id = this.route.snapshot.params['id'];
     this.getUserInfo(this.id);
-    this.userService.refreshRequest.subscribe((res) => this.getUserInfo(this.id));
+    //this.userService.refreshRequest.subscribe((res) => this.getUserInfo(this.id));
     this.getUserPosts();
   }
 
@@ -56,13 +56,8 @@ export class UserProfileComponent implements OnInit{
   }
 
   getUserInfo(id: string) {
-    this.userService.getUserInfos(id).subscribe(
-        response => {
-          this._user = response;
-          this.pictureService.getPicture(this._user.profilePicture).subscribe(
-              (res) => this._user.profilePicture = URL.createObjectURL(res));
-          },
-        error => console.log(error));
+      this.userService.loadUserInfo();
+      this.userService.user.subscribe((res) => this._user = res);
   }
 
   getUserPosts() {
