@@ -19,20 +19,13 @@ export class UserService {
     }
 
     updateUserInfo(id: string, updateUserInfoDto: UpdateUserInfoDto): Observable<UserEntity> {
-        updateUserInfoDto.username = updateUserInfoDto.username.toLowerCase();
-
-        return this.userDao.findByUsername1(updateUserInfoDto.username).pipe(
-            mergeMap(existingUser => {
-                if(existingUser) {
-                    return throwError(() =>
-                        new ConflictException(`Username ${updateUserInfoDto.username} already exists`));
-                }
-                return this.userDao.findByIdAndUpdate(id, updateUserInfoDto).pipe(
-                    mergeMap(
-                        (userUpdated) => !!userUpdated ? of(new UserEntity(userUpdated))
-                            : throwError(() => new NotFoundException(`User with ID '${id}' not found`))));
-            })
-        )
+        return this.userDao.findByIdAndUpdate(id, updateUserInfoDto).pipe(
+            catchError((e) => e.code === 11000 ? throwError(
+                () => new ConflictException(`Username ${updateUserInfoDto.username} already exists`))
+                : throwError(() => new UnprocessableEntityException(e.message))
+        ),
+        mergeMap((userUpdated) => !!userUpdated ? of(new UserEntity(userUpdated))
+        : throwError(() => new NotFoundException(`User with ID '${id}' not found`))));
     }
 
     findUserById(id: string): Observable<UserEntity> {
@@ -101,9 +94,9 @@ export class UserService {
             error: (err) => console.error('Error declining friend:', err)
         });
     }
-      
+
     updateProfilePicture(id: string, profilePicture: string) {
-        const updateData : Partial<UpdateUserInfoDto> = {profilePicture};
+        const updateData: Partial<UpdateUserInfoDto> = {profilePicture};
         return this.userDao.findByIdAndUpdate(id, updateData).pipe(
             mergeMap(
                 (userUpdated) => !!userUpdated ? of(new UserEntity(userUpdated))
