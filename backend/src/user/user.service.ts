@@ -109,6 +109,4 @@ export class UserService {
                 (userUpdated) => !!userUpdated ? of(new UserEntity(userUpdated))
                     : throwError(() => new NotFoundException(`User with ID '${id}' not found`))));
     }
-
-
 }
