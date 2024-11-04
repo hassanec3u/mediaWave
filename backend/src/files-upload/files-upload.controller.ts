@@ -1,4 +1,4 @@
-import {Controller, Get, Post, Query, StreamableFile, UploadedFile, UseInterceptors} from '@nestjs/common';
+import {Controller, Get, Post, Query, StreamableFile, UploadedFile, UseGuards, UseInterceptors} from '@nestjs/common';
 import {FileInterceptor} from "@nestjs/platform-express";
 import { createReadStream } from 'fs';
 import { join } from 'path';
@@ -6,7 +6,9 @@ import { join } from 'path';
 import {FileEntity} from "./entity/FileEntity";
 import { FilesUploadService } from './files-upload.service';
 import * as process from "process";
+import {AuthGuard} from "../auth/AuthGuard";
 
+@UseGuards(AuthGuard)
 @Controller('upload')
 export class FilesUploadController {
   constructor(private readonly filesUploadService: FilesUploadService) {}

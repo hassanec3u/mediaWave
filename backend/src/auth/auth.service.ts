@@ -29,7 +29,6 @@ export class AuthService {
 
         // Hash the password
         const hashedPassword = await bcrypt.hash(createUserDto.password, 10);
-
         this.userDao.save({...createUserDto, password: hashedPassword});
     }
 
