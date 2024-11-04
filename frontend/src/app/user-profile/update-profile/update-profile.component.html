@@ -28,27 +28,51 @@
         </mat-form-field>
         <mat-form-field appearance="outline" class="w-full">
             <textarea
-                    matInput
-                    placeholder="Bio"
-                    formControlName="bio"
-                    required></textarea>
-            <mat-error *ngIf="form.get('bio')?.dirty && form.get('bio')?.hasError('required')">
-                Bio is <strong>required</strong>
-            </mat-error>
-            <mat-error *ngIf="form.get('bio')?.dirty && form.get('bio')?.hasError('minlength')">
-                Bio is <strong>10 chars min</strong>
-            </mat-error>
-        </mat-form-field>
-    </form>
+              matInput
+              placeholder="Bio"
+              formControlName="bio"
+              required></textarea>
+      <mat-error *ngIf="form.get('bio')?.dirty && form.get('bio')?.hasError('required')">
+        Bio is <strong>required</strong>
+      </mat-error>
+      <mat-error *ngIf="form.get('bio')?.dirty && form.get('bio')?.hasError('minlength')">
+        Bio is <strong>10 chars min</strong>
+      </mat-error>
+    </mat-form-field>
+
+      <mat-form-field appearance="outline" class="w-full">
+        <input
+          matInput
+          [matDatepicker]="picker"
+          placeholder="Date de naissance"
+          formControlName="birthday" />
+        <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+        <mat-datepicker #picker></mat-datepicker>
+        <mat-error *ngIf="form.get('birthday')?.dirty && form.get('birthday')?.hasError('required')">
+          Date de naissance is <strong>required</strong>
+        </mat-error>
+      </mat-form-field>
+
+
+
+    <!-- Champ pour le pays -->
+    <mat-form-field appearance="outline" class="w-full">
+      <input
+        matInput
+        placeholder="Location"
+        formControlName="location" />
+      <mat-error *ngIf="form.get('location')?.dirty && form.get('location')?.hasError('required')">
+        Location is <strong>required</strong>
+      </mat-error>
+    </mat-form-field>
+  </form>
 </mat-dialog-content>
 
 <mat-dialog-actions align="end" class="p-1 flex justify-end space-x-4">
-    <button (click)="onCancel()" class="px-4 py-2 bg-gray-300 text-gray-700 rounded-md hover:bg-gray-400">
-        Cancel
-    </button>
-    <button (click)="onSubmit()" class="px-4 py-2 bg-blue-700 text-white rounded-md hover:bg-blue-500">
-        Save
-    </button>
+  <button (click)="onCancel()" class="px-4 py-2 bg-gray-300 text-gray-700 rounded-md hover:bg-gray-400">
+    Cancel
+  </button>
+  <button (click)="onSubmit()" class="px-4 py-2 bg-blue-700 text-white rounded-md hover:bg-blue-500">
+    Save
+  </button>
 </mat-dialog-actions>
-
-

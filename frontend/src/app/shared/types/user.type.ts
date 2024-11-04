@@ -4,4 +4,6 @@ export type User = {
     email?: string;
     profilePicture?: string;
     bio?: string;
+    birthday?: Date;
+    pays?: string;
 }

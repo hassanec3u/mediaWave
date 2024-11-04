@@ -1,12 +1,14 @@
-import {Component, Inject, OnInit, Optional} from '@angular/core';
+import {ChangeDetectionStrategy, Component, Inject, OnInit, Optional} from '@angular/core';
 import {MAT_DIALOG_DATA, MatDialogActions, MatDialogContent, MatDialogRef} from "@angular/material/dialog";
-import {MatFormField, MatError} from "@angular/material/form-field";
-import {MatInput} from "@angular/material/input";
+import {MatFormField, MatError, MatFormFieldModule} from "@angular/material/form-field";
+import {MatInput, MatInputModule} from "@angular/material/input";
 import {User} from "../../shared/types/user.type";
 import {FormControl, FormGroup, FormsModule, ReactiveFormsModule, Validators} from "@angular/forms";
 import {NgIf} from "@angular/common";
 import {UserService} from "../../service/userService";
 import {Subject} from "rxjs";
+import {provideNativeDateAdapter} from '@angular/material/core';
+import {MatDatepickerModule} from '@angular/material/datepicker';
 
 @Component({
   selector: 'app-update-profile',
@@ -19,10 +21,14 @@ import {Subject} from "rxjs";
     ReactiveFormsModule,
     FormsModule,
     NgIf,
-    MatError
+    MatError,MatFormFieldModule, MatInputModule, MatDatepickerModule
   ],
   templateUrl: './update-profile.component.html',
-  styleUrl: './update-profile.component.css'
+  styleUrl: './update-profile.component.css',
+  providers: [provideNativeDateAdapter()],
+  changeDetection: ChangeDetectionStrategy.OnPush,
+
+
 })
 export class UpdateProfileComponent implements OnInit {
   private _open!: boolean;
@@ -57,8 +63,10 @@ export class UpdateProfileComponent implements OnInit {
     return new FormGroup({
       username: new FormControl('', Validators.compose([Validators.required, Validators.minLength(3)])),
       email: new FormControl('', [Validators.required, Validators.email]),
-      bio: new FormControl('', Validators.compose([Validators.required, Validators.minLength(10)]))
-    })
+      bio: new FormControl('', Validators.compose([Validators.required, Validators.minLength(10)])),
+      birthday: new FormControl('', Validators.required), // Ajouter le champ birthday
+      location: new FormControl('') // Ajouter le champ location (ou pays)
+    });
   }
 
   onCancel() {

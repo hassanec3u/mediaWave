@@ -17,13 +17,17 @@ import {NgIf} from '@angular/common';
     NgIf
   ],
   templateUrl: './aside-profile.component.html',
-  styleUrl: './aside-profile.component.css'
+  styleUrls: ['./aside-profile.component.css'] // Correction ici pour 'styleUrls'
 })
 export class AsideProfileComponent {
   private _userInfo!: User;
   private _formUpdateOpen!: boolean;
   @ViewChild('fileInput') fileInput!: ElementRef;
   profilePicture!: string | undefined;
+
+  // Ajout des nouvelles propriétés
+  locations!: string;
+  birthdate!: string;
 
   constructor(private _dialog: MatDialog, private userService: UserService) {
     this._formUpdateOpen = false;
@@ -36,6 +40,9 @@ export class AsideProfileComponent {
   @Input()
   set userInfo(value: User) {
     this._userInfo = value;
+    // Mettre à jour les propriétés à partir de userInfo
+    this.locations = this._userInfo.pays || 'Non renseigné';
+    this.birthdate = this._userInfo.birthday ? new Date(this._userInfo.birthday).toLocaleDateString() : 'Non renseigné';
   }
 
   isMyProfile() {
