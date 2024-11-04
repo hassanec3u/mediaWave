@@ -98,6 +98,7 @@ export class UserService {
   }
 
   updateUserInfos(id: string, userInfo: User): Observable<User> {
+console.log(userInfo);
     return this.http.put<User>(this.apiBackendUrl + environment.backend.endpoints.updateUserInfo + id, userInfo).pipe(
       tap((user) => {
         user.profilePicture = this.userSubject.value.profilePicture;

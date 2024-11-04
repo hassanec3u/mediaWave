@@ -28,6 +28,12 @@ export class User {
     @Prop()
     bio: string;
 
+    @Prop()
+    birthday: Date;
+
+    @Prop()
+    pays: string;
+
     @Prop({ type: [{ type: mongoose.Schema.Types.ObjectId, ref: 'User' }] })
     friends: User[];
 

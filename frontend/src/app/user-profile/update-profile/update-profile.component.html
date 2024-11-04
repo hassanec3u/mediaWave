@@ -28,18 +28,45 @@
         </mat-form-field>
         <mat-form-field appearance="outline" class="w-full">
             <textarea
-                    matInput
-                    placeholder="Bio"
-                    formControlName="bio"
-                    required></textarea>
-            <mat-error *ngIf="form.get('bio')?.dirty && form.get('bio')?.hasError('required')">
-                Bio is <strong>required</strong>
-            </mat-error>
-            <mat-error *ngIf="form.get('bio')?.dirty && form.get('bio')?.hasError('minlength')">
-                Bio is <strong>10 chars min</strong>
-            </mat-error>
-        </mat-form-field>
-    </form>
+              matInput
+              placeholder="Bio"
+              formControlName="bio"
+              required>
+
+            </textarea>
+      <mat-error *ngIf="form.get('bio')?.dirty && form.get('bio')?.hasError('required')">
+        Bio is <strong>required</strong>
+      </mat-error>
+      <mat-error *ngIf="form.get('bio')?.dirty && form.get('bio')?.hasError('minlength')">
+        Bio is <strong>10 chars min</strong>
+      </mat-error>
+    </mat-form-field>
+
+      <mat-form-field appearance="outline" class="w-full">
+        <input
+          matInput
+          [matDatepicker]="picker"
+          placeholder="Date de naissance"
+          formControlName="birthday" />
+        <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+        <mat-datepicker #picker></mat-datepicker>
+        <mat-error *ngIf="form.get('birthday')?.dirty && form.get('birthday')?.hasError('required')">
+          Date de naissance is <strong>required</strong>
+        </mat-error>
+      </mat-form-field>
+
+
+
+    <mat-form-field appearance="outline" class="w-full">
+      <input
+        matInput
+        placeholder="Location"
+        formControlName="pays" />
+      <mat-error *ngIf="form.get('pays')?.dirty && form.get('pays')?.hasError('required')">
+        Location is <strong>required</strong>
+      </mat-error>
+    </mat-form-field>
+  </form>
 </mat-dialog-content>
 
 <mat-dialog-actions align="end" class="p-1 flex justify-end space-x-4">

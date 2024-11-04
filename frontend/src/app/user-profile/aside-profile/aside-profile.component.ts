@@ -26,6 +26,10 @@ export class AsideProfileComponent {
   @ViewChild('fileInput') fileInput!: ElementRef;
   defaultImage: string = environment.defaultImageProfile;
 
+  // Ajout des nouvelles propriétés
+  pays!: string;
+  birthdate!: string;
+
   constructor(private _dialog: MatDialog, private userService: UserService) {
     this._formUpdateOpen = false;
   }
@@ -37,6 +41,9 @@ export class AsideProfileComponent {
   @Input()
   set userInfo(value: User) {
     this._userInfo = value;
+    // Mettre à jour les propriétés à partir de userInfo
+    this.pays = this._userInfo.pays ? this._userInfo.pays : 'Non renseigné';
+    this.birthdate = this._userInfo.birthday ? new Date(this._userInfo.birthday).toLocaleDateString() : 'Non renseigné';
   }
 
   isMyProfile() {

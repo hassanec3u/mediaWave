@@ -11,22 +11,21 @@
             <mat-icon *ngIf="enableEdit" [matMenuTriggerFor]="menuPost" class="text-sm text-blue-500 cursor-pointer ml-2">more</mat-icon>
             <mat-menu #menuPost="matMenu" class="cursor-pointer bg-white">
                 <span (click)="openDeleteDialog(post._id)" class="text-sm font-extralight block p-1 hover:bg-white">
-                            <mat-icon class="text-sm p-2">delete</mat-icon>Supprimer ce poste</span>
-                <span (click)="editPost()" class="text-sm font-extralight block p-1 hover:bg-white">
-                            <mat-icon class="text-sm p-2">edit</mat-icon>Modifier ce poste</span>
-            </mat-menu>
-        </div>
+                    <mat-icon class="text-sm p-2">delete</mat-icon>Supprimer ce poste</span>
+        <span (click)="editPost()" class="text-sm font-extralight block p-1 hover:bg-white">
+                    <mat-icon class="text-sm p-2">edit</mat-icon>Modifier ce poste</span>
+      </mat-menu>
     </div>
-    <h6 class="text-sm font-bold mb-0">{{ post.title }}</h6>
-    <p class="font-light text-base text-justify">{{ post.content }}</p>
-    <img *ngIf="post.postPicture" [src]="post.postPicture"
-         class="w-full rounded mb-3 h-52"
-         alt="post-image">
-    <p class="flex items-center">
-        <mat-icon class="text-red-500 cursor-pointer">favorite</mat-icon>
-        <span class="ml-1">142</span>
-        <mat-icon class="text-gray-800 cursor-pointer ml-2">message</mat-icon>
-        <span class="ml-1">142</span>
-    </p>
-  <app-comment-list [postId]="post._id!"  ></app-comment-list>
+  </div>
+  <h6 class="text-sm font-bold mb-0">{{ post.title }}</h6>
+  <p class="font-light text-base text-justify">{{ post.content }}</p>
+  <img *ngIf="post.postPicture" [src]="post.postPicture" class="w-full rounded mb-3 h-52" alt="post-image">
+
+  <p class="flex items-center">
+    <app-like  [postId]="post._id!"> </app-like>
+    <mat-icon class="text-gray-800 cursor-pointer ml-2"></mat-icon>
+    <span class="ml-1"></span>  </p>
+
+  <app-comment-list [postId]="post._id!"></app-comment-list>
 </div>
+
