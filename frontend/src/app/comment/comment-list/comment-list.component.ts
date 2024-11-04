@@ -7,6 +7,7 @@ import {FormsModule} from '@angular/forms';
 import {MatFormField} from '@angular/material/form-field';
 import {MatButton} from '@angular/material/button';
 import {MatInput} from '@angular/material/input';
+import {detailedComment} from '../../shared/types/detailedComment';
 
 
 @Component({
@@ -25,7 +26,7 @@ import {MatInput} from '@angular/material/input';
 })
 export class CommentListComponent implements OnInit {
   @Input() postId!: string;
-  comments: Comment[] = [];
+  detailedComment: detailedComment[] = [];
   newComment = '';
 
   constructor(private commentService: CommentService, private userService: UserService) {
@@ -36,8 +37,9 @@ export class CommentListComponent implements OnInit {
   }
 
   loadComments(): void {
-    this.commentService.getComments(this.postId).subscribe(comments => {
-      this.comments = comments;});
+    this.commentService.getComments(this.postId).subscribe(detailedComment => {
+      this.detailedComment = detailedComment;
+    });
   }
 
   addComment(newComment: string): void {
@@ -46,8 +48,20 @@ export class CommentListComponent implements OnInit {
       post: this.postId,
       content: newComment
     };
-    this.commentService.addComment(comment, this.postId).subscribe(newComment => {
-      this.comments.push(newComment);
+
+    this.commentService.addComment(comment).subscribe(newComment => {
+
+      //convert newComment to detailedComment
+      const detailedComment: detailedComment = {
+        _id: newComment._id,
+        author: {
+          _id: newComment.author._id,
+          username: newComment.author.username
+        },
+        post: newComment.post,
+        content: newComment.content
+      }
+      this.detailedComment.push(detailedComment);
       this.newComment = '';
     });
   }
@@ -55,7 +69,7 @@ export class CommentListComponent implements OnInit {
 
   deleteComment(commentId: string): void {
     this.commentService.deleteComment(commentId).subscribe(() => {
-      this.comments = this.comments.filter(comment => comment._id !== commentId);
+      this.detailedComment = this.detailedComment.filter(comment => comment._id !== commentId);
     });
   }
 
