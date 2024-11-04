@@ -17,7 +17,7 @@ import {NgIf} from '@angular/common';
     NgIf
   ],
   templateUrl: './aside-profile.component.html',
-  styleUrls: ['./aside-profile.component.css'] // Correction ici pour 'styleUrls'
+  styleUrl: './aside-profile.component.css'
 })
 export class AsideProfileComponent {
   private _userInfo!: User;
