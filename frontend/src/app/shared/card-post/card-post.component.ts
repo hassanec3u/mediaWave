@@ -11,6 +11,7 @@ import {PostsComponent} from "../../posts/posts.component";
 import {UserService} from "../../service/userService";
 import {PicturesService} from "../../service/picturesService";
 import {CommentListComponent} from '../../comment/comment-list/comment-list.component';
+import {environment} from "../../../environments/environments";
 import {LikeComponent} from '../../like/like.component';
 
 @Component({
@@ -33,6 +34,8 @@ export class CardPostComponent {
     @Output() onPostDeleted: EventEmitter<string>;
     @Output() onPostEdited: EventEmitter<Post>;
     @Input() enableEdit: boolean = false;
+    @Input() userProfilePicture!: string | undefined;
+    defaultImage: string = environment.defaultImageProfile;
 
     constructor(private dialog: MatDialog,
                 private postService: PostService,

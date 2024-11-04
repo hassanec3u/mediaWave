@@ -1,7 +1,7 @@
 <aside class="bg-white rounded-lg h-dvh pt-10">
     <div class="mx-auto my-5 ml-5 p-4 shadow-lg h-full">
         <div class="flex items-center mb-4">
-            <img [src]="profilePicture || userInfo.profilePicture" alt="profile-image"
+            <img [src]="userInfo.profilePicture || defaultImage" alt="profile-image"
                  class="w-16 h-16 object-cover cursor-pointer rounded-full mr-4" (click)="onProfileImageClick()">
                 <input type="file" #fileInput class="hidden" (change)="onFileSelected($event)" accept="image/*">
             <div>

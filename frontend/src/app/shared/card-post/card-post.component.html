@@ -1,15 +1,15 @@
 <div class="w-full mx-auto my-5 p-6 bg-white rounded-lg shadow-lg">
-  <div class="flex justify-between items-end mb-4">
-    <div class="flex items-center">
-      <img src="https://cdn.pixabay.com/photo/2015/05/31/16/03/teddy-bear-792273_1280.jpg"
-           alt="profile-image"
-           class="w-8 h-8 object-cover items-center rounded-full mr-2">
-      <span class="font-medium text-sm items-center text-gray-700">{{ post.publisher.username }}</span>
-    </div>
-    <div class="flex">
-      <span class="font-extralight text-sm">{{ post.postDate | date: 'dd-MM-yyyy' }}</span>
-      <mat-icon *ngIf="enableEdit" [matMenuTriggerFor]="menuPost" class="text-sm text-blue-500 cursor-pointer ml-2">more</mat-icon>
-      <mat-menu #menuPost="matMenu" class="cursor-pointer bg-white">
+    <div class="flex justify-between items-end mb-4">
+        <div class="flex items-center">
+            <img [src]="userProfilePicture || defaultImage"
+                 alt="profile-image"
+                 class="w-8 h-8 object-cover items-center rounded-full mr-2">
+            <span class="font-medium text-sm items-center text-gray-700">{{ post.publisher.username }}</span>
+        </div>
+        <div class="flex">
+            <span class="font-extralight text-sm">{{ post.postDate | date: 'dd-MM-yyyy' }}</span>
+            <mat-icon *ngIf="enableEdit" [matMenuTriggerFor]="menuPost" class="text-sm text-blue-500 cursor-pointer ml-2">more</mat-icon>
+            <mat-menu #menuPost="matMenu" class="cursor-pointer bg-white">
                 <span (click)="openDeleteDialog(post._id)" class="text-sm font-extralight block p-1 hover:bg-white">
                     <mat-icon class="text-sm p-2">delete</mat-icon>Supprimer ce poste</span>
         <span (click)="editPost()" class="text-sm font-extralight block p-1 hover:bg-white">
