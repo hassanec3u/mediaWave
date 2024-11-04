@@ -21,6 +21,10 @@
       </button>
     </ng-template>
   </div>-->
-    <app-posts />
-    <!--<app-card-post [post]=""/>-->
+    <div class="w-1/2">
+        <app-posts />
+    </div>
+    <div *ngFor="let post of friendsPosts" class="w-1/2">
+        <app-card-post [post]="post" [enableEdit]="false"/>
+    </div>
 </div>

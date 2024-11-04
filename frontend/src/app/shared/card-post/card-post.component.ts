@@ -31,6 +31,7 @@ export class CardPostComponent {
     private _post!: Post;
     @Output() onPostDeleted: EventEmitter<string>;
     @Output() onPostEdited: EventEmitter<Post>;
+    @Input() enableEdit: boolean = false;
 
     constructor(private dialog: MatDialog,
                 private postService: PostService,

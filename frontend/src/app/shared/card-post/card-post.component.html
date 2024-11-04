@@ -1,4 +1,4 @@
-<div class="mx-auto my-5 p-6 bg-white shadow-lg w-1/2">
+<div class="w-full mx-auto my-5 p-6 bg-white rounded-lg shadow-lg">
     <div class="flex justify-between items-end mb-4">
         <div class="flex items-center">
             <img src="https://cdn.pixabay.com/photo/2015/05/31/16/03/teddy-bear-792273_1280.jpg"
@@ -8,7 +8,7 @@
         </div>
         <div class="flex">
             <span class="font-extralight text-sm">{{ post.postDate | date: 'dd-MM-yyyy' }}</span>
-            <mat-icon [matMenuTriggerFor]="menuPost" class="text-sm text-blue-500 cursor-pointer ml-2">more</mat-icon>
+            <mat-icon *ngIf="enableEdit" [matMenuTriggerFor]="menuPost" class="text-sm text-blue-500 cursor-pointer ml-2">more</mat-icon>
             <mat-menu #menuPost="matMenu" class="cursor-pointer bg-white">
                 <span (click)="openDeleteDialog(post._id)" class="text-sm font-extralight block p-1 hover:bg-white">
                             <mat-icon class="text-sm p-2">delete</mat-icon>Supprimer ce poste</span>
@@ -20,7 +20,7 @@
     <h6 class="text-sm font-bold mb-0">{{ post.title }}</h6>
     <p class="font-light text-base text-justify">{{ post.content }}</p>
     <img *ngIf="post.postPicture" [src]="post.postPicture"
-         class="w-full rounded mb-3 h-72"
+         class="w-full rounded mb-3 h-52"
          alt="post-image">
     <p class="flex items-center">
         <mat-icon class="text-red-500 cursor-pointer">favorite</mat-icon>

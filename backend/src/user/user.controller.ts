@@ -9,7 +9,7 @@ import {PostsService} from "../posts/posts.service";
 
 @UseInterceptors(ClassSerializerInterceptor)
 @Controller('user')
-@UseGuards(AuthGuard)
+//@UseGuards(AuthGuard)
 
 export class UserController {
 
@@ -81,5 +81,10 @@ export class UserController {
     getUserPosts(@Param('userId') userId: string): Observable<PostEntity> {
         console.log(userId);
         return this.postService.getPostsByUser(userId);
+    }
+
+    @Get(':userId/friends/posts')
+    getFriendsPosts(@Param('userId') userId: string): Observable<PostEntity[]> {
+        return this.postService.getFriendsPosts(userId);
     }
 }

@@ -7,6 +7,7 @@ import {User} from "../../user/schema/userSchema";
 import {CreatePostDto} from "../dto/createPostDto";
 import {from, Observable} from "rxjs";
 import {PostEntity} from "../entity/PostEntity";
+import {UserEntity} from "../../user/entity/UserEntity";
 
 
 @Injectable()
@@ -41,5 +42,9 @@ export class PostDao {
 
     findPostById(id: string): Observable<Post> {
         return from(this._postModel.findById(id).lean());
+    }
+
+    getFriendsPosts(friends: UserEntity[]): Observable<any> {
+        return from(this._postModel.find({publisher: {$in: friends}}).populate('publisher').sort({ postDate: -1 }).lean());
     }
 }
