@@ -18,7 +18,7 @@ import {MatIconModule} from '@angular/material/icon';
 import {HeaderComponent} from './shared/header/header.component';
 import {HomeComponent} from './home/home.component';
 import {FriendSearchComponent} from './friend/friend-search.component';
-import {AuthInterceptor} from './authInterceptor/AuthInterceptor';
+import {AuthInterceptor} from './Interceptor/AuthInterceptor';
 
 
 @NgModule({

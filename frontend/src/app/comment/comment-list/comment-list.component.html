@@ -18,6 +18,7 @@
         <small class="text-gray-500">par {{ comment.author.username }}</small>
       </div>
       <button
+        *ngIf="isMyPost() || isMyComment(comment)"
         mat-raised-button
         color="warn"
         class="ml-4 mt-1 text-xs px-3 py-1 rounded-lg"

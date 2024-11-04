@@ -2,7 +2,7 @@ import {Component, Input, OnInit} from '@angular/core';
 import {CommentService} from '../../service/commentService';
 import {Comment} from '../../shared/types/comment.type';
 import {UserService} from '../../service/userService';
-import {DatePipe, NgForOf} from '@angular/common';
+import {DatePipe, NgForOf, NgIf} from '@angular/common';
 import {FormsModule} from '@angular/forms';
 import {MatFormField} from '@angular/material/form-field';
 import {MatButton} from '@angular/material/button';
@@ -20,7 +20,8 @@ import {detailedComment} from '../../shared/types/detailedComment';
     NgForOf,
     MatFormField,
     MatButton,
-    MatInput
+    MatInput,
+    NgIf
   ],
   styleUrls: ['./comment-list.component.css']
 })
@@ -50,8 +51,6 @@ export class CommentListComponent implements OnInit {
     };
 
     this.commentService.addComment(comment).subscribe(newComment => {
-
-      //convert newComment to detailedComment
       const detailedComment: detailedComment = {
         _id: newComment._id,
         author: {
@@ -64,6 +63,15 @@ export class CommentListComponent implements OnInit {
       this.detailedComment.push(detailedComment);
       this.newComment = '';
     });
+    this.loadComments();
+  }
+
+ isMyPost(): boolean {
+    return this.userService.getUserId() === this.detailedComment[0].author._id;
+  }
+
+  isMyComment(comment: detailedComment): boolean {
+    return this.userService.getUserId() === comment.author._id;
   }
 
 
