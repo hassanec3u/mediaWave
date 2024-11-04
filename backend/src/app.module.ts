@@ -5,6 +5,7 @@ import {UserModule} from "./user/user.module";
 import { FilesUploadModule } from './files-upload/files-upload.module';
 import { PostsModule } from './posts/posts.module';
 import {CommentsModule} from "./comment/comment.module";
+import {LikeModule} from "./like/like.module";
 
 @Module({
     imports: [
@@ -13,6 +14,7 @@ import {CommentsModule} from "./comment/comment.module";
         UserModule,
         PostsModule,
         CommentsModule,
+        LikeModule,
         FilesUploadModule
     ]
 })

@@ -27,6 +27,10 @@ export class Post {
 
     @Prop({ type: mongoose.Schema.Types.ObjectId, ref: 'User' })
     publisher: User;
+
+    @Prop({ default: 0 })
+    likes: number;
+
 }
 
 export const PostSchema = SchemaFactory.createForClass(Post);

@@ -11,7 +11,7 @@ import {AuthGuard} from "./AuthGuard";
   imports: [
     JwtModule.register({
       secret: 'secretKey',
-      signOptions: { expiresIn: '1h' },
+      signOptions: { expiresIn: '6h' },
     }),
     MongooseModule.forFeature([{ name: User.name, schema: UserSchema }]),
   ],

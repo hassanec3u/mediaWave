@@ -14,6 +14,7 @@ import {AuthModule} from "../auth/auth.module";
       MongooseModule.forFeature([{ name: Post.name, schema: PostSchema }]),
     forwardRef(() => UserModule)],
   providers: [PostsService, PostDao],
-  exports: [PostsService]
+  exports: [PostsService,MongooseModule.forFeature([{ name: Post.name, schema: PostSchema }]),
+  ]
 })
 export class PostsModule {}
