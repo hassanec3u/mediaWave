@@ -13,7 +13,6 @@ import {CommentsModule} from "./comment/comment.module";
         UserModule,
         PostsModule,
         CommentsModule,
-        UserModule,
         FilesUploadModule
     ]
 })
