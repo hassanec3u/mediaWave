@@ -22,8 +22,8 @@ export class UpdateUserInfoDto {
     profilePicture: string;
 
     @IsOptional()
-    @IsDate()
-    birthday?: Date;
+    @IsString()
+    birthday?: string;
 
     @IsOptional()
     @IsString()

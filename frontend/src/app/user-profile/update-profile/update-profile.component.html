@@ -31,7 +31,9 @@
               matInput
               placeholder="Bio"
               formControlName="bio"
-              required></textarea>
+              required>
+
+            </textarea>
       <mat-error *ngIf="form.get('bio')?.dirty && form.get('bio')?.hasError('required')">
         Bio is <strong>required</strong>
       </mat-error>
@@ -69,10 +71,12 @@
 </mat-dialog-content>
 
 <mat-dialog-actions align="end" class="p-1 flex justify-end space-x-4">
-  <button (click)="onCancel()" class="px-4 py-2 bg-gray-300 text-gray-700 rounded-md hover:bg-gray-400">
-    Cancel
-  </button>
-  <button (click)="onSubmit()" class="px-4 py-2 bg-blue-700 text-white rounded-md hover:bg-blue-500">
-    Save
-  </button>
+    <button (click)="onCancel()" class="px-4 py-2 bg-gray-300 text-gray-700 rounded-md hover:bg-gray-400">
+        Cancel
+    </button>
+    <button (click)="onSubmit()" class="px-4 py-2 bg-blue-700 text-white rounded-md hover:bg-blue-500">
+        Save
+    </button>
 </mat-dialog-actions>
+
+

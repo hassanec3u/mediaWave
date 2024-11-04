@@ -95,6 +95,7 @@ export class UserService {
   }
 
   updateUserInfos(id: string, userInfo: User): Observable<User> {
+
     return this.http.put<User>(this.apiBackendUrl + environment.backend.endpoints.updateUserInfo + id, userInfo).pipe(
       tap(() => this.refreshRequest.next())
     );
