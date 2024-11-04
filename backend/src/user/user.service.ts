@@ -5,7 +5,6 @@ import {UserEntity} from "./entity/UserEntity";
 import {UserDao} from "./dao/UserDao";
 import {UpdateUserInfoDto} from "./dto/UpdateUserInfoDto";
 import {User} from "./schema/userSchema";
-import {UserWithPostEntity} from "./entity/UserWithPostEntity";
 
 @Injectable()
 export class UserService {
@@ -108,13 +107,6 @@ export class UserService {
         return this.userDao.findByIdAndUpdate(id, updateData).pipe(
             mergeMap(
                 (userUpdated) => !!userUpdated ? of(new UserEntity(userUpdated))
-                    : throwError(() => new NotFoundException(`User with ID '${id}' not found`))));
-    }
-
-    findUserByIdWithPosts(id: string): Observable<UserWithPostEntity> {
-        return this.userDao.findUserById(id).pipe(
-            mergeMap(
-                (user) => !!user ? of(new UserWithPostEntity(user))
                     : throwError(() => new NotFoundException(`User with ID '${id}' not found`))));
     }
 }

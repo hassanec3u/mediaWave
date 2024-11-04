@@ -4,11 +4,12 @@ import {CreatePostDto} from "./dto/createPostDto";
 import {catchError, map, mergeMap, Observable, of, throwError} from "rxjs";
 import {Post} from "./schema/postSchema";
 import {PostEntity} from "./entity/PostEntity";
+import {UserService} from "../user/user.service";
 
 @Injectable()
 export class PostsService {
 
-    constructor(private postDao: PostDao) {
+    constructor(private postDao: PostDao, private userService: UserService) {
     }
 
     savePost(createPostDto: CreatePostDto): Observable<PostEntity> {
@@ -36,5 +37,16 @@ export class PostsService {
             mergeMap((post) => of(new PostEntity(post))),
             catchError((e) => throwError(() => new NotFoundException(`Post with ID ${id} not found`)))
         );
+    }
+
+    getFriendsPosts(userId: string): Observable<PostEntity[]> {
+        return this.userService.getFriends(userId).pipe(
+            mergeMap((friends) => {
+                return this.postDao.getFriendsPosts(friends).pipe(
+                    mergeMap((posts) => of(posts.map(post => new PostEntity(post)))),
+                    catchError((e) => throwError(() => new UnprocessableEntityException(e.message)))
+                );
+            })
+        )
     }
 }

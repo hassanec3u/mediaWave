@@ -1,4 +1,4 @@
-import {Module} from "@nestjs/common";
+import {forwardRef, Module} from "@nestjs/common";
 import {JwtModule} from "@nestjs/jwt";
 import {MongooseModule} from "@nestjs/mongoose";
 import {User, UserSchema} from "./schema/userSchema";
@@ -16,10 +16,11 @@ import {PostsModule} from "../posts/posts.module";
             signOptions: { expiresIn: '1h' },
         }),
         MongooseModule.forFeature([{ name: User.name, schema: UserSchema }]),
-        PostsModule
+        forwardRef(() => PostsModule)
     ],
     providers: [UserService, UserDao],
     controllers: [UserController],
+    exports: [UserService]
 })
 export class UserModule {
 
