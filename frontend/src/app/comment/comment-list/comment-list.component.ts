@@ -8,6 +8,7 @@ import {MatFormField} from '@angular/material/form-field';
 import {MatButton} from '@angular/material/button';
 import {MatInput} from '@angular/material/input';
 import {detailedComment} from '../../shared/types/detailedComment';
+import {MatIcon} from '@angular/material/icon';
 
 
 @Component({
@@ -20,6 +21,7 @@ import {detailedComment} from '../../shared/types/detailedComment';
     NgForOf,
     MatFormField,
     MatButton,
+    MatIcon,
     MatInput,
     NgIf
   ],

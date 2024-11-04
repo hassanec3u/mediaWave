@@ -10,8 +10,8 @@ import {catchError, map, Observable, of} from "rxjs";
 import {PostsComponent} from "../../posts/posts.component";
 import {UserService} from "../../service/userService";
 import {PicturesService} from "../../service/picturesService";
-import {AppModule} from '../../app.module';
 import {CommentListComponent} from '../../comment/comment-list/comment-list.component';
+import {LikeComponent} from '../../like/like.component';
 
 @Component({
   selector: 'app-card-post',
@@ -23,6 +23,7 @@ import {CommentListComponent} from '../../comment/comment-list/comment-list.comp
     DatePipe,
     NgIf,
     CommentListComponent,
+    LikeComponent,
   ],
   templateUrl: './card-post.component.html',
   styleUrl: './card-post.component.css'

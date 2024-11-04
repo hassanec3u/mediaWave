@@ -1,0 +1,6 @@
+<mat-icon
+  [class.text-red-500]="liked"
+  [class.text-gray-800]="!liked"
+  (click)="toggleLike()"
+  class="cursor-pointer">favorite</mat-icon>
+<span class="ml-1">{{ likes }}</span>
