@@ -57,13 +57,12 @@
 
 
 
-    <!-- Champ pour le pays -->
     <mat-form-field appearance="outline" class="w-full">
       <input
         matInput
         placeholder="Location"
-        formControlName="location" />
-      <mat-error *ngIf="form.get('location')?.dirty && form.get('location')?.hasError('required')">
+        formControlName="pays" />
+      <mat-error *ngIf="form.get('pays')?.dirty && form.get('pays')?.hasError('required')">
         Location is <strong>required</strong>
       </mat-error>
     </mat-form-field>

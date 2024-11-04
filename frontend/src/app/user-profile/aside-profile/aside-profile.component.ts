@@ -26,7 +26,7 @@ export class AsideProfileComponent {
   profilePicture!: string | undefined;
 
   // Ajout des nouvelles propriétés
-  locations!: string;
+  pays!: string;
   birthdate!: string;
 
   constructor(private _dialog: MatDialog, private userService: UserService) {
@@ -41,7 +41,7 @@ export class AsideProfileComponent {
   set userInfo(value: User) {
     this._userInfo = value;
     // Mettre à jour les propriétés à partir de userInfo
-    this.locations = this._userInfo.pays || 'Non renseigné';
+    this.pays = this._userInfo.pays ? this._userInfo.pays : 'Non renseigné';
     this.birthdate = this._userInfo.birthday ? new Date(this._userInfo.birthday).toLocaleDateString() : 'Non renseigné';
   }
 

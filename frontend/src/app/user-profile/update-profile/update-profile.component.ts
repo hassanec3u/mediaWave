@@ -64,8 +64,8 @@ export class UpdateProfileComponent implements OnInit {
       username: new FormControl('', Validators.compose([Validators.required, Validators.minLength(3)])),
       email: new FormControl('', [Validators.required, Validators.email]),
       bio: new FormControl('', Validators.compose([Validators.required, Validators.minLength(10)])),
-      birthday: new FormControl('', Validators.required), // Ajouter le champ birthday
-      location: new FormControl('') // Ajouter le champ location (ou pays)
+      birthday: new FormControl('', Validators.required),
+      pays: new FormControl('', Validators.required)
     });
   }
 
