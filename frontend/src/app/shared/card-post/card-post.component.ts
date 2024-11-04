@@ -10,17 +10,20 @@ import {catchError, map, Observable, of} from "rxjs";
 import {PostsComponent} from "../../posts/posts.component";
 import {UserService} from "../../service/userService";
 import {PicturesService} from "../../service/picturesService";
+import {AppModule} from '../../app.module';
+import {CommentListComponent} from '../../comment/comment-list/comment-list.component';
 
 @Component({
   selector: 'app-card-post',
   standalone: true,
-    imports: [
-        MatIcon,
-        MatMenu,
-        MatMenuTrigger,
-        DatePipe,
-        NgIf
-    ],
+  imports: [
+    MatIcon,
+    MatMenu,
+    MatMenuTrigger,
+    DatePipe,
+    NgIf,
+    CommentListComponent,
+  ],
   templateUrl: './card-post.component.html',
   styleUrl: './card-post.component.css'
 })
