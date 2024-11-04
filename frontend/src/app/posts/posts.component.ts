@@ -1,6 +1,6 @@
 import {Component, Inject, Optional} from '@angular/core';
 import {FormBuilder, FormGroup, ReactiveFormsModule, Validators} from "@angular/forms";
-import {NgIf} from "@angular/common";
+import {NgClass, NgIf} from "@angular/common";
 import {PostService} from "../service/postService";
 import {MAT_DIALOG_DATA, MatDialogRef} from "@angular/material/dialog";
 import {Post} from "../shared/types/post.type";
@@ -10,7 +10,8 @@ import {Post} from "../shared/types/post.type";
     standalone: true,
     imports: [
         ReactiveFormsModule,
-        NgIf
+        NgIf,
+        NgClass
     ],
     templateUrl: './posts.component.html',
     styleUrl: './posts.component.css'

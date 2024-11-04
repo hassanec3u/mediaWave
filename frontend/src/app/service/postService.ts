@@ -56,4 +56,8 @@ export class PostService {
     getUserPosts(): Observable<Post[]> {
         return this.http.get<Post[]>(`${this.backendUrl}/user/${this.userId}/posts`);
     }
+
+    getFriendsPosts(): Observable<Post[]> {
+        return this.http.get<Post[]>(`${this.backendUrl}/user/${this.userId}${environment.backend.endpoints.friendsPosts}`);
+    }
 }

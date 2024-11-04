@@ -12,6 +12,7 @@ export const environment = {
             addPost: '/posts/',
             updatePost: '/posts/',
             deletePost: '/posts/',
+            friendsPosts: '/friends/posts'
         },
     },
 };

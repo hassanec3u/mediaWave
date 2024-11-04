@@ -1,4 +1,4 @@
-<div class="w-full mx-auto p-6 bg-white shadow-md rounded-lg mt-20">
+<div class="w-full mx-auto p-6 bg-white shadow-md rounded-lg" [ngClass]="{'mt-0': isEditingPost, 'mt-20': !isEditingPost}">
     <form (ngSubmit)="onSubmit()" [formGroup]="postForm" class="space-y-2">
         <div class="flex justify-between">
             <div>
@@ -45,7 +45,7 @@
                 type="submit"
                 class="cursor-pointer py-2 px-4 bg-blue-600 text-white text-sm rounded-lg hover:bg-blue-500 focus:outline-none focus:ring-2 focus:ring-blue-400"
                 [disabled]="postForm.invalid">
-            Publier
+            {{ isEditingPost ? 'Modifier' : 'Publier' }}
         </button>
     </form>
 </div>
