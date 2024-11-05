@@ -1,0 +1,49 @@
+<app-header></app-header>
+<div class="p-6 bg-gray-50 rounded-lg shadow-md max-w-md mx-auto mt-20">
+  <!-- Search Section -->
+  <div class="flex items-center mb-4">
+    <mat-form-field  class="w-full">
+      <mat-label>Rechercher un user</mat-label>
+      <input matInput type="text" #searchInput>
+    </mat-form-field>
+    <button mat-raised-button color="primary" class="ml-2" (click)="search(searchInput.value)">
+      Search
+    </button>
+  </div>
+
+  <!-- Search Results Section -->
+  <div *ngIf="searchResults.length > 0" class="mb-6">
+    <h3 class="text-lg font-semibold mb-2">Résultats</h3>
+    <ul class="bg-white rounded-lg shadow-sm">
+      <li *ngFor="let user of searchResults" class="flex items-center justify-between p-2 border-b last:border-b-0">
+        <span>{{ user.username }}</span>
+        <button mat-raised-button color="accent" (click)="sendFriendRequest(user._id!)">Ajouter ami</button>
+      </li>
+    </ul>
+  </div>
+
+  <!-- Friends List Section -->
+  <div *ngIf="friends.length > 0" class="mb-6">
+    <h3 class="text-lg font-semibold mb-2">Mes Amis</h3>
+    <ul class="bg-white rounded-lg shadow-sm">
+      <li *ngFor="let friend of friends" class="flex items-center justify-between p-2 border-b last:border-b-0">
+        <span>{{ friend.username }}</span>
+        <button mat-raised-button color="warn" (click)="removeFriend(friend._id!)">Retirer Ami</button>
+      </li>
+    </ul>
+  </div>
+
+  <!-- Pending Friend Requests Section -->
+  <div *ngIf="pendingRequests.length > 0">
+    <h3 class="text-lg font-semibold mb-2">Demande d'amis</h3>
+    <ul class="bg-white rounded-lg shadow-sm">
+      <li *ngFor="let request of pendingRequests" class="flex items-center justify-between p-2 border-b last:border-b-0">
+        <span>{{ request.username }}</span>
+        <div class="flex space-x-2 ml-auto">
+          <button mat-raised-button color="primary" (click)="acceptFriend(request._id!)">Accepter</button>
+          <button mat-raised-button color="warn" (click)="refuseFriend(request._id!)">Refuser</button>
+        </div>
+      </li>
+    </ul>
+  </div>
+</div>

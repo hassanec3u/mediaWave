@@ -1,0 +1,34 @@
+<aside class="bg-white rounded-lg h-dvh pt-10">
+    <div class="mx-auto my-5 ml-5 p-4 shadow-lg h-full">
+        <div class="flex items-center mb-4">
+            <img [src]="userInfo.profilePicture || defaultImage" alt="profile-image"
+                 class="w-16 h-16 object-cover cursor-pointer rounded-full mr-4" (click)="onProfileImageClick()">
+                <input type="file" #fileInput class="hidden" (change)="onFileSelected($event)" accept="image/*">
+            <div>
+                <span class="text-blue-500 text-lg block">{{ userInfo.username }}</span>
+                <div class="flex">
+                    <mat-icon class="text-sm text-blue-500">email</mat-icon>
+                    <span class="text-gray-700 text-sm">{{ userInfo.email }}</span>
+                </div>
+                <div class="flex">
+                    <mat-icon class="text-sm text-blue-500">cake</mat-icon>
+                    <span class="text-gray-700 text-sm">{{birthdate}}</span>
+                </div>
+                <div class="flex">
+                    <mat-icon class="text-blue-500 text-sm">place</mat-icon>
+                    <span class="text-gray-700 text-sm">{{pays}}</span>
+                </div>
+            </div>
+        </div>
+        <div class="mb-4">
+            <span>BIO :</span>
+            <p class="text-justify font-extralight">
+                {{userInfo.bio}}
+            </p>
+        </div>
+        <button
+          *ngIf="isMyProfile()"
+          class="px-4 py-2 bg-blue-600 text-white text-sm rounded-md hover:bg-blue-500"
+                (click)="openFormUpdate()">Modifier</button>
+    </div>
+</aside>

@@ -1,0 +1,9 @@
+<app-header/>
+<div class="flex bg-blue-50">
+    <app-aside-profile [userInfo]="user" class="fixed w-1/4"></app-aside-profile>
+    <section class="flex-1 ml-[25%] pt-12 justify-center">
+        <div *ngFor="let post of userPosts" class="w-1/2 mx-auto">
+            <app-card-post [userProfilePicture]="user.profilePicture" [post]="post" (onPostDeleted)="onPostDeleted($event)" (onPostEdited)="onPostUpdated($event)" [enableEdit]="true"></app-card-post>
+        </div>
+    </section>
+</div>

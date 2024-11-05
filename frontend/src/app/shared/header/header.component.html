@@ -1,0 +1,25 @@
+<header class="fixed bg-blue-500 top-0 left-0 right-0 flex justify-between items-center shadow-md z-10">
+  <mat-toolbar-row>
+    <span class="ml-5 text-white cursor-pointer" (click)="navigateHome()">MediaWave</span>
+  </mat-toolbar-row>
+
+  <!-- Menu pour utilisateur authentifié -->
+  <div *ngIf="isAuthenticated">
+    <button mat-icon-button [matMenuTriggerFor]="menuHeader">
+      <img [src]="user?.profilePicture || defaultImage" alt="profile-image"
+           class="w-8 h-8 object-cover rounded-full mr-4">
+    </button>
+    <mat-menu #menuHeader="matMenu" class="cursor-pointer bg-white">
+      <button mat-menu-item (click)="navigateToFriend()">Mes Amis</button>
+      <button mat-menu-item (click)="navigateToProfile()">Mon Profil</button>
+      <button mat-menu-item (click)="logout()">Se Déconnecter</button>
+    </mat-menu>
+  </div>
+
+  <!-- Boutons pour utilisateur non authentifié -->
+  <div class="auth-buttons" *ngIf="!isAuthenticated">
+    <span class="text-white mr-5 cursor-pointer" (click)="login()">Se connecter</span>
+    <span class="text-white mr-5 cursor-pointer" (click)="register()">S'inscrire</span>
+  </div>
+
+</header>

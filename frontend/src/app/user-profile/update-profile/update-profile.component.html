@@ -1,0 +1,81 @@
+<mat-dialog-content>
+    <form [formGroup]="form">
+        <mat-form-field appearance="outline" class="w-full space-y-0">
+            <input
+                    matInput
+                    placeholder="Username"
+                    formControlName="username"
+                    required />
+            <mat-error *ngIf="form.get('username')?.dirty && form.get('username')?.hasError('required')">
+                L'utilisateur doit avoir un nom d'utilisateur
+            </mat-error>
+            <mat-error *ngIf="form.get('username')?.dirty && form.get('username')?.hasError('minlength')">
+              L'utilisateur doit contenir au moins <strong>2 caractères</strong>
+            </mat-error>
+        </mat-form-field>
+        <mat-form-field appearance="outline" class="w-full">
+            <input
+                    matInput
+                    placeholder="Email"
+                    formControlName="email"
+                    required />
+            <mat-error *ngIf="form.get('email')?.dirty && form.get('email')?.hasError('required')">
+              L'utilisateur doit avoir un <strong>email</strong>
+            </mat-error>
+            <mat-error *ngIf="form.get('email')?.dirty && form.get('email')?.hasError('email')">
+              Le format de l'email est <strong>invalide</strong> (email&#64;email.com)
+            </mat-error>
+        </mat-form-field>
+        <mat-form-field appearance="outline" class="w-full">
+            <textarea
+              matInput
+              placeholder="Bio"
+              formControlName="bio"
+              required>
+
+            </textarea>
+      <mat-error *ngIf="form.get('bio')?.dirty && form.get('bio')?.hasError('required')">
+        La bio est <strong>requis</strong>
+      </mat-error>
+      <mat-error *ngIf="form.get('bio')?.dirty && form.get('bio')?.hasError('minlength')">
+        la bio doit contenir au moins <strong>10 caractères</strong>
+      </mat-error>
+    </mat-form-field>
+
+      <mat-form-field appearance="outline" class="w-full">
+        <input
+          matInput
+          [matDatepicker]="picker"
+          placeholder="Date de naissance"
+          formControlName="birthday" />
+        <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+        <mat-datepicker #picker></mat-datepicker>
+        <mat-error *ngIf="form.get('birthday')?.dirty && form.get('birthday')?.hasError('required')">
+          La date de naissance est <strong>requis</strong>
+        </mat-error>
+      </mat-form-field>
+
+
+
+    <mat-form-field appearance="outline" class="w-full">
+      <input
+        matInput
+        placeholder="Location"
+        formControlName="pays" />
+      <mat-error *ngIf="form.get('pays')?.dirty && form.get('pays')?.hasError('required')">
+        La location est <strong>requis</strong>
+      </mat-error>
+    </mat-form-field>
+  </form>
+</mat-dialog-content>
+
+<mat-dialog-actions align="end" class="p-1 flex justify-end space-x-4">
+    <button (click)="onCancel()" class="px-4 py-2 bg-gray-300 text-gray-700 rounded-md hover:bg-gray-400">
+        Cancel
+    </button>
+    <button (click)="onSubmit()" class="px-4 py-2 bg-blue-700 text-white rounded-md hover:bg-blue-500">
+        Save
+    </button>
+</mat-dialog-actions>
+
+

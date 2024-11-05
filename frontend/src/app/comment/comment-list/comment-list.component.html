@@ -1,0 +1,41 @@
+<div class="p-6 bg-white rounded-lg shadow-lg max-w-3xl mx-auto">
+  <h5 class="text-2xl font-semibold mb-4 text-gray-800">Commentaires</h5>
+
+  <div class="mb-4">
+    <textarea
+      [(ngModel)]="newComment"
+      placeholder="Ajouter un commentaire"
+      class="h-24 p-4 w-full bg-gray-100 rounded-lg border border-gray-300 focus:border-indigo-500 focus:ring focus:ring-indigo-200 transition duration-200 ease-in-out"
+    ></textarea>
+  </div>
+
+  <ul>
+    <li
+      *ngFor="let comment of detailedComment"
+      class="border-b border-gray-200 py-4 flex items-start justify-between"
+    >
+      <div>
+        <p class="text-gray-700 text-sm mb-1">{{ comment.content }}</p>
+        <small class="text-gray-500">par {{ comment.author.username }}</small>
+      </div>
+      <mat-icon
+        *ngIf=" isMyComment(comment)"
+        color="warn"
+        class="cursor-pointer hover:text-red-600 transition duration-200"
+        (click)="deleteComment(comment._id!)">
+        delete
+      </mat-icon>
+    </li>
+  </ul>
+
+  <div class="mt-6 flex justify-end">
+    <button
+      mat-raised-button
+      color="primary"
+      class="mt-4 text-sm px-5 py-2 rounded-lg bg-indigo-600 text-white hover:bg-indigo-700 transition duration-200"
+      (click)="addComment(newComment)"
+    >
+      Ajouter un commentaire
+    </button>
+  </div>
+</div>
