@@ -34,7 +34,7 @@ Lancer l'application
     - Démarrez le serveur Angular avec ng serve. Le frontend sera accessible par défaut sur http://localhost:4200.
 
 
-Liste des fonctionnalités implémentées dans la V1.0
+## Liste des fonctionnalités implémentées dans la V1.0
 1. Authentification et gestion des utilisateurs
   Création de comptes (inscription)
   Connexion/déconnexion
