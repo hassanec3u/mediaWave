@@ -1,7 +1,3 @@
-Prérequis
-- MongoDB : Assurez-vous que MongoDB est installé sur votre machine. Configurez le root, le login, et le mot de passe dans le fichier app.module.ts du dossier backend. Par défaut, aucun login ou mot de passe n’est configuré.
-- NestJS et Angular : Ces frameworks doivent être installés sur votre machine pour le backend et le frontend de l’application.
-
 
 Prérequis
 - MongoDB : Assurez-vous que MongoDB est installé sur votre machine. Configurez le root, le login, et le mot de passe dans le fichier app.module.ts du dossier backend. Par défaut, aucun login ou mot de passe n’est configuré.
