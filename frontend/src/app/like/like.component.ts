@@ -44,7 +44,6 @@ export class LikeComponent implements OnInit {
         this.liked = false;
         this.likes = this.likes - 1;
         this.updateLikes();
-
       });
     } else {
       this.likeService.likePost(this.userId, this.postId).subscribe(() => {

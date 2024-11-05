@@ -19,7 +19,7 @@
         <small class="text-gray-500">par {{ comment.author.username }}</small>
       </div>
       <mat-icon
-        *ngIf="isMyPost() || isMyComment(comment)"
+        *ngIf=" isMyComment(comment)"
         color="warn"
         class="cursor-pointer hover:text-red-600 transition duration-200"
         (click)="deleteComment(comment._id!)">

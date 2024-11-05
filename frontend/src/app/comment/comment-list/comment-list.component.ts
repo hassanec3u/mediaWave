@@ -68,9 +68,6 @@ export class CommentListComponent implements OnInit {
     this.loadComments();
   }
 
- isMyPost(): boolean {
-    return this.userService.getUserId() === this.detailedComment[0].author._id;
-  }
 
   isMyComment(comment: detailedComment): boolean {
     return this.userService.getUserId() === comment.author._id;

@@ -7,10 +7,10 @@
                     formControlName="username"
                     required />
             <mat-error *ngIf="form.get('username')?.dirty && form.get('username')?.hasError('required')">
-                Username is <strong>required</strong>
+                L'utilisateur doit avoir un nom d'utilisateur
             </mat-error>
             <mat-error *ngIf="form.get('username')?.dirty && form.get('username')?.hasError('minlength')">
-                Username is <strong>2 chars min</strong>
+              L'utilisateur doit contenir au moins <strong>2 caractères</strong>
             </mat-error>
         </mat-form-field>
         <mat-form-field appearance="outline" class="w-full">
@@ -20,10 +20,10 @@
                     formControlName="email"
                     required />
             <mat-error *ngIf="form.get('email')?.dirty && form.get('email')?.hasError('required')">
-                Email is <strong>required</strong>
+              L'utilisateur doit avoir un <strong>email</strong>
             </mat-error>
             <mat-error *ngIf="form.get('email')?.dirty && form.get('email')?.hasError('email')">
-                Format email is <strong>Invalid</strong> (email&#64;email.com)
+              Le format de l'email est <strong>invalide</strong> (email&#64;email.com)
             </mat-error>
         </mat-form-field>
         <mat-form-field appearance="outline" class="w-full">
@@ -35,10 +35,10 @@
 
             </textarea>
       <mat-error *ngIf="form.get('bio')?.dirty && form.get('bio')?.hasError('required')">
-        Bio is <strong>required</strong>
+        La bio est <strong>requis</strong>
       </mat-error>
       <mat-error *ngIf="form.get('bio')?.dirty && form.get('bio')?.hasError('minlength')">
-        Bio is <strong>10 chars min</strong>
+        la bio doit contenir au moins <strong>10 caractères</strong>
       </mat-error>
     </mat-form-field>
 
@@ -51,7 +51,7 @@
         <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
         <mat-datepicker #picker></mat-datepicker>
         <mat-error *ngIf="form.get('birthday')?.dirty && form.get('birthday')?.hasError('required')">
-          Date de naissance is <strong>required</strong>
+          La date de naissance est <strong>requis</strong>
         </mat-error>
       </mat-form-field>
 
@@ -63,7 +63,7 @@
         placeholder="Location"
         formControlName="pays" />
       <mat-error *ngIf="form.get('pays')?.dirty && form.get('pays')?.hasError('required')">
-        Location is <strong>required</strong>
+        La location est <strong>requis</strong>
       </mat-error>
     </mat-form-field>
   </form>
