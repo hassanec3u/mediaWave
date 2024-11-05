@@ -15,6 +15,8 @@
 
    ```bash
    docker compose up
+3. **Accés à l'application** :
+   http://localhost:4200
 ## 2. Option manuelle
 Prérequis
 - MongoDB : Assurez-vous que MongoDB est installé sur votre machine. Configurez le root, le login, et le mot de passe dans le fichier app.module.ts du dossier backend. Par défaut, aucun login ou mot de passe n’est configuré.
