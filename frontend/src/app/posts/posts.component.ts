@@ -65,6 +65,7 @@ export class PostsComponent {
                     newPost => {
                         this.postForm.reset();
                         this.selectedImage = null;
+                        alert("Post ajouté avec succès!, vous pouvez le voir dans votre profil");
                     },
                     error => console.log(error)
                 );
