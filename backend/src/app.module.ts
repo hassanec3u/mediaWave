@@ -9,7 +9,7 @@ import {LikeModule} from "./like/like.module";
 
 @Module({
     imports: [
-        MongooseModule.forRoot('mongodb://mongo:27017/nestjs-social-app'||'mongodb://localhost/nestjs-social-app'),
+        MongooseModule.forRoot('mongodb://mongo:27017/nestjs-social-app'),
         AuthModule,
         UserModule,
         PostsModule,
