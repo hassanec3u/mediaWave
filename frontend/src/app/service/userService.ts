@@ -132,12 +132,16 @@ console.log(userInfo);
   loadUserInfo() {
     this.getUserInfos(this.getUserId()).subscribe(
         res => {
-          this.getProfilePicture(res.profilePicture).subscribe(
-              picture => {
-                res.profilePicture = URL.createObjectURL(picture)
-                this.userSubject.next(res)
-              }
-          )
+          if(res.profilePicture) {
+            this.getProfilePicture(res.profilePicture).subscribe(
+                picture => {
+                  res.profilePicture = URL.createObjectURL(picture)
+                  this.userSubject.next(res)
+                }
+            )
+          } else {
+            this.userSubject.next(res)
+          }
         }
     );
   }
