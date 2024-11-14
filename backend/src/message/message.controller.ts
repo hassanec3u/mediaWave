@@ -1,16 +1,16 @@
 import {Controller, Post, Body, Get, Param, UseGuards} from '@nestjs/common';
 import {AuthGuard} from "../auth/AuthGuard";
-import {MessagesService} from "./message.service";
-import {Message} from "./schema/userSchema";
+import {MessageService} from "./message.service";
+import {Message} from "./schema/messageSchema";
 import {CreateMessageDto} from "./dto/createMessageDto";
 import {ApiBearerAuth, ApiTags} from "@nestjs/swagger";
 
 @UseGuards(AuthGuard)
 @ApiBearerAuth()  // Utilisé pour l'authentification avec un token Bearer
 @ApiTags('Messages')  // Regroupe les routes sous la catégorie "Messages" dans Swagger
-@Controller('messages')
+@Controller('message')
 export class MessagesController {
-    constructor(private readonly messagesService: MessagesService) {}
+    constructor(private readonly messagesService: MessageService) {}
 
     // Créer un message
     @Post()

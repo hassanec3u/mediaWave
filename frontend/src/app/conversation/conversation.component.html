@@ -1,0 +1,24 @@
+<!-- src/app/components/conversation-list/conversation-list.component.html -->
+<div class="conversation-list">
+  <h3>Conversations</h3>
+
+  <!-- Formulaire pour démarrer une nouvelle conversation -->
+  <div class="new-conversation">
+    <input
+      [(ngModel)]="newParticipantId"
+      placeholder="ID du participant"
+      class="input-participant"
+    />
+    <button (click)="startNewConversation()" class="btn-start">Démarrer une conversation</button>
+  </div>
+
+  <ul>
+    <li *ngFor="let conversation of conversations" (click)="selectConversation(conversation)">
+      Participants: {{ conversation.participants }}
+      <p>Dernier message : {{ conversation.lastMessage?.content }}</p>
+    </li>
+  </ul>
+
+  <!-- Inclut le composant de chat pour afficher les messages de la conversation sélectionnée -->
+  <app-message *ngIf="selectedConversation" [conversation]="selectedConversation"></app-message>
+</div>

@@ -6,6 +6,8 @@ import { FilesUploadModule } from './files-upload/files-upload.module';
 import { PostsModule } from './posts/posts.module';
 import {CommentsModule} from "./comment/comment.module";
 import {LikeModule} from "./like/like.module";
+import {MessagesModule} from "./message/message.module";
+import {ConversationModule} from "./conversation/conversation.module";
 
 @Module({
     imports: [
@@ -15,6 +17,8 @@ import {LikeModule} from "./like/like.module";
         PostsModule,
         CommentsModule,
         LikeModule,
+        MessagesModule,
+        ConversationModule,
         FilesUploadModule
     ]
 })
