@@ -1,4 +1,4 @@
-import {Component, OnInit} from '@angular/core';
+import {Component, EventEmitter, OnInit, Output} from '@angular/core';
 import {ConversationService} from '../service/conversationService';
 import {CookieService} from 'ngx-cookie-service';
 
@@ -12,6 +12,10 @@ export class ConversationListComponent implements OnInit {
   selectedConversation!: any
   userId!: string;
   newParticipantId!: string;
+
+  @Output() conversationSelected = new EventEmitter<any>();
+
+
 
   constructor(private conversationService: ConversationService, private cookieService: CookieService) {
   }
@@ -33,7 +37,7 @@ export class ConversationListComponent implements OnInit {
 
   // Sélectionne une conversation pour afficher les messages
   selectConversation(conversation: any) {
-    this.selectedConversation = conversation;
+    this.conversationSelected.emit(conversation);
   }
 
   startNewConversation() {

@@ -1,8 +1,8 @@
-import {Component, Input, OnDestroy, OnInit} from '@angular/core';
-import {Subscription} from 'rxjs';
-import {MessageService} from '../service/message.service';
-import {CookieService} from 'ngx-cookie-service';
-import {Message} from '../shared/types/message';
+import { Component, Input, OnDestroy, OnInit } from '@angular/core';
+import { Subscription } from 'rxjs';
+import { MessageService } from '../service/message.service';
+import { CookieService } from 'ngx-cookie-service';
+import { Message } from '../shared/types/message';
 
 @Component({
   selector: 'app-message',
@@ -13,24 +13,33 @@ export class MessageComponent implements OnInit, OnDestroy {
   messages: Message[] = [];
   newMessage: string = '';
   senderId: string = '';
-  @Input() conversation!: any;
+  @Input() selectedConversation: any;
   private messageSubscription: Subscription | undefined;
 
   constructor(private messageService: MessageService, private cookieService: CookieService) {
   }
 
   ngOnInit() {
-
     this.senderId = this.cookieService.get('userId');
     this.loadMessageHistory();
 
     // S'abonner aux nouveaux messages
     this.messageService.listenForMessages();
 
-    // Abonnement aux messages en temps réel
-    this.messageSubscription = this.messageService.getMessageObservable().subscribe((message) => {
-      this.messages.push(message);
-    });
+    // S'abonne aux messages en temps réel
+    this.messageSubscription = this.messageService
+      .getMessageObservable()
+      .subscribe((message) => {
+        // Ajouter un nouveau message à la liste des messages
+        if (
+          message.receiverId === this.senderId ||
+          message.senderId === this.senderId
+        ) {
+          this.messages.push(message);
+        }
+      });
+
+    // Charger l'historique des messages au début
     this.loadMessageHistory();
   }
 
@@ -41,23 +50,31 @@ export class MessageComponent implements OnInit, OnDestroy {
     }
   }
 
-  // Envoi d'un message
   sendMessage(content: string) {
-    if (this.newMessage.trim()) {
+    if (content.trim()) {
       const message: Message = {
         content: content,
         senderId: this.senderId,
-        receiverId: this.conversation[1],
-        createdAt: new Date()
+        receiverId: this.selectedConversation[1],
       };
-      this.messageService.sendMessage(message);
-      this.newMessage = '';
+      this.messageService.sendMessage(message); // Envoi du message via le service
+      this.newMessage = ''; // Réinitialise la zone de texte
     }
   }
 
   loadMessageHistory() {
-    this.messageService.getMessageHistory(this.senderId, this.conversation[1]).subscribe((messages) => {
-      this.messages = messages;
-    });
+    if (this.selectedConversation) {
+      const receiverId = this.selectedConversation[1]; // ID de la conversation cible
+      this.messageService
+        .getMessageHistory(this.senderId, receiverId)
+        .subscribe((messages) => {
+          this.messages = messages;
+        });
+    }
+  }
+
+  // Fonction pour fermer la conversation active
+  closeChat() {
+    this.selectedConversation = null;
   }
 }

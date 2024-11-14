@@ -1,12 +1,28 @@
-<div class="chat-container">
-  <div class="messages-container">
-    <div *ngFor="let message of messages" class="message">
+<!-- chat.component.html -->
+<div *ngIf="selectedConversation" class="flex-1 bg-white h-screen p-4 shadow-lg overflow-hidden">
+  <div class="flex justify-between items-center mb-4">
+    <h3 class="text-xl font-semibold">Conversation avec {{ selectedConversation?.participants }}</h3>
+    <button (click)="closeChat()" class="text-gray-500 hover:text-gray-700">
+      Fermer
+    </button>
+  </div>
+
+  <!-- Affichage des messages -->
+  <div class="messages-container h-4/5 overflow-y-auto mb-4">
+    <div *ngFor="let message of messages" class="message mb-2 p-3 rounded-md shadow-sm bg-gray-50">
       <strong>{{ message.senderId }}:</strong> {{ message.content }}
     </div>
   </div>
 
-  <div class="message-input">
-    <textarea [(ngModel)]="newMessage" placeholder="Écrivez un message..."></textarea>
-    <button (click)="sendMessage(newMessage)">Envoyer</button>
+  <!-- Zone de saisie de message -->
+  <div class="message-input mt-4 flex space-x-2">
+    <textarea
+      [(ngModel)]="newMessage"
+      placeholder="Écrivez un message..."
+      class="w-full p-2 border border-gray-300 rounded-md"
+    ></textarea>
+    <button (click)="sendMessage(newMessage)" class="bg-blue-500 text-white py-2 px-4 rounded-md hover:bg-blue-600">
+      Envoyer
+    </button>
   </div>
 </div>

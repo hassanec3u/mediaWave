@@ -1,24 +1,33 @@
-<!-- src/app/components/conversation-list/conversation-list.component.html -->
-<div class="conversation-list">
-  <h3>Conversations</h3>
+<!-- conversation-list.component.html -->
+<div class="flex h-screen">
 
-  <!-- Formulaire pour démarrer une nouvelle conversation -->
-  <div class="new-conversation">
-    <input
-      [(ngModel)]="newParticipantId"
-      placeholder="ID du participant"
-      class="input-participant"
-    />
-    <button (click)="startNewConversation()" class="btn-start">Démarrer une conversation</button>
+  <!-- Liste des Conversations -->
+  <div class="w-1/3 bg-gray-100 p-4 shadow-lg h-screen overflow-y-auto">
+    <h3 class="text-xl font-semibold mb-4">Conversations</h3>
+
+    <!-- Formulaire pour démarrer une nouvelle conversation -->
+    <div class="mb-6 flex space-x-2">
+      <input
+        [(ngModel)]="newParticipantId"
+        placeholder="ID du participant"
+        class="w-full p-2 border border-gray-300 rounded-md"
+      />
+      <button (click)="startNewConversation()" class="bg-blue-500 text-white py-2 px-4 rounded-md hover:bg-blue-600">
+        Démarrer
+      </button>
+    </div>
+
+    <!-- Liste des conversations -->
+    <ul>
+      <li
+        *ngFor="let conversation of conversations"
+        (click)="selectConversation(conversation)"
+        class="cursor-pointer p-3 mb-2 rounded-md hover:bg-gray-200"
+      >
+        <div class="font-medium">{{ conversation.participants[1].username }}</div>
+        <p class="text-sm text-gray-600">Dernier message: {{ conversation.lastMessage?.content }}</p>
+      </li>
+    </ul>
   </div>
 
-  <ul>
-    <li *ngFor="let conversation of conversations" (click)="selectConversation(conversation)">
-      Participants: {{ conversation.participants }}
-      <p>Dernier message : {{ conversation.lastMessage?.content }}</p>
-    </li>
-  </ul>
-
-  <!-- Inclut le composant de chat pour afficher les messages de la conversation sélectionnée -->
-  <app-message *ngIf="selectedConversation" [conversation]="selectedConversation"></app-message>
 </div>

@@ -1,2 +1,4 @@
-<router-outlet></router-outlet>
-
+<div class>
+  <app-conversation (conversationSelected)="onConversationSelected($event)"></app-conversation>
+  <app-message [selectedConversation]="selectedConversation"></app-message>
+</div>

@@ -37,8 +37,12 @@ export class ConversationDao {
         if (!Types.ObjectId.isValid(userId)) {
             throw new BadRequestException('Invalid userId');
         }
-        return this._conversationModel.find({ participants: new Types.ObjectId(userId) })
+        return this._conversationModel.find({participants: new Types.ObjectId(userId)})
+            .populate({
+                path: 'participants',
+                select: 'username',
+            })
             .populate('lastMessage')
-            .sort({ updatedAt: -1 });
+            .sort({updatedAt: -1});
     }
 }
