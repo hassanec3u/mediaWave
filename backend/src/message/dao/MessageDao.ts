@@ -4,14 +4,11 @@ import {Message} from "../schema/messageSchema";
 import {Model, Types} from "mongoose";
 import {CreateMessageDto} from "../dto/createMessageDto";
 import {MessagesGateway} from "../../gateways/websocket.gateway";
-import {ConversationDao} from "../../conversation/dao/conversationDao";
 
 
 @Injectable()
 export class MessageDao {
-    function
-
-    constructor(
+     constructor(
         @InjectModel(Message.name)
         private readonly _messageModel: Model<Message>,
      //   private readonly conversationDao: ConversationDao,
@@ -36,12 +33,7 @@ export class MessageDao {
 
         const createdMessage = await this._messageModel.create(message);
 
-    /*    // Trouver ou créer la conversation entre les deux utilisateurs
-        const conversation = await this.conversationDao.findOrCreateConversation(
-            messageDto.senderId,
-            messageDto.receiverId,
-        );
-*/
+
         // Mettre à jour le dernier message de la conversation
         //await this.conversationDao.updateLastMessage(conversation._id.toString(), createdMessage._id.toString());
 
@@ -62,7 +54,10 @@ export class MessageDao {
                 {senderId: new Types.ObjectId(senderId), receiverId: new Types.ObjectId(receiverId)},
                 {senderId: new Types.ObjectId(receiverId), receiverId: new Types.ObjectId(senderId)}
             ]
-        }).sort({createdAt: 1})
+        })
+            .populate('senderId', 'username')
+            .populate('receiverId', 'username')
+            .sort({createdAt: 1});
     }
 
 

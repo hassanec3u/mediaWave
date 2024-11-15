@@ -8,6 +8,7 @@ import {CommentsModule} from "./comment/comment.module";
 import {LikeModule} from "./like/like.module";
 import {MessagesModule} from "./message/message.module";
 import {ConversationModule} from "./conversation/conversation.module";
+import {MessagesGateway} from "./gateways/websocket.gateway";
 
 @Module({
     imports: [
@@ -19,7 +20,8 @@ import {ConversationModule} from "./conversation/conversation.module";
         LikeModule,
         MessagesModule,
         ConversationModule,
-        FilesUploadModule
+        FilesUploadModule,
+        MessagesGateway
     ]
 })
 export class AppModule {

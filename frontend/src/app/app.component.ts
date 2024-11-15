@@ -10,9 +10,4 @@ import { Component } from '@angular/core';
 
 export class AppComponent {
   title = 'frontend';
-  selectedConversation: any = null;
-
-  onConversationSelected(conversation: any) {
-    this.selectedConversation = conversation;
-  }
 }

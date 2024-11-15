@@ -9,14 +9,9 @@ import {CookieService} from 'ngx-cookie-service';
 })
 export class ConversationListComponent implements OnInit {
   conversations!: any[];
-  selectedConversation!: any
   userId!: string;
   newParticipantId!: string;
-
   @Output() conversationSelected = new EventEmitter<any>();
-
-
-
   constructor(private conversationService: ConversationService, private cookieService: CookieService) {
   }
 
@@ -29,10 +24,13 @@ export class ConversationListComponent implements OnInit {
 
   // Charge les conversations de l'utilisateur
   loadConversations() {
-    console.log('loading conversations with user id:', this.userId);
     this.conversationService.getUserConversations(this.userId).subscribe((data) => {
       this.conversations = data;
     });
+  }
+
+  getOtherParticipant(participants: any[]): any {
+    return participants.find((participant) => participant._id !== this.userId);
   }
 
   // Sélectionne une conversation pour afficher les messages

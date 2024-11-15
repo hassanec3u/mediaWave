@@ -21,10 +21,20 @@ import {FriendSearchComponent} from './friend/friend-search.component';
 import {AuthInterceptor} from './Interceptor/AuthInterceptor';
 import {MessageComponent} from './message/message.component';
 import {ConversationListComponent} from './conversation/conversation.component';
+import {MessagerieComponent} from './messagerie/messagerie.component';
 
 
 @NgModule({
-  declarations: [AppComponent, LoginComponent,ConversationListComponent, RegisterComponent, LogoutComponent, FriendSearchComponent,MessageComponent],
+  declarations: [
+    AppComponent,
+    LoginComponent,
+    RegisterComponent,
+    LogoutComponent,
+    MessagerieComponent,
+    ConversationListComponent,
+    MessageComponent,
+    FriendSearchComponent,
+    ],
   imports: [BrowserModule,
     AppRoutingModule,
     FormsModule,

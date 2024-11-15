@@ -18,9 +18,5 @@ export class CreateMessageDto {
     @IsString()
     receiverId: string;
 
-    @ApiProperty({ example: '2021-09-01T00:00:00.000Z', description: 'Date de création du message' })
-    @IsNotEmpty()
-    @IsString()
-    createdAt: Date;
 
 }

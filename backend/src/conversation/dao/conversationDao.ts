@@ -20,7 +20,7 @@ export class ConversationDao {
         });
 
         if (!conversation) {
-            conversation = await this._conversationModel.create({ participants });
+            conversation = await this._conversationModel.create({ participants, lastMessage: "" });
         }
 
         return conversation;

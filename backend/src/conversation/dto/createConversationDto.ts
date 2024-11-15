@@ -8,4 +8,8 @@ export class CreateConversationDto {
     @IsNotEmpty()
     @IsString()
     userId2: string;
+
+    @IsNotEmpty()
+    @IsString()
+    lastMessage: string;
 }

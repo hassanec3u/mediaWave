@@ -1,8 +1,6 @@
-<!-- conversation-list.component.html -->
-<div class="flex h-screen">
-
+<div >
   <!-- Liste des Conversations -->
-  <div class="w-1/3 bg-gray-100 p-4 shadow-lg h-screen overflow-y-auto">
+  <div class=" bg-gray-100 p-4 shadow-lg h-screen overflow-y-auto">
     <h3 class="text-xl font-semibold mb-4">Conversations</h3>
 
     <!-- Formulaire pour démarrer une nouvelle conversation -->
@@ -24,10 +22,14 @@
         (click)="selectConversation(conversation)"
         class="cursor-pointer p-3 mb-2 rounded-md hover:bg-gray-200"
       >
-        <div class="font-medium">{{ conversation.participants[1].username }}</div>
-        <p class="text-sm text-gray-600">Dernier message: {{ conversation.lastMessage?.content }}</p>
+        <!-- Affiche uniquement le participant qui n'est pas l'utilisateur courant -->
+        <div class="font-medium">
+          {{ getOtherParticipant( conversation.participants).username }}
+        </div>
+        <p class="text-sm text-gray-600">
+          Dernier message: {{ conversation.lastMessage?.content }}
+        </p>
       </li>
     </ul>
-  </div>
 
 </div>
