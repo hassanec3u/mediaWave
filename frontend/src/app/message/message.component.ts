@@ -26,14 +26,11 @@ export class MessageComponent implements OnInit, OnDestroy {
     // Connecter le service WebSocket
     this.messageService.connect();
 
-
     // S'abonne aux messages en temps réel
     this.messageSubscription = this.messageService
       .getMessageObservable()
       .subscribe((message) => {
-        console.log('Nouveau message reçu via Observable:', message);
-        // Ajouter un nouveau message à la liste des messages
-        if (message.receiverId === this.senderId || message.senderId === this.senderId) {
+        if (message.receiverId._id === this.senderId || message.senderId._id === this.senderId) {
         message = { ...message, senderName: message.senderId.username, receiverName: message.receiverId.username };
           this.messages.push(message);
         }
@@ -94,10 +91,5 @@ export class MessageComponent implements OnInit, OnDestroy {
         }));
       });
     }
-  }
-
-
-  closeChat() {
-    this.selectedConversation = null;
   }
 }

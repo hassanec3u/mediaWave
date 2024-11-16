@@ -1,6 +1,7 @@
 import {Injectable, UnprocessableEntityException} from "@nestjs/common";
 import {Conversation} from "./schema/conversationSchema";
 import {ConversationDao} from "./dao/conversationDao";
+import {CreateConversationDto} from "./dto/createConversationDto";
 
 
 @Injectable()
@@ -9,9 +10,9 @@ export class ConversationService {
     }
 
     //create a new conversation
-    async createNewConversation(conversationDto: any): Promise<void> {
-        const { userId, otherUserId } = conversationDto;
-        this.conversationDao.findOrCreateConversation(userId,otherUserId).catch(err => {
+    async createNewConversation(conversationDto: CreateConversationDto): Promise<void> {
+        const { senderId, receiverUsername } = conversationDto;
+        this.conversationDao.createConversation(senderId,receiverUsername).catch(err => {
             console.error('Error saving conversation:', err);
             throw new UnprocessableEntityException(err.message);
         });

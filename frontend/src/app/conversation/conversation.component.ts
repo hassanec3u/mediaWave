@@ -10,8 +10,9 @@ import {CookieService} from 'ngx-cookie-service';
 export class ConversationListComponent implements OnInit {
   conversations!: any[];
   userId!: string;
-  newParticipantId!: string;
+  newParticipantName!: string;
   @Output() conversationSelected = new EventEmitter<any>();
+
   constructor(private conversationService: ConversationService, private cookieService: CookieService) {
   }
 
@@ -30,7 +31,11 @@ export class ConversationListComponent implements OnInit {
   }
 
   getOtherParticipant(participants: any[]): any {
-    return participants.find((participant) => participant._id !== this.userId);
+    console.log('participants', participants);
+    const res = participants.find((participant) => participant._id !== this.userId);
+
+    console.log('res', res);
+    return res;
   }
 
   // Sélectionne une conversation pour afficher les messages
@@ -39,11 +44,11 @@ export class ConversationListComponent implements OnInit {
   }
 
   startNewConversation() {
-    if (this.newParticipantId) {
-      this.conversationService.createConversation(this.userId, this.newParticipantId).subscribe(
+    if (this.newParticipantName) {
+      this.conversationService.createConversation(this.userId, this.newParticipantName).subscribe(
         (newConversation) => {
           this.conversations.push(newConversation);
-          this.newParticipantId = '';
+          this.newParticipantName = '';
         },
         (error) => {
           console.error('Erreur lors de la création de la conversation :', error);

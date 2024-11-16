@@ -14,7 +14,7 @@ export class ConversationService {
     return this.http.get<any>(`${this.apiUrl}/${userId}`);
   }
 
-  createConversation(userId1: string, userId2: string): Observable<any> {
-    return this.http.post<any>(this.apiUrl, { userId1, userId2 });
+  createConversation(senderId: string, receiverUsername: string): Observable<any> {
+    return this.http.post<any>(this.apiUrl, { senderId, receiverUsername });
   }
 }

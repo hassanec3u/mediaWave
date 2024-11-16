@@ -1,6 +1,7 @@
 import { WebSocketGateway, WebSocketServer, OnGatewayConnection, OnGatewayDisconnect } from '@nestjs/websockets';
 import { Server, Socket } from 'socket.io';
 import { CreateMessageDto } from '../message/dto/createMessageDto';
+import {Message} from "../message/schema/messageSchema";
 
 @WebSocketGateway({ cors: true })
 export class MessagesGateway implements OnGatewayConnection, OnGatewayDisconnect {
@@ -16,7 +17,7 @@ export class MessagesGateway implements OnGatewayConnection, OnGatewayDisconnect
     }
 
     // Méthode pour diffuser un message à tous les clients connectés
-    sendMessageToClients(createMessageDto: CreateMessageDto): void {
+    sendMessageToClients(createMessageDto: Message): void {
         this.server.emit('message', createMessageDto);
         console.log('Message envoyé à tous les clients connectés');
         console.log(createMessageDto);

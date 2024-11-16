@@ -3,7 +3,7 @@ import { Subject } from 'rxjs';
 import { io, Socket } from 'socket.io-client';
 import {HttpClient} from '@angular/common/http';
 import {environment} from "../../environments/environments";
-import {Message} from 'postcss';
+import {Message} from '../shared/types/message';
 
 @Injectable({
   providedIn: 'root',
@@ -42,7 +42,6 @@ export class MessageService {
 
 
 
-  // Emission d'un nouveau message vers le backend
   sendMessage(message: any) {
     return this.http.post(`${this.backendUrl}/message`, message);
   }

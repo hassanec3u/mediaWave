@@ -3,13 +3,10 @@ import { IsNotEmpty, IsString } from 'class-validator';
 export class CreateConversationDto {
     @IsNotEmpty()
     @IsString()
-    userId1: string;
+    senderId: string;
 
     @IsNotEmpty()
     @IsString()
-    userId2: string;
+    receiverUsername: string;
 
-    @IsNotEmpty()
-    @IsString()
-    lastMessage: string;
 }

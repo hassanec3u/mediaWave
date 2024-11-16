@@ -1,4 +1,3 @@
-<!-- chat.component.html -->
 <div *ngIf="selectedConversation" class="flex-1 bg-white h-screen p-4 shadow-lg overflow-hidden">
   <div class="flex justify-between items-center mb-4">
     <h3 class="text-xl font-semibold"> {{ getOtherParticipant(selectedConversation.participants).username }}</h3>
@@ -6,8 +5,14 @@
 
   <!-- Affichage des messages -->
   <div class="messages-container h-4/5 overflow-y-auto mb-4">
-    <div *ngFor="let message of messages" class="message mb-2 p-3 rounded-md shadow-sm bg-gray-50">
-      <strong>{{ message.senderId.username }}:</strong> {{ message.content }}
+    <div
+      *ngFor="let message of messages"
+      class="message mb-2 p-3 rounded-md shadow-sm"
+      [ngClass]="{
+        'bg-blue-100 self-end text-right': message.senderId._id === senderId,
+        'bg-gray-50 self-start text-left': message.senderId._id !== senderId
+      }"
+    >{{ message.content }}
     </div>
   </div>
 

@@ -33,12 +33,15 @@ export class MessageDao {
 
         const createdMessage = await this._messageModel.create(message);
 
+        await createdMessage.populate([
+            { path: 'senderId', select: 'username' },
+            { path: 'receiverId', select: 'username' }
+        ]);
 
-        // Mettre à jour le dernier message de la conversation
-        //await this.conversationDao.updateLastMessage(conversation._id.toString(), createdMessage._id.toString());
 
-        // Envoyer le message via WebSocket
-        this.webSocketGateway.sendMessageToClients(messageDto);
+
+        // Envoyer via WebSocket Gateway
+        this.webSocketGateway.sendMessageToClients(createdMessage);
 
         return createdMessage;
     }
