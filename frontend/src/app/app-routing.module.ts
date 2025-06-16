@@ -9,7 +9,6 @@ import {HomeComponent} from './home/home.component';
 import {FriendSearchComponent} from './friend/friend-search.component';
 import {PostsComponent} from "./posts/posts.component";
 import {MessageComponent} from './message/message.component';
-import {ConversationListComponent} from './conversation/conversation.component';
 import {MessagerieComponent} from './messagerie/messagerie.component';
 
 const routes: Routes = [

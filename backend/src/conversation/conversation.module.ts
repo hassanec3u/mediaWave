@@ -14,7 +14,8 @@ import {User, UserSchema} from "../user/schema/userSchema";
         MongooseModule.forFeature([{ name: User.name, schema: UserSchema }]),
     ],
     providers: [ConversationDao, ConversationService],
-    controllers: [ConversationController]
+    controllers: [ConversationController],
+    exports: [ConversationDao],
 })
 export class ConversationModule {
 }

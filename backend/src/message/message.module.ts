@@ -6,10 +6,12 @@ import {MessagesController} from "./message.controller";
 import {MessageService} from "./message.service";
 import {MongooseModule} from "@nestjs/mongoose";
 import {AuthModule} from "../auth/auth.module";
+import {ConversationModule} from "../conversation/conversation.module";
 
 @Module({
     imports: [
         AuthModule,
+        ConversationModule,
         MongooseModule.forFeature([{name: Message.name, schema: MessageSchema}]),
     ],
     providers: [MessageDao, MessageService, MessagesGateway],

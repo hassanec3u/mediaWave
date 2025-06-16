@@ -33,8 +33,6 @@ export class ConversationListComponent implements OnInit {
   getOtherParticipant(participants: any[]): any {
     console.log('participants', participants);
     const res = participants.find((participant) => participant._id !== this.userId);
-
-    console.log('res', res);
     return res;
   }
 

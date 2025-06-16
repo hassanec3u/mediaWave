@@ -1,10 +1,10 @@
 import {Component, OnInit} from '@angular/core';
 import {MatButton, MatIconButton} from "@angular/material/button";
-import { MatMenu, MatMenuItem, MatMenuTrigger } from "@angular/material/menu";
-import { MatToolbarRow } from "@angular/material/toolbar";
-import { Router } from '@angular/router';
-import { UserService } from '../../service/userService';
-import { CommonModule } from '@angular/common';
+import {MatMenu, MatMenuItem, MatMenuTrigger} from "@angular/material/menu";
+import {MatToolbarRow} from "@angular/material/toolbar";
+import {Router} from '@angular/router';
+import {UserService} from '../../service/userService';
+import {CommonModule} from '@angular/common';
 import {User} from "../types/user.type";
 import {PicturesService} from "../../service/picturesService";
 import {environment} from "../../../environments/environments"; // Import CommonModule
@@ -24,19 +24,19 @@ import {environment} from "../../../environments/environments"; // Import Common
   templateUrl: './header.component.html',
   styleUrl: './header.component.css'
 })
-export class HeaderComponent implements OnInit{
+export class HeaderComponent implements OnInit {
   isAuthenticated: boolean = false;
   user!: User | undefined;
   defaultImage: string = environment.defaultImageProfile;
 
-  constructor(private router: Router, private userService: UserService, private pictureService: PicturesService) {}
+  constructor(private router: Router, private userService: UserService, private pictureService: PicturesService) {
+  }
 
   ngOnInit(): void {
     this.isAuthenticated = this.userService.isAuthenticated(); // Check authentication status
     this.userService.loadUserInfo();
     this.userService.user.subscribe((user) => this.user = user);
   }
-
 
 
   login(): void {
@@ -47,7 +47,6 @@ export class HeaderComponent implements OnInit{
     this.userService.logout();
 
   }
-
 
   register(): void {
     this.router.navigate(['/register']);
@@ -70,4 +69,9 @@ export class HeaderComponent implements OnInit{
   navigateHome() {
     this.router.navigate(['/']);
   }
+
+  navigateToConversations() {
+    this.router.navigate(['/messagerie']);
+  }
 }
+

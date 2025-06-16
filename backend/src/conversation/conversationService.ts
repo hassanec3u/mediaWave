@@ -2,37 +2,40 @@ import {Injectable, UnprocessableEntityException} from "@nestjs/common";
 import {Conversation} from "./schema/conversationSchema";
 import {ConversationDao} from "./dao/conversationDao";
 import {CreateConversationDto} from "./dto/createConversationDto";
+import {catchError, from, Observable, tap, throwError} from "rxjs";
 
 
 @Injectable()
 export class ConversationService {
-    constructor(private readonly conversationDao: ConversationDao) {
-    }
+    constructor(private readonly conversationDao: ConversationDao) {}
 
-    //create a new conversation
-    async createNewConversation(conversationDto: CreateConversationDto): Promise<void> {
+    createNewConversation(conversationDto: CreateConversationDto): Observable<Conversation> {
         const { senderId, receiverUsername } = conversationDto;
-        this.conversationDao.createConversation(senderId,receiverUsername).catch(err => {
-            console.error('Error saving conversation:', err);
-            throw new UnprocessableEntityException(err.message);
-        });
+
+        return from(this.conversationDao.createConversation(senderId, receiverUsername)).pipe(
+            catchError(err => {
+                console.error('Error saving conversation:', err);
+                return throwError(() => new UnprocessableEntityException(err.message));
+            })
+        );
     }
 
-    async updateLastMessage(conversationId: string, messageId: string): Promise<void> {
-        try {
-            await this.conversationDao.updateLastMessage(conversationId, messageId);
-        } catch (err) {
-            console.error('Error updating last message:', err);
-            throw new UnprocessableEntityException(err.message);
-        }
+    updateLastMessage(conversationId: string, messageId: string): Observable<void> {
+        return from(this.conversationDao.updateLastMessage(conversationId, messageId)).pipe(
+            catchError(err => {
+                console.error('Error updating last message:', err);
+                return throwError(() => new UnprocessableEntityException(err.message));
+            })
+        );
     }
 
-    async getUserConversations(userId: string): Promise<Conversation[]> {
-        try {
-            return await this.conversationDao.getUserConversations(userId);
-        } catch (err) {
-            console.error('Error getting conversations:', err);
-            throw new UnprocessableEntityException(err.message);
-        }
+    getUserConversations(userId: string): Observable<Conversation[]> {
+        return from(this.conversationDao.getUserConversations(userId)).pipe(
+
+            catchError(err => {
+                console.error('Error getting conversations:', err);
+                return throwError(() => new UnprocessableEntityException(err.message));
+            })
+        );
     }
 }

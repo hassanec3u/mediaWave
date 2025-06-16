@@ -62,6 +62,7 @@ export class MessageComponent implements OnInit, OnDestroy {
         senderId: this.senderId,
         receiverId: receiver._id,
         content: content.trim(),
+        conversationId: this.selectedConversation._id,
       };
 
       // Envoyer le message via le service

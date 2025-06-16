@@ -36,6 +36,7 @@ export class ConversationDao {
             throw new BadRequestException('User not found');
         }
 
+        //On vérifie que l'utilisateur n'essaie pas de créer une conversation avec lui-même
         if (otherUser._id.toString() === SenderID) {
             console.error('Cannot create a conversation with oneself.');
             throw new BadRequestException('Cannot create a conversation with oneself.');
@@ -52,7 +53,6 @@ export class ConversationDao {
             conversation = await this._conversationModel.create({participants, lastMessage: null});
         }
 
-        console.log('conversation', conversation);
         return conversation;
     }
 

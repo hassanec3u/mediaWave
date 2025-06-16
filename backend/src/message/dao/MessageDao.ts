@@ -4,6 +4,7 @@ import {Message} from "../schema/messageSchema";
 import {Model, Types} from "mongoose";
 import {CreateMessageDto} from "../dto/createMessageDto";
 import {MessagesGateway} from "../../gateways/websocket.gateway";
+import {ConversationDao} from "../../conversation/dao/conversationDao";
 
 
 @Injectable()
@@ -11,7 +12,7 @@ export class MessageDao {
      constructor(
         @InjectModel(Message.name)
         private readonly _messageModel: Model<Message>,
-     //   private readonly conversationDao: ConversationDao,
+        private readonly conversationDao: ConversationDao,
         private readonly webSocketGateway: MessagesGateway,
     ) {
     }
@@ -19,7 +20,6 @@ export class MessageDao {
     isValidObjectId(id: string): boolean {
         return Types.ObjectId.isValid(id);
     }
-
     async createNewMessage(messageDto: CreateMessageDto): Promise<Message> {
         if (!this.isValidObjectId(messageDto.senderId) || !this.isValidObjectId(messageDto.receiverId)) {
             throw new BadRequestException('Invalid senderId or receiverId');
@@ -38,7 +38,10 @@ export class MessageDao {
             { path: 'receiverId', select: 'username' }
         ]);
 
-
+        // Met à jour le dernier message de la conversation
+        if (messageDto.conversationId && this.isValidObjectId(messageDto.conversationId)) {
+            await this.conversationDao.updateLastMessage(messageDto.conversationId, createdMessage._id);
+        }
 
         // Envoyer via WebSocket Gateway
         this.webSocketGateway.sendMessageToClients(createdMessage);
