@@ -43,13 +43,11 @@ export class LikeComponent implements OnInit {
       this.likeService.unlikePost(this.userId, this.postId).subscribe(() => {
         this.liked = false;
         this.likes = this.likes - 1;
-        this.updateLikes();
       });
     } else {
       this.likeService.likePost(this.userId, this.postId).subscribe(() => {
         this.liked = true;
         this.likes = this.likes + 1;
-        this.updateLikes();
       });
     }
 

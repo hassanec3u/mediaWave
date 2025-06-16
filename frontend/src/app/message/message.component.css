@@ -1,0 +1,26 @@
+.messages-container {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+
+.message {
+  max-width: 50%;
+  word-wrap: break-word;
+}
+
+.message.self-end {
+  align-self: flex-end; /* Aligner les messages envoyés à droite */
+  background-color: #dbeafe; /* Couleur de fond pour les messages envoyés */
+}
+
+.message.self-start {
+  align-self: flex-start;
+  background-color: #f9fafb;
+}
+
+.message strong {
+  display: block;
+  font-weight: 600;
+}
+}
+

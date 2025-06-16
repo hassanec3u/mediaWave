@@ -1,0 +1,37 @@
+<app-header></app-header>
+<div>
+  <!-- Liste des Conversations -->
+  <div class=" bg-gray-100 p-4 shadow-lg h-screen overflow-y-auto">
+    <h3 class="text-xl font-semibold mb-4">Conversations</h3>
+
+    <!-- Formulaire pour démarrer une nouvelle conversation -->
+    <div class="mb-6 flex space-x-2">
+      <input
+        [(ngModel)]="newParticipantName"
+        placeholder="Nom du participant"
+        class="w-full p-2 border border-gray-300 rounded-md"
+      />
+      <button (click)="startNewConversation()" class="bg-blue-500 text-white py-2 px-4 rounded-md hover:bg-blue-600">
+        Démarrer
+      </button>
+    </div>
+
+    <!-- Liste des conversations -->
+    <ul>
+      <li
+        *ngFor="let conversation of conversations"
+        (click)="selectConversation(conversation)"
+        class="cursor-pointer p-3 mb-2 rounded-md hover:bg-gray-200"
+      >
+        <!-- Affiche uniquement le participant qui n'est pas l'utilisateur courant -->
+        <div class="font-medium">
+          {{ getOtherParticipant(conversation.participants).username }}
+        </div>
+        <p class="text-sm text-gray-600">
+          Dernier message: {{ conversation.lastMessage?.content }}
+        </p>
+      </li>
+    </ul>
+
+  </div>
+</div>

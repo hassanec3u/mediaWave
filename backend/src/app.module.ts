@@ -6,6 +6,9 @@ import { FilesUploadModule } from './files-upload/files-upload.module';
 import { PostsModule } from './posts/posts.module';
 import {CommentsModule} from "./comment/comment.module";
 import {LikeModule} from "./like/like.module";
+import {MessagesModule} from "./message/message.module";
+import {ConversationModule} from "./conversation/conversation.module";
+import {MessagesGateway} from "./gateways/websocket.gateway";
 
 @Module({
     imports: [
@@ -15,7 +18,10 @@ import {LikeModule} from "./like/like.module";
         PostsModule,
         CommentsModule,
         LikeModule,
-        FilesUploadModule
+        MessagesModule,
+        ConversationModule,
+        FilesUploadModule,
+        MessagesGateway
     ]
 })
 export class AppModule {

@@ -1,28 +1,40 @@
-import { NgModule } from '@angular/core';
-import { BrowserModule } from '@angular/platform-browser';
+import {NgModule} from '@angular/core';
+import {BrowserModule} from '@angular/platform-browser';
 import {FormsModule} from '@angular/forms';
-import { AppComponent } from './app.component';
-import { LoginComponent } from './account/login/login.component';
-import { AppRoutingModule } from './app-routing.module';
+import {AppComponent} from './app.component';
+import {LoginComponent} from './account/login/login.component';
+import {AppRoutingModule} from './app-routing.module';
 import {HTTP_INTERCEPTORS, HttpClientModule} from "@angular/common/http";
 import {RegisterComponent} from "./account/register/register.component";
 import {CookieService} from "ngx-cookie-service";
 import {LogoutComponent} from './account/logout/logout.component';
-import { ReactiveFormsModule } from '@angular/forms';
-import { provideAnimationsAsync } from '@angular/platform-browser/animations/async';
-import { MatFormFieldModule} from '@angular/material/form-field';
-import { MatButtonModule} from '@angular/material/button';
-import { MatInputModule} from '@angular/material/input';
+import {ReactiveFormsModule} from '@angular/forms';
+import {provideAnimationsAsync} from '@angular/platform-browser/animations/async';
+import {MatFormFieldModule} from '@angular/material/form-field';
+import {MatButtonModule} from '@angular/material/button';
+import {MatInputModule} from '@angular/material/input';
 import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
 import {MatIconModule} from '@angular/material/icon';
 import {HeaderComponent} from './shared/header/header.component';
 import {HomeComponent} from './home/home.component';
 import {FriendSearchComponent} from './friend/friend-search.component';
 import {AuthInterceptor} from './Interceptor/AuthInterceptor';
+import {MessageComponent} from './message/message.component';
+import {ConversationListComponent} from './conversation/conversation.component';
+import {MessagerieComponent} from './messagerie/messagerie.component';
 
 
 @NgModule({
-  declarations: [AppComponent, LoginComponent, RegisterComponent, LogoutComponent, FriendSearchComponent],
+  declarations: [
+    AppComponent,
+    LoginComponent,
+    RegisterComponent,
+    LogoutComponent,
+    MessagerieComponent,
+    ConversationListComponent,
+    MessageComponent,
+    FriendSearchComponent,
+    ],
   imports: [BrowserModule,
     AppRoutingModule,
     FormsModule,
@@ -41,4 +53,5 @@ import {AuthInterceptor} from './Interceptor/AuthInterceptor';
   }],
   bootstrap: [AppComponent]
 })
-export class AppModule {}
+export class AppModule {
+}

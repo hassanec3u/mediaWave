@@ -10,9 +10,11 @@
            class="w-8 h-8 object-cover rounded-full mr-4">
     </button>
     <mat-menu #menuHeader="matMenu" class="cursor-pointer bg-white">
-      <button mat-menu-item (click)="navigateToFriend()">Mes Amis</button>
-      <button mat-menu-item (click)="navigateToProfile()">Mon Profil</button>
+      <button mat-menu-item (click)="navigateToProfile()">Profil</button>
+      <button mat-menu-item (click)="navigateToFriend()">Amis</button>
+      <button mat-menu-item (click)="navigateToConversations()">Messages</button>
       <button mat-menu-item (click)="logout()">Se Déconnecter</button>
+
     </mat-menu>
   </div>
 
