@@ -19,12 +19,6 @@ import {PicturesService} from "../../service/picturesService";
   selector: 'app-user-profile',
   standalone: true,
   imports: [
-    MatIcon,
-    MatToolbarRow,
-    MatMenuTrigger,
-    MatIconButton,
-    MatMenu,
-    MatMenuItem,
     HeaderComponent,
     CardPostComponent,
     AsideProfileComponent,
@@ -67,7 +61,7 @@ export class UserProfileComponent implements OnInit{
               this.pictureService.getPicture(post.postPicture).pipe(
                   map(image => ({...post, postPicture: URL.createObjectURL(image)})),
                   catchError(error => {
-                    console.error(`Erreur pour le post ${post._id}:`, error);
+                    console.error(`Erreur pour le post ${post.id}:`, error);
                     return of(post);
                   })
               )
@@ -80,11 +74,11 @@ export class UserProfileComponent implements OnInit{
   }
 
   onPostDeleted(postId: string) {
-      this.userPosts = this.userPosts.filter(post => post._id !== postId);
+      this.userPosts = this.userPosts.filter(post => post.id !== postId);
   }
 
   onPostUpdated(updatePost: Post) {
-      const postIndex = this.userPosts.findIndex(post => post._id === updatePost._id);
+      const postIndex = this.userPosts.findIndex(post => post.id === updatePost.id);
       if(postIndex !== -1) {
           this.userPosts[postIndex] = updatePost;
       }

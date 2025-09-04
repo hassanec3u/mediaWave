@@ -17,13 +17,17 @@ export class PicturesService {
     uploadPicture(profilePicture: File): Observable<Picture> {
         const formData = new FormData();
         formData.append('file', profilePicture);
-        return this.http.post<Picture>(this.backendUrl+environment.backend.endpoints.uploadPicture, formData, {
+        return this.http.post<Picture>(this.backendUrl+environment.backend.endpoints.upload, formData,
+            {
             headers: new HttpHeaders({'enctype': 'multipart/form-data'})});
     }
 
     getPicture(profilePicturePath: string | undefined): Observable<any> {
         console.log("GET PROFILE PICTURE");
         const params = new HttpParams().set('filePath', profilePicturePath+'');
-        return this.http.get<any>(this.backendUrl+environment.backend.endpoints.uploadPicture, {params, responseType: 'blob' as 'json'});
+        return this.http.get<any>(this.backendUrl+environment.backend.endpoints.upload, {
+            params,
+            responseType: 'blob' as 'json'
+        });
     }
 }

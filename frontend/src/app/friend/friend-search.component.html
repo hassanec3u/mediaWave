@@ -17,7 +17,7 @@
     <ul class="bg-white rounded-lg shadow-sm">
       <li *ngFor="let user of searchResults" class="flex items-center justify-between p-2 border-b last:border-b-0">
         <span>{{ user.username }}</span>
-        <button mat-raised-button color="accent" (click)="sendFriendRequest(user._id!)">Ajouter ami</button>
+        <button mat-raised-button color="accent" (click)="sendFriendRequest(user.id!)">Ajouter ami</button>
       </li>
     </ul>
   </div>
@@ -28,7 +28,7 @@
     <ul class="bg-white rounded-lg shadow-sm">
       <li *ngFor="let friend of friends" class="flex items-center justify-between p-2 border-b last:border-b-0">
         <span>{{ friend.username }}</span>
-        <button mat-raised-button color="warn" (click)="removeFriend(friend._id!)">Retirer Ami</button>
+        <button mat-raised-button color="warn" (click)="removeFriend(friend.id!)">Retirer Ami</button>
       </li>
     </ul>
   </div>
@@ -40,8 +40,8 @@
       <li *ngFor="let request of pendingRequests" class="flex items-center justify-between p-2 border-b last:border-b-0">
         <span>{{ request.username }}</span>
         <div class="flex space-x-2 ml-auto">
-          <button mat-raised-button color="primary" (click)="acceptFriend(request._id!)">Accepter</button>
-          <button mat-raised-button color="warn" (click)="refuseFriend(request._id!)">Refuser</button>
+          <button mat-raised-button color="primary" (click)="acceptFriend(request.id!)">Accepter</button>
+          <button mat-raised-button color="warn" (click)="refuseFriend(request.id!)">Refuser</button>
         </div>
       </li>
     </ul>

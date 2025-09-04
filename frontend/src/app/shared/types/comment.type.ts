@@ -1,7 +1,9 @@
 // After
 export type Comment = {
-  _id?: string;
-  author: string;
-  post: string;
+  id?: string;
   content: string;
+  authorUsername?: string;
+  authorId?: string;
+  createdAt?: Date;
+  postId : string;
 }

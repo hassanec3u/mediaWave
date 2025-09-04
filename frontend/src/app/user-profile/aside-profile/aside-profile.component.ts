@@ -47,7 +47,7 @@ export class AsideProfileComponent {
   }
 
   isMyProfile() {
-    return this.userService.getUserId() === this._userInfo._id;
+    return this.userService.getUserId() === this._userInfo.id;
   }
 
   openFormUpdate() {
@@ -72,7 +72,7 @@ export class AsideProfileComponent {
   }
 
   uploadProfileImage(file: File) {
-    this.userService.uploadProfilePicture(this._userInfo._id, file).subscribe(
+    this.userService.uploadProfilePicture(this._userInfo.id, file).subscribe(
         response => {
           console.log("UPLOAD IMAGE!")
           console.log(response);

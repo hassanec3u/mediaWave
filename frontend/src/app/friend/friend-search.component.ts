@@ -23,13 +23,12 @@ export class FriendSearchComponent implements OnInit {
 
   search(query: string): void {
     this.userService.searchUsers(query).subscribe(users => {
-      this.searchResults = users.filter(user =>
-        user._id !== this.myId && !this.friends.some(friend => friend._id === user._id)
-      );
+      this.searchResults = users
+      console.log(users);
     });
   }
-  sendFriendRequest(userId: string): void {
-    this.userService.sendFriendRequest(this.myId,userId).subscribe(() => {
+  sendFriendRequest(friendId: string): void {
+    this.userService.sendFriendRequest(friendId).subscribe(() => {
       this.loadFriends();
       this.loadPendingRequests();
       alert("Demande d'ami envoyée");
@@ -38,22 +37,22 @@ export class FriendSearchComponent implements OnInit {
     });
   }
 
-  acceptFriend(userId: string): void {
-    this.userService.acceptFriend(this.myId, userId).subscribe(() => {
+  acceptFriend(friendId: string): void {
+    this.userService.acceptFriend( friendId).subscribe(() => {
       this.loadFriends();
       this.loadPendingRequests();
     });
   }
 
-  refuseFriend(userId: string): void {
-    this.userService.refuseFriend(this.myId, userId).subscribe(() => {
+  refuseFriend(friendId: string): void {
+    this.userService.refuseFriend(friendId).subscribe(() => {
       this.loadFriends();
       this.loadPendingRequests();
     });
   }
 
-  removeFriend(friendIdToRemove: string ): void {
-    this.userService.removeFriend(this.myId,friendIdToRemove).subscribe(() => {
+  removeFriend(friendId: string ): void {
+    this.userService.removeFriend(friendId).subscribe(() => {
       this.loadFriends();
       this.loadPendingRequests();
     });
@@ -65,7 +64,7 @@ export class FriendSearchComponent implements OnInit {
     });
   }
 
-  private loadPendingRequests(): void { // Nouvelle méthode
+  private loadPendingRequests(): void { 
     this.userService.getPendingRequests(this.myId).subscribe(requests => {
       this.pendingRequests = requests;
     });

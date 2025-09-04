@@ -22,10 +22,10 @@ export class PostsComponent {
     imageError: string | null = null;
     isEditingPost: boolean = false;
 
-    constructor(private fb: FormBuilder,
-                private postService: PostService,
-                @Optional() private dialogRef: MatDialogRef<PostsComponent, Post> | null,
-                @Optional() @Inject(MAT_DIALOG_DATA) private post?: Post) {
+    constructor(private readonly fb: FormBuilder,
+                private readonly postService: PostService,
+                @Optional() private readonly dialogRef: MatDialogRef<PostsComponent, Post> | null,
+                @Optional() @Inject(MAT_DIALOG_DATA) private readonly post: Post) {
         this.postForm = this.fb.group({
             title: ['', Validators.required],
             content: ['', Validators.required],
@@ -56,7 +56,8 @@ export class PostsComponent {
         console.log(this.postForm.valid);
         if (this.postForm.valid) {
             if (this.isEditingPost) {
-                this.postService.updatePost(this.post?._id, this.postForm.value, this.selectedImage).subscribe(
+              console.log("Editing Post..." + this.post?.id);
+                this.postService.updatePost(this.post.id, this.postForm.value, this.selectedImage).subscribe(
                     (updatedPost) => this.dialogRef?.close(updatedPost),
                     error => console.log(error)
                 )

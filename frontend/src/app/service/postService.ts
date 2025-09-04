@@ -1,5 +1,4 @@
 import {HttpClient} from "@angular/common/http";
-import {CookieService} from "ngx-cookie-service";
 import {environment} from "../../environments/environments";
 import {Observable, switchMap} from "rxjs";
 import {Post} from "../shared/types/post.type";
@@ -7,57 +6,54 @@ import {PicturesService} from "./picturesService";
 import {Injectable} from "@angular/core";
 
 @Injectable({
-    providedIn: 'root'
+  providedIn: 'root'
 })
 export class PostService {
-    private userId: string;
-    private backendUrl = `${environment.backend.protocol}://${environment.backend.host}:${environment.backend.port}`;
+  private readonly backendUrl = `${environment.backend.protocol}://${environment.backend.host}:${environment.backend.port}`;
 
-    constructor(private http: HttpClient,
-                private cookieService: CookieService,
-                private picturesService: PicturesService) {
-        this.userId = this.cookieService.get('userId');
-    }
+  constructor(private readonly http: HttpClient,
+              private readonly picturesService: PicturesService) {
+  }
 
-    addPost(newPost: Post, picturePost: File | null): Observable<Post> {
-        console.log("Service method add new post")
-        newPost.publisher = this.userId;
-        if (picturePost != null) {
-            console.log("post with photo")
-            return this.picturesService.uploadPicture(picturePost).pipe(
-                switchMap((response) => {
-                    newPost.postPicture = response.filePath;
-                    return this.http.post<Post>(this.backendUrl + environment.backend.endpoints.addPost, newPost);
-                }));
-        } else {
-            console.log("post without photo")
-            return this.http.post<Post>(this.backendUrl + environment.backend.endpoints.addPost, newPost);
-        }
+  addPost(newPost: Post, picturePost: File | null): Observable<Post> {
+    //log the newPost object
+    console.log("New Post: ", newPost);
+    if (picturePost != null) {
+      console.log("post with photo")
+      return this.picturesService.uploadPicture(picturePost).pipe(
+        switchMap((response) => {
+          newPost.postPicture = response.filePath;
+          return this.http.post<Post>(this.backendUrl + environment.backend.endpoints.posts.add, newPost);
+        }));
+    } else {
+      console.log("post without photo")
+      return this.http.post<Post>(this.backendUrl + environment.backend.endpoints.posts.add, newPost);
     }
+  }
 
-    updatePost(postId: string | undefined, updatedPost: Post, picturePost: File | null): Observable<Post> {
-        updatedPost.publisher = this.userId;
-        if(picturePost != null) {
-            return this.picturesService.uploadPicture(picturePost).pipe(
-                switchMap((response) => {
-                    updatedPost.postPicture = response.filePath;
-                    return this.http.put<Post>(this.backendUrl + environment.backend.endpoints.updatePost+postId, updatedPost);
-                })
-            )
-        } else {
-            return this.http.put<Post>(this.backendUrl + environment.backend.endpoints.updatePost+postId, updatedPost);
-        }
+  updatePost(postId: string, updatedPost: Post, picturePost: File | null): Observable<Post> {
+    // updatedPost.publisher = this.userId;
+    if (picturePost != null) {
+      return this.picturesService.uploadPicture(picturePost).pipe(
+        switchMap((response) => {
+          updatedPost.postPicture = response.filePath;
+          return this.http.put<Post>(this.backendUrl + environment.backend.endpoints.posts.update(postId), updatedPost);
+        })
+      )
+    } else {
+      return this.http.put<Post>(this.backendUrl + environment.backend.endpoints.posts.update(postId), updatedPost);
     }
+  }
 
-    deletePost(postId: string | undefined): Observable<any> {
-        return this.http.delete(this.backendUrl + environment.backend.endpoints.deletePost + postId);
-    }
+  deletePost(postId: string): Observable<any> {
+    return this.http.delete(this.backendUrl + environment.backend.endpoints.posts.delete(postId));
+  }
 
-    getUserPosts(): Observable<Post[]> {
-        return this.http.get<Post[]>(`${this.backendUrl}/user/${this.userId}/posts`);
-    }
+  getUserPosts(): Observable<Post[]> {
+    return this.http.get<Post[]>(this.backendUrl + environment.backend.endpoints.posts.myPosts);
+  }
 
-    getFriendsPosts(): Observable<Post[]> {
-        return this.http.get<Post[]>(`${this.backendUrl}/user/${this.userId}${environment.backend.endpoints.friendsPosts}`);
-    }
+  getFriendsPosts(): Observable<Post[]> {
+    return this.http.get<Post[]>(`${this.backendUrl}${environment.backend.endpoints.posts.friends}`);
+  }
 }

@@ -1,38 +1,39 @@
 import {Component, Input, OnInit} from '@angular/core';
-import {CommentService} from '../../service/commentService';
-import {Comment} from '../../shared/types/comment.type';
-import {UserService} from '../../service/userService';
-import {DatePipe, NgForOf, NgIf} from '@angular/common';
+import {DatePipe, NgForOf, NgIf, SlicePipe, UpperCasePipe} from '@angular/common';
 import {FormsModule} from '@angular/forms';
-import {MatFormField} from '@angular/material/form-field';
 import {MatButton} from '@angular/material/button';
-import {MatInput} from '@angular/material/input';
-import {detailedComment} from '../../shared/types/detailedComment';
 import {MatIcon} from '@angular/material/icon';
-
+import {Comment} from '../../shared/types/comment.type';
+import {CommentService} from '../../service/commentService';
+import {MatFormField, MatLabel} from '@angular/material/form-field';
 
 @Component({
   selector: 'app-comment-list',
   standalone: true,
   templateUrl: './comment-list.component.html',
   imports: [
-    DatePipe,
     FormsModule,
     NgForOf,
-    MatFormField,
     MatButton,
     MatIcon,
-    MatInput,
-    NgIf
+    NgIf,
+    MatFormField,
+    MatLabel,
+    DatePipe,
+    SlicePipe,
+    UpperCasePipe
   ],
   styleUrls: ['./comment-list.component.css']
 })
 export class CommentListComponent implements OnInit {
   @Input() postId!: string;
-  detailedComment: detailedComment[] = [];
+  comments: Comment[] = [];
   newComment = '';
 
-  constructor(private commentService: CommentService, private userService: UserService) {
+  constructor(private readonly commentService: CommentService
+
+  ) {
+
   }
 
   ngOnInit(): void {
@@ -40,44 +41,40 @@ export class CommentListComponent implements OnInit {
   }
 
   loadComments(): void {
-    this.commentService.getComments(this.postId).subscribe(detailedComment => {
-      this.detailedComment = detailedComment;
+    this.commentService.getComments(this.postId).subscribe((comment) => {
+      this.comments = comment;
+      console.log( "id post: ", this.postId);
+      console.log("Comments loaded: ", this.comments);
     });
   }
 
-  addComment(newComment: string): void {
-    const comment: Comment = {
-      author: this.userService.getUserId(),
-      post: this.postId,
-      content: newComment
-    };
+  addComment(content: string): void {
 
-    this.commentService.addComment(comment).subscribe(newComment => {
-      const detailedComment: detailedComment = {
-        _id: newComment._id,
-        author: {
-          _id: newComment.author._id,
-          username: newComment.author.username
-        },
-        post: newComment.post,
-        content: newComment.content
-      }
-      this.detailedComment.push(detailedComment);
-      this.newComment = '';
-    });
-    this.loadComments();
+    if (content.trim()) {
+      const comment: Comment = {
+        postId: this.postId,
+        content: content,
+      };
+      console.log(this.comments);
+
+      this.commentService.addComment(comment).subscribe((newComment) => {
+        this.comments.push(newComment);
+        this.newComment = '';
+      });
+    }
   }
 
 
-  isMyComment(comment: detailedComment): boolean {
-    return this.userService.getUserId() === comment.author._id;
+  isMyComment(comment: Comment): boolean {
+
+
+    return true
   }
 
 
   deleteComment(commentId: string): void {
-    this.commentService.deleteComment(commentId).subscribe(() => {
-      this.detailedComment = this.detailedComment.filter(comment => comment._id !== commentId);
+    this.commentService.deleteComment(this.postId,commentId).subscribe(() => {
+      this.comments = this.comments.filter(c => c.id !== commentId);
     });
   }
-
 }

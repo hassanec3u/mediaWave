@@ -62,7 +62,7 @@ export class HomeComponent implements OnInit{
               this.pictureService.getPicture(post.postPicture).pipe(
                   map(image => ({...post, postPicture: URL.createObjectURL(image)})),
                   catchError(error => {
-                    console.error(`Erreur pour le post ${post._id}:`, error);
+                    console.error(`Erreur pour le post ${post.id}:`, error);
                     return of(post);
                   })
               )

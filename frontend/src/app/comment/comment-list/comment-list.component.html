@@ -1,41 +1,73 @@
-<div class="p-6 bg-white rounded-lg shadow-lg max-w-3xl mx-auto">
-  <h5 class="text-2xl font-semibold mb-4 text-gray-800">Commentaires</h5>
-
-  <div class="mb-4">
-    <textarea
-      [(ngModel)]="newComment"
-      placeholder="Ajouter un commentaire"
-      class="h-24 p-4 w-full bg-gray-100 rounded-lg border border-gray-300 focus:border-indigo-500 focus:ring focus:ring-indigo-200 transition duration-200 ease-in-out"
-    ></textarea>
+<!-- Carte commentaires -->
+<div class="card shadow-sm border-0">
+  <div class="card-header bg-white border-0 d-flex align-items-center">
+    <i class="bi bi-chat-dots me-2 fs-5 text-primary"></i>
+    <h5 class="mb-0">Commentaires</h5>
   </div>
 
-  <ul>
-    <li
-      *ngFor="let comment of detailedComment"
-      class="border-b border-gray-200 py-4 flex items-start justify-between"
-    >
-      <div>
-        <p class="text-gray-700 text-sm mb-1">{{ comment.content }}</p>
-        <small class="text-gray-500">par {{ comment.author.username }}</small>
+  <div class="card-body">
+    <!-- Ajouter un commentaire -->
+    <div class="mb-3">
+      <label class="form-label small text-muted">Ajouter un commentaire</label>
+      <textarea
+        [(ngModel)]="newComment"
+        class="form-control form-control-lg"
+        rows="3"
+        placeholder="Écrire un commentaire…"></textarea>
+      <div class="d-flex justify-content-end mt-2">
+        <button
+          class="btn btn-primary px-4"
+          (click)="addComment(newComment)"
+          [disabled]="!newComment || !newComment.trim()">
+          <i class="bi bi-send me-1"></i> Publier
+        </button>
       </div>
-      <mat-icon
-        *ngIf=" isMyComment(comment)"
-        color="warn"
-        class="cursor-pointer hover:text-red-600 transition duration-200"
-        (click)="deleteComment(comment._id!)">
-        delete
-      </mat-icon>
-    </li>
-  </ul>
+    </div>
 
-  <div class="mt-6 flex justify-end">
-    <button
-      mat-raised-button
-      color="primary"
-      class="mt-4 text-sm px-5 py-2 rounded-lg bg-indigo-600 text-white hover:bg-indigo-700 transition duration-200"
-      (click)="addComment(newComment)"
-    >
-      Ajouter un commentaire
-    </button>
+    <!-- Liste des commentaires -->
+    <ng-container *ngIf="comments?.length; else emptyState">
+      <ul class="list-group list-group-flush">
+        <li
+          *ngFor="let comment of comments"
+          class="list-group-item d-flex align-items-start justify-content-between px-0">
+          <div class="d-flex">
+            <!-- Avatar initiales (fallback) -->
+            <div class="rounded-circle bg-light border me-3 d-flex align-items-center justify-content-center"
+                 style="width:40px;height:40px;">
+              <span class="text-muted fw-semibold">
+                {{ (comment.authorUsername || 'U') | slice:0:1 | uppercase }}
+              </span>
+            </div>
+            <div>
+              <div class="fw-semibold small">
+                {{ comment.authorUsername || 'Utilisateur' }}
+                <span class="text-muted ms-2">• {{ comment.createdAt | date:'short' }}</span>
+              </div>
+              <p class="mb-0 mt-1">{{ comment.content }}</p>
+            </div>
+          </div>
+
+          <!-- Actions -->
+          <div class="ms-3">
+            <button
+              *ngIf="isMyComment(comment)"
+              class="btn btn-outline-danger btn-sm"
+              type="button"
+              (click)="deleteComment(comment.id!)"
+              aria-label="Supprimer le commentaire">
+              <i class="bi bi-trash"></i>
+            </button>
+          </div>
+        </li>
+      </ul>
+    </ng-container>
+
+    <!-- État vide -->
+    <ng-template #emptyState>
+      <div class="text-center text-muted py-4">
+        <i class="bi bi-chat-square-text fs-3 d-block mb-2"></i>
+        Soyez le premier à commenter.
+      </div>
+    </ng-template>
   </div>
 </div>
