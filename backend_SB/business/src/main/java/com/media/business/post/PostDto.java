@@ -1,7 +1,6 @@
 package com.media.business.post;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
-import com.media.business.comment.CommentDto;
 import com.media.business.common.SimpleDto;
 
 import java.time.Instant;
@@ -26,7 +25,8 @@ public class PostDto implements SimpleDto {
 
     private Instant postDate;
 
-    private List<CommentDto> comments;
+    private List<String> likeUserIds;
+
 
     public String getTitle() {
 
@@ -98,13 +98,13 @@ public class PostDto implements SimpleDto {
         this.id = id;
     }
 
-    public List<CommentDto> getComments() {
+    public List<String> getLikeUserIds() {
 
-        return this.comments;
+        return this.likeUserIds;
     }
 
-    public void setComments(List<CommentDto> comments) {
+    public void setLikeUserIds(List<String> likeUserIds) {
 
-        this.comments = comments;
+        this.likeUserIds = likeUserIds;
     }
 }

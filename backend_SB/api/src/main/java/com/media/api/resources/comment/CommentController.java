@@ -1,6 +1,5 @@
 package com.media.api.resources.comment;
 
-import com.media.api.resources.post.PostController;
 import com.media.business.comment.CommentDto;
 import com.media.business.comment.CommentService;
 import org.slf4j.Logger;
@@ -13,10 +12,10 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-@RequestMapping("/posts/{postId}/comments")
+@RequestMapping("/post/{postId}/comment")
 public class CommentController {
 
-    private static final Logger LOG = LoggerFactory.getLogger(PostController.class);
+    private static final Logger LOG = LoggerFactory.getLogger(CommentController.class);
 
     @Autowired
     private CommentService commentService;
@@ -27,7 +26,7 @@ public class CommentController {
         LOG.info("Saving comment");
         CommentDto resul = this.commentService.save(dto);
         if (resul != null) {
-            return ResponseEntity.ok(dto);
+            return ResponseEntity.ok(resul);
         } else {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
         }

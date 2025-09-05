@@ -3,7 +3,6 @@ import {Subscription} from 'rxjs';
 import {MessageService} from '../service/message.service';
 import {CookieService} from 'ngx-cookie-service';
 import {Message} from '../shared/types/message';
-import colors from 'tailwindcss/colors';
 
 @Component({
   selector: 'app-message',

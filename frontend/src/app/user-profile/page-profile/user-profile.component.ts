@@ -1,10 +1,6 @@
 import {Component, OnInit} from '@angular/core';
-import {MatIcon} from "@angular/material/icon";
-import {MatToolbarRow} from "@angular/material/toolbar";
-import {MatMenu, MatMenuItem, MatMenuTrigger} from "@angular/material/menu";
-import {MatIconButton} from "@angular/material/button";
 import {HeaderComponent} from "../../shared/header/header.component";
-import {CardPostComponent} from "../../shared/card-post/card-post.component";
+import {PostCardComponent} from "../../posts/post-card/post-card.component";
 import {AsideProfileComponent} from "../aside-profile/aside-profile.component";
 import {UserService} from "../../service/userService";
 import {ActivatedRoute} from "@angular/router";
@@ -12,7 +8,7 @@ import {User} from "../../shared/types/user.type";
 import {Post} from "../../shared/types/post.type";
 import {PostService} from "../../service/postService";
 import {NgForOf} from "@angular/common";
-import {catchError, forkJoin, map, mergeMap, of, switchMap} from "rxjs";
+import {catchError, forkJoin, map, of, switchMap} from "rxjs";
 import {PicturesService} from "../../service/picturesService";
 
 @Component({
@@ -20,7 +16,7 @@ import {PicturesService} from "../../service/picturesService";
   standalone: true,
   imports: [
     HeaderComponent,
-    CardPostComponent,
+    PostCardComponent,
     AsideProfileComponent,
     NgForOf
   ],

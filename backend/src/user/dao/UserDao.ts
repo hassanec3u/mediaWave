@@ -1,6 +1,6 @@
 import {Injectable} from '@nestjs/common';
 import {InjectModel} from '@nestjs/mongoose';
-import {Model, Types} from 'mongoose';
+import {Model} from 'mongoose';
 import {User} from "../schema/userSchema";
 import {CreateUserDto} from "../dto/createUserDto.";
 import {from, map, mergeMap, Observable, throwError} from "rxjs";
@@ -36,8 +36,8 @@ export class UserDao {
     }
 
 
-    findByIdAndUpdate(id: string, user: Partial<UpdateUserInfoDto>) : Observable<User> {
-      
+    findByIdAndUpdate(id: string, user: Partial<UpdateUserInfoDto>): Observable<User> {
+
         return from(this._personModel.findByIdAndUpdate(id, user, {new: true, runValidators: true}).lean());
     }
 
@@ -97,7 +97,7 @@ export class UserDao {
     refuseFriend(userId: string, friendId: string): Observable<User[]> {
         return this.findUserById(userId).pipe(
             mergeMap(user =>
-                from(this._personModel.findByIdAndUpdate(user, {$pull: {friendRequests:friendId}}, {new: true}).lean()).pipe(
+                from(this._personModel.findByIdAndUpdate(user, {$pull: {friendRequests: friendId}}, {new: true}).lean()).pipe(
                     map(updatedUser => [updatedUser])
                 )
             )

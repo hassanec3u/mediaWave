@@ -20,8 +20,8 @@ export class AuthInterceptor implements HttpInterceptor {
         catchError((error: HttpErrorResponse) => {
           if (error.status === 401) {
             // Si le serveur retourne une erreur 401, on déconnecte l'utilisateur et on le redirige vers la page de connexion car son token n'est plus valide
-            this.userService.logout();
-            this.router.navigate(['/login']);
+        /*    this.userService.logout();
+            this.router.navigate(['/login']);*/
           }
           return throwError(error);
         })

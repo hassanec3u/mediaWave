@@ -4,7 +4,6 @@ import {UserDao} from "../user/dao/UserDao";
 import {CreateUserDto} from "../user/dto/createUserDto.";
 import * as bcrypt from 'bcrypt';
 import {LoginUserDto} from "../user/dto/LoginUserDto";
-import e from 'express';
 
 /**
  * AuthService handles the authentication logic for the application.

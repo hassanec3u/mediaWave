@@ -1,6 +1,5 @@
 import {Injectable} from "@angular/core";
-import {Observable, switchMap} from "rxjs";
-import {User} from "../shared/types/user.type";
+import {Observable} from "rxjs";
 import {Picture} from "../shared/types/Picture.type";
 import {environment} from "../../environments/environments";
 import {HttpClient, HttpHeaders, HttpParams} from "@angular/common/http";

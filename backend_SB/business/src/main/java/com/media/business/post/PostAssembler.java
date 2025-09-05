@@ -27,6 +27,7 @@ public class PostAssembler implements Assembler<Post, PostDto> {
         dto.setPostDate(entity.getPostDate());
         dto.setPublisherId(entity.getPublisherId());
         dto.setPublisherName(entity.getPublisherName());
+        dto.setLikeUserIds(entity.getLikeUserIds() != null ? entity.getLikeUserIds() : List.of());
         return dto;
 
     }
@@ -48,6 +49,7 @@ public class PostAssembler implements Assembler<Post, PostDto> {
         entitie.setPostDate(dto.getPostDate());
         entitie.setPublisherId(dto.getPublisherId());
         entitie.setPublisherName(dto.getPublisherName());
+        entitie.setLikeUserIds(dto.getLikeUserIds() != null ? dto.getLikeUserIds() : List.of());
         return entitie;
     }
 

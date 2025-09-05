@@ -7,13 +7,11 @@ import com.media.domain.repository.UserRepository;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
-import java.util.stream.Collectors;
 
 @Service
 public class UserServiceImpl {
@@ -27,35 +25,30 @@ public class UserServiceImpl {
     private CustomUserDetailsService customUserDetailsService;
 
     @Autowired
-    private UserMapper userMapper;
+    private UserAssembler userAssembler;
 
     public Optional<UserInfoDto> findByUsername(String username) {
 
-        //retourne la valeur du repository en utilisant le username
-        return this.userRepository.findByUsername(username).map(this.userMapper::toDto);
+        return this.userRepository.findByUsername(username).map(this.userAssembler::toDto);
     }
 
-    public Optional<UserInfoDto> findById(String id) {
 
-        return this.userRepository.findById(id).map(this.userMapper::toDto);
+    public UserInfoDto updateUser(UserInfoDto userInfoDto) {
+
+        User currentUser = this.customUserDetailsService.getAuthenticatedUser();
+        User existing = this.userRepository.findById(currentUser.getId())
+                .orElseThrow(() -> new RuntimeException("User not found"));
+        this.userAssembler.updateEntity(existing, userInfoDto);
+        User saved = this.userRepository.save(existing);
+        return this.userAssembler.toDto(saved);
+
     }
 
-    public Optional<UserInfoDto> updateUser(UserInfoDto updateUserInfo) {
+
+    public UserInfoDto getCurrentUser() {
 
         User user = this.customUserDetailsService.getAuthenticatedUser();
-
-        User existingUser = this.userRepository.findById(user.getId()).orElseThrow(() -> new RuntimeException("User not found"));
-        User updatedUser = this.userMapper.fromDto(updateUserInfo);
-        this.userRepository.save(updatedUser);
-        return Optional.of(this.userMapper.toDto(existingUser));
-
-    }
-
-
-    public Optional<UserInfoDto> getCurrentUser() {
-
-        String username = SecurityContextHolder.getContext().getAuthentication().getName();
-        return this.userRepository.findByUsername(username).map(this.userMapper::toDto);
+        return this.userAssembler.toDto(user);
     }
 
     public Optional<UserInfoDto> sendFriendRequest(String friendId) {
@@ -78,7 +71,7 @@ public class UserServiceImpl {
 
         friend.getFriendsRequests().add(user);
         this.userRepository.save(friend);
-        return Optional.of(this.userMapper.toDto(friend));
+        return Optional.of(this.userAssembler.toDto(friend));
     }
 
     public Optional<UserInfoDto> refuseFriendRequest(String friendId) {
@@ -88,7 +81,7 @@ public class UserServiceImpl {
 
         user.getFriendsRequests().remove(friend);
         this.userRepository.save(user);
-        return Optional.of(this.userMapper.toDto(user));
+        return Optional.of(this.userAssembler.toDto(user));
     }
 
     public Optional<UserInfoDto> acceptFriendRequest(String friendId) {
@@ -107,7 +100,7 @@ public class UserServiceImpl {
         this.userRepository.save(user);
         this.userRepository.save(friend);
 
-        return Optional.of(this.userMapper.toDto(user));
+        return Optional.of(this.userAssembler.toDto(user));
     }
 
 
@@ -122,28 +115,28 @@ public class UserServiceImpl {
         this.userRepository.save(user);
         this.userRepository.save(friend);
 
-        return Optional.of(this.userMapper.toDto(user));
+        return Optional.of(this.userAssembler.toDto(user));
     }
 
     public List<UserInfoDto> getFriends() {
 
         User user = this.customUserDetailsService.getAuthenticatedUser();
 
-        return user.getFriends().stream().map(friend -> this.userRepository.findById(friend.getId()).orElse(null)).filter(Objects::nonNull).map(this.userMapper::toDto).collect(Collectors.toList());
+        return user.getFriends().stream().map(friend -> this.userRepository.findById(friend.getId()).orElse(null)).filter(Objects::nonNull).map(this.userAssembler::toDto).toList();
     }
 
     public List<UserInfoDto> getPendingFriendRequests() {
 
         User user = this.customUserDetailsService.getAuthenticatedUser();
 
-        return user.getFriendsRequests().stream().map(requester -> this.userRepository.findById(requester.getId()).orElse(null)).filter(Objects::nonNull).map(this.userMapper::toDto).collect(Collectors.toList());
+        return user.getFriendsRequests().stream().map(requester -> this.userRepository.findById(requester.getId()).orElse(null)).filter(Objects::nonNull).map(this.userAssembler::toDto).toList();
     }
 
     public List<UserInfoDto> searchUsers(String query) {
 
         User user = this.customUserDetailsService.getAuthenticatedUser();
         List<User> users = this.userRepository.findByUsernameContainingIgnoreCase(query);
-        return users.stream().filter(u -> !u.getId().equals(user.getId())).map(this.userMapper::toDto).collect(Collectors.toList());
+        return users.stream().filter(u -> !u.getId().equals(user.getId())).map(this.userAssembler::toDto).toList();
     }
 
 

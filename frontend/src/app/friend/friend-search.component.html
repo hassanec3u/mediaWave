@@ -1,49 +1,133 @@
 <app-header></app-header>
-<div class="p-6 bg-gray-50 rounded-lg shadow-md max-w-md mx-auto mt-20">
-  <!-- Search Section -->
-  <div class="flex items-center mb-4">
-    <mat-form-field  class="w-full">
-      <mat-label>Rechercher un user</mat-label>
-      <input matInput type="text" #searchInput>
-    </mat-form-field>
-    <button mat-raised-button color="primary" class="ml-2" (click)="search(searchInput.value)">
-      Search
-    </button>
-  </div>
 
-  <!-- Search Results Section -->
-  <div *ngIf="searchResults.length > 0" class="mb-6">
-    <h3 class="text-lg font-semibold mb-2">Résultats</h3>
-    <ul class="bg-white rounded-lg shadow-sm">
-      <li *ngFor="let user of searchResults" class="flex items-center justify-between p-2 border-b last:border-b-0">
-        <span>{{ user.username }}</span>
-        <button mat-raised-button color="accent" (click)="sendFriendRequest(user.id!)">Ajouter ami</button>
-      </li>
-    </ul>
-  </div>
+<div class="container py-4" style="max-width: 720px;">
+  <!-- Carte globale -->
+  <div class="card border-0 shadow-sm">
+    <div class="card-body">
+      <!-- Titre -->
+      <div class="d-flex align-items-center mb-3">
+        <i class="bi bi-people-fill text-primary me-2 fs-4"></i>
+        <h5 class="mb-0">Gérer mes amis</h5>
+      </div>
 
-  <!-- Friends List Section -->
-  <div *ngIf="friends.length > 0" class="mb-6">
-    <h3 class="text-lg font-semibold mb-2">Mes Amis</h3>
-    <ul class="bg-white rounded-lg shadow-sm">
-      <li *ngFor="let friend of friends" class="flex items-center justify-between p-2 border-b last:border-b-0">
-        <span>{{ friend.username }}</span>
-        <button mat-raised-button color="warn" (click)="removeFriend(friend.id!)">Retirer Ami</button>
-      </li>
-    </ul>
-  </div>
-
-  <!-- Pending Friend Requests Section -->
-  <div *ngIf="pendingRequests.length > 0">
-    <h3 class="text-lg font-semibold mb-2">Demande d'amis</h3>
-    <ul class="bg-white rounded-lg shadow-sm">
-      <li *ngFor="let request of pendingRequests" class="flex items-center justify-between p-2 border-b last:border-b-0">
-        <span>{{ request.username }}</span>
-        <div class="flex space-x-2 ml-auto">
-          <button mat-raised-button color="primary" (click)="acceptFriend(request.id!)">Accepter</button>
-          <button mat-raised-button color="warn" (click)="refuseFriend(request.id!)">Refuser</button>
+      <!-- Barre de recherche -->
+      <div class="row g-2 align-items-center mb-3">
+        <div class="col-12 col-sm">
+          <input
+            #searchInput
+            type="text"
+            class="form-control"
+            placeholder="Rechercher un utilisateur...">
         </div>
-      </li>
-    </ul>
+        <div class="col-12 col-sm-auto">
+          <button class="btn btn-primary w-100 w-sm-auto" (click)="search(searchInput.value)">
+            <i class="bi bi-search me-1"></i> Rechercher
+          </button>
+        </div>
+      </div>
+
+      <hr class="text-muted">
+
+      <!-- Résultats de recherche -->
+      <!-- Résultats de recherche -->
+      <ng-container *ngIf="searchResults?.length; else noResults">
+        <div class="mb-4">
+          <div class="d-flex align-items-center mb-2">
+            <i class="bi bi-search-heart me-2 text-secondary"></i>
+            <h6 class="mb-0">Résultats</h6>
+          </div>
+          <ul class="list-group list-group-flush">
+            <li *ngFor="let user of searchResults" class="list-group-item d-flex justify-content-between align-items-center px-0">
+              <div class="d-flex align-items-center">
+                <div class="rounded-circle bg-light border me-2 d-flex align-items-center justify-content-center"
+                     style="width:36px;height:36px;">
+            <span class="text-muted fw-semibold">
+              {{ (user.username || 'U') | slice:0:1 | uppercase }}
+            </span>
+                </div>
+                <span class="fw-semibold">{{ user.username }}</span>
+              </div>
+
+              <!-- Vérifie si déjà ami -->
+              <ng-container *ngIf="isFriend(user.id!); else addButton">
+                <span class="badge bg-success">Ami</span>
+              </ng-container>
+              <ng-template #addButton>
+                <button class="btn btn-outline-primary btn-sm" (click)="sendFriendRequest(user.id!)">
+                  <i class="bi bi-person-plus me-1"></i> Ajouter
+                </button>
+              </ng-template>
+            </li>
+          </ul>
+        </div>
+      </ng-container>
+
+
+      <ng-template #noResults>
+        <div class="text-muted small mb-4">
+          <i class="bi bi-info-circle me-1"></i>
+          Saisissez un nom d’utilisateur puis cliquez sur <em>Rechercher</em>.
+        </div>
+      </ng-template>
+
+      <!-- Mes amis -->
+      <div *ngIf="friends?.length" class="mb-4">
+        <div class="d-flex align-items-center mb-2">
+          <i class="bi bi-people me-2 text-secondary"></i>
+          <h6 class="mb-0">Mes amis</h6>
+        </div>
+        <ul class="list-group list-group-flush">
+          <li *ngFor="let friend of friends" class="list-group-item d-flex justify-content-between align-items-center px-0">
+            <div class="d-flex align-items-center">
+              <div class="rounded-circle bg-light border me-2 d-flex align-items-center justify-content-center"
+                   style="width:36px;height:36px;">
+                <span class="text-muted fw-semibold">
+                  {{ (friend.username || 'U') | slice:0:1 | uppercase }}
+                </span>
+              </div>
+              <span class="fw-semibold">{{ friend.username }}</span>
+            </div>
+            <button class="btn btn-outline-danger btn-sm" (click)="removeFriend(friend.id!)">
+              <i class="bi bi-person-dash me-1"></i> Retirer
+            </button>
+          </li>
+        </ul>
+      </div>
+
+      <!-- Demandes d'amis -->
+      <div *ngIf="pendingRequests?.length">
+        <div class="d-flex align-items-center mb-2">
+          <i class="bi bi-bell me-2 text-secondary"></i>
+          <h6 class="mb-0">Demandes d’amis</h6>
+        </div>
+        <ul class="list-group list-group-flush">
+          <li *ngFor="let request of pendingRequests" class="list-group-item d-flex justify-content-between align-items-center px-0">
+            <div class="d-flex align-items-center">
+              <div class="rounded-circle bg-light border me-2 d-flex align-items-center justify-content-center"
+                   style="width:36px;height:36px;">
+                <span class="text-muted fw-semibold">
+                  {{ (request.username || 'U') | slice:0:1 | uppercase }}
+                </span>
+              </div>
+              <span class="fw-semibold">{{ request.username }}</span>
+            </div>
+            <div class="d-flex gap-2">
+              <button class="btn btn-primary btn-sm" (click)="acceptFriend(request.id!)">
+                <i class="bi bi-check-lg me-1"></i> Accepter
+              </button>
+              <button class="btn btn-outline-secondary btn-sm" (click)="refuseFriend(request.id!)">
+                <i class="bi bi-x-lg me-1"></i> Refuser
+              </button>
+            </div>
+          </li>
+        </ul>
+      </div>
+
+      <!-- États vides secondaires -->
+      <div *ngIf="!friends?.length && !pendingRequests?.length" class="text-center text-muted mt-4 small">
+        <i class="bi bi-emoji-smile fs-4 d-block mb-2"></i>
+        Pas encore d’amis ni de demandes. Lance une recherche ! 🔍
+      </div>
+    </div>
   </div>
 </div>

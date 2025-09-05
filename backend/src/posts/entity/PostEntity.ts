@@ -1,5 +1,4 @@
 import {Exclude, Expose, Type} from "class-transformer";
-import {User} from "../../user/schema/userSchema";
 import {UserEntity} from "../../user/entity/UserEntity";
 
 

@@ -1,6 +1,5 @@
-import { WebSocketGateway, WebSocketServer, OnGatewayConnection, OnGatewayDisconnect } from '@nestjs/websockets';
-import { Server, Socket } from 'socket.io';
-import { CreateMessageDto } from '../message/dto/createMessageDto';
+import {OnGatewayConnection, OnGatewayDisconnect, WebSocketGateway, WebSocketServer} from '@nestjs/websockets';
+import {Server, Socket} from 'socket.io';
 import {Message} from "../message/schema/messageSchema";
 
 @WebSocketGateway({ cors: true })

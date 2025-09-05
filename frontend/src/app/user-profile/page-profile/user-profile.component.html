@@ -16,13 +16,13 @@
           *ngFor="let post of userPosts"
           class="row justify-content-center mb-4">
           <div class="col-12 col-md-10 col-lg-8">
-            <app-card-post
+            <app-post-form
               [userProfilePicture]="user.profilePicture"
               [post]="post"
               [enableEdit]="true"
               (onPostDeleted)="onPostDeleted($event)"
               (onPostEdited)="onPostUpdated($event)">
-            </app-card-post>
+            </app-post-form>
           </div>
         </div>
       </div>

@@ -1,39 +1,56 @@
 <app-header></app-header>
-<form [formGroup]="loginForm" (ngSubmit)="login()" class="max-w-md mx-auto p-6 bg-white shadow-lg rounded-lg">
-  <h4 class="text-xl font-semibold text-gray-800 mb-6 text-center"> Se connecter</h4>
 
-  <!-- Champs Username -->
-  <mat-form-field class="w-full mb-4">
-    <mat-label>Nom d'utilisateur</mat-label>
-    <input matInput id="username" formControlName="username" type="text" placeholder="Votre nom d'utilisateur">
-    <mat-error *ngIf="loginForm.get('username')?.hasError('required')">
-      Ce champ est requis.
-    </mat-error>
-  </mat-form-field>
+<div class="container d-flex justify-content-center align-items-center" style="min-height: 90vh;">
+  <div class="card shadow-sm border-0" style="max-width: 420px; width: 100%;">
+    <div class="card-body p-4">
+      <h4 class="text-center mb-4 fw-semibold">Se connecter</h4>
 
+      <form [formGroup]="loginForm" (ngSubmit)="login()" novalidate>
+        <!-- Username -->
+        <div class="mb-3">
+          <label for="username" class="form-label">Nom d'utilisateur</label>
+          <input
+            id="username"
+            type="text"
+            class="form-control"
+            [ngClass]="{ 'is-invalid': f.username.invalid && (f.username.touched || submitted) }"
+            placeholder="Votre nom d'utilisateur"
+            formControlName="username">
+          <div class="invalid-feedback" *ngIf="f.username.invalid && (f.username.touched || submitted)">
+            Ce champ est requis.
+          </div>
+        </div>
 
-<!-- Champs Mot de passe -->
-  <mat-form-field class="w-full mb-4">
-    <mat-label>Mot de passe</mat-label>
-    <input matInput [type]="hide ? 'password' : 'text'" formControlName="password" placeholder="Votre mot de passe">
-    <button mat-icon-button matSuffix (click)="clickEvent($event)" [attr.aria-label]="'Hide password'" [attr.aria-pressed]="hide">
-      <mat-icon>{{hide ? 'visibility_off' : 'visibility'}}</mat-icon>
-    </button>
-    <mat-error *ngIf="loginForm.get('password')?.hasError('required')">
-      Ce champ est requis.
-    </mat-error>
-  </mat-form-field>
+        <!-- Password -->
+        <div class="mb-3">
+          <label for="password" class="form-label">Mot de passe</label>
+          <div class="input-group has-validation">
+            <input
+              id="password"
+              [type]="hide ? 'password' : 'text'"
+              class="form-control"
+              [ngClass]="{ 'is-invalid': f.password.invalid && (f.password.touched || submitted) }"
+              placeholder="Votre mot de passe"
+              formControlName="password">
+            <button type="button" class="btn btn-outline-secondary" (click)="togglePasswordVisibility($event)" aria-label="Afficher / masquer le mot de passe">
+              <i class="bi" [ngClass]="hide ? 'bi-eye-slash' : 'bi-eye'"></i>
+            </button>
+            <div class="invalid-feedback" *ngIf="f.password.invalid && (f.password.touched || submitted)">
+              Ce champ est requis.
+            </div>
+          </div>
+        </div>
 
+        <!-- Erreur globale -->
+        <div class="alert alert-danger py-2 small" *ngIf="loginForm.hasError('loginFailed')">
+          {{ loginForm.getError('loginFailed') }}
+        </div>
 
-  <!-- Affiche les erreurs de ID/MDP -->
-  <mat-error *ngIf=" loginForm.hasError('loginFailed')">
-    {{ loginForm.getError('loginFailed') }}
-  </mat-error>
-
-
-  <!-- Bouton Register -->
-  <button mat-flat-button color="primary" type="submit" class="w-full py-2 mt-2 text-white bg-blue-600 hover:bg-blue-700">
-    Se connecter
-  </button>
-
-</form>
+        <!-- Submit -->
+        <button type="submit" class="btn btn-primary w-100 mt-3">
+          Se connecter
+        </button>
+      </form>
+    </div>
+  </div>
+</div>

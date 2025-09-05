@@ -1,8 +1,8 @@
-import {Injectable, Logger} from '@nestjs/common';
+import {Injectable} from '@nestjs/common';
 import {InjectModel} from '@nestjs/mongoose';
 import {Model} from 'mongoose';
 import {Like} from "../schema/likeSchema";
-import {from, map, Observable, of, switchMap, throwError} from "rxjs";
+import {from, map, Observable, of} from "rxjs";
 import {catchError} from 'rxjs/operators';
 import {Post} from "../../posts/schema/postSchema";
 

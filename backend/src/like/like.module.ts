@@ -1,4 +1,4 @@
-import {forwardRef, Module, Post} from '@nestjs/common';
+import {forwardRef, Module} from '@nestjs/common';
 import { MongooseModule } from '@nestjs/mongoose';
 import { LikeService } from './like.service';
 import { LikeController } from './like.controller';

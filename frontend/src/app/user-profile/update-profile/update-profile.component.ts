@@ -1,6 +1,6 @@
 import {ChangeDetectionStrategy, Component, Inject, OnInit, Optional} from '@angular/core';
 import {MAT_DIALOG_DATA, MatDialogActions, MatDialogContent, MatDialogRef} from "@angular/material/dialog";
-import {MatFormField, MatError, MatFormFieldModule} from "@angular/material/form-field";
+import {MatFormFieldModule} from "@angular/material/form-field";
 import {MatInput, MatInputModule} from "@angular/material/input";
 import {User} from "../../shared/types/user.type";
 import {FormControl, FormGroup, FormsModule, ReactiveFormsModule, Validators} from "@angular/forms";
@@ -14,13 +14,12 @@ import {MatDatepickerModule} from '@angular/material/datepicker';
   standalone: true,
   imports: [
     MatDialogContent,
-    MatFormField,
     MatInput,
     MatDialogActions,
     ReactiveFormsModule,
     FormsModule,
     NgIf,
-    MatError,MatFormFieldModule, MatInputModule, MatDatepickerModule
+    MatFormFieldModule, MatInputModule, MatDatepickerModule
   ],
   templateUrl: './update-profile.component.html',
   styleUrl: './update-profile.component.css',
@@ -67,12 +66,12 @@ export class UpdateProfileComponent implements OnInit {
   }
 
   onSubmit() {
-    if(this._form.valid) {
+    if (this._form.valid) {
       this.userService.updateUserInfos(this._user.id, this._form.value).subscribe(
-          updatedUser => {
-            this.onCancel();
-          },
-          error => console.log(error)
+        updatedUser => {
+          this.onCancel();
+        },
+        error => console.log(error)
       )
     }
   }

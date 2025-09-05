@@ -1,21 +1,18 @@
-import { Component } from '@angular/core';
-import {MatDialogActions, MatDialogContent, MatDialogRef, MatDialogTitle} from "@angular/material/dialog";
-import {MatButton} from "@angular/material/button";
+import {Component} from '@angular/core';
+import {MatDialogActions, MatDialogContent, MatDialogRef} from "@angular/material/dialog";
 
 @Component({
   selector: 'app-confirm-dialog',
   standalone: true,
   imports: [
     MatDialogActions,
-    MatDialogContent,
-    MatDialogTitle,
-    MatButton
+    MatDialogContent
   ],
   templateUrl: './confirm-dialog.component.html',
   styleUrl: './confirm-dialog.component.css'
 })
 export class ConfirmDialogComponent {
-  constructor(private dialogRef: MatDialogRef<ConfirmDialogComponent>) {}
+  constructor(private readonly dialogRef: MatDialogRef<ConfirmDialogComponent>) {}
 
   onConfirm(): void {
     this.dialogRef.close(true);

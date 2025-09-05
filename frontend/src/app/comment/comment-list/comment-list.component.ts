@@ -1,11 +1,9 @@
 import {Component, Input, OnInit} from '@angular/core';
 import {DatePipe, NgForOf, NgIf, SlicePipe, UpperCasePipe} from '@angular/common';
 import {FormsModule} from '@angular/forms';
-import {MatButton} from '@angular/material/button';
-import {MatIcon} from '@angular/material/icon';
 import {Comment} from '../../shared/types/comment.type';
 import {CommentService} from '../../service/commentService';
-import {MatFormField, MatLabel} from '@angular/material/form-field';
+import {CookieService} from 'ngx-cookie-service';
 
 @Component({
   selector: 'app-comment-list',
@@ -14,11 +12,7 @@ import {MatFormField, MatLabel} from '@angular/material/form-field';
   imports: [
     FormsModule,
     NgForOf,
-    MatButton,
-    MatIcon,
     NgIf,
-    MatFormField,
-    MatLabel,
     DatePipe,
     SlicePipe,
     UpperCasePipe
@@ -27,12 +21,12 @@ import {MatFormField, MatLabel} from '@angular/material/form-field';
 })
 export class CommentListComponent implements OnInit {
   @Input() postId!: string;
+  @Input() postOwnerId!: string;
   comments: Comment[] = [];
   newComment = '';
 
-  constructor(private readonly commentService: CommentService
-
-  ) {
+  constructor(private readonly commentService: CommentService,
+              private readonly cookieService: CookieService) {
 
   }
 
@@ -43,8 +37,6 @@ export class CommentListComponent implements OnInit {
   loadComments(): void {
     this.commentService.getComments(this.postId).subscribe((comment) => {
       this.comments = comment;
-      console.log( "id post: ", this.postId);
-      console.log("Comments loaded: ", this.comments);
     });
   }
 
@@ -55,7 +47,6 @@ export class CommentListComponent implements OnInit {
         postId: this.postId,
         content: content,
       };
-      console.log(this.comments);
 
       this.commentService.addComment(comment).subscribe((newComment) => {
         this.comments.push(newComment);
@@ -65,15 +56,15 @@ export class CommentListComponent implements OnInit {
   }
 
 
-  isMyComment(comment: Comment): boolean {
-
-
-    return true
+  canDeleteComment(comment: Comment): boolean {
+    const userId = this.cookieService.get('userId');
+    return comment.authorId === userId || this.postOwnerId === userId;
   }
 
 
+
   deleteComment(commentId: string): void {
-    this.commentService.deleteComment(this.postId,commentId).subscribe(() => {
+    this.commentService.deleteComment(this.postId, commentId).subscribe(() => {
       this.comments = this.comments.filter(c => c.id !== commentId);
     });
   }

@@ -1,73 +1,60 @@
-<!-- Carte commentaires -->
-<div class="card shadow-sm border-0">
-  <div class="card-header bg-white border-0 d-flex align-items-center">
-    <i class="bi bi-chat-dots me-2 fs-5 text-primary"></i>
-    <h5 class="mb-0">Commentaires</h5>
-  </div>
-
-  <div class="card-body">
-    <!-- Ajouter un commentaire -->
-    <div class="mb-3">
-      <label class="form-label small text-muted">Ajouter un commentaire</label>
-      <textarea
-        [(ngModel)]="newComment"
-        class="form-control form-control-lg"
-        rows="3"
-        placeholder="Écrire un commentaire…"></textarea>
-      <div class="d-flex justify-content-end mt-2">
-        <button
-          class="btn btn-primary px-4"
-          (click)="addComment(newComment)"
-          [disabled]="!newComment || !newComment.trim()">
-          <i class="bi bi-send me-1"></i> Publier
-        </button>
-      </div>
-    </div>
-
-    <!-- Liste des commentaires -->
-    <ng-container *ngIf="comments?.length; else emptyState">
-      <ul class="list-group list-group-flush">
-        <li
-          *ngFor="let comment of comments"
-          class="list-group-item d-flex align-items-start justify-content-between px-0">
-          <div class="d-flex">
-            <!-- Avatar initiales (fallback) -->
-            <div class="rounded-circle bg-light border me-3 d-flex align-items-center justify-content-center"
-                 style="width:40px;height:40px;">
-              <span class="text-muted fw-semibold">
-                {{ (comment.authorUsername || 'U') | slice:0:1 | uppercase }}
-              </span>
-            </div>
-            <div>
-              <div class="fw-semibold small">
-                {{ comment.authorUsername || 'Utilisateur' }}
-                <span class="text-muted ms-2">• {{ comment.createdAt | date:'short' }}</span>
-              </div>
-              <p class="mb-0 mt-1">{{ comment.content }}</p>
-            </div>
-          </div>
-
-          <!-- Actions -->
-          <div class="ms-3">
-            <button
-              *ngIf="isMyComment(comment)"
-              class="btn btn-outline-danger btn-sm"
-              type="button"
-              (click)="deleteComment(comment.id!)"
-              aria-label="Supprimer le commentaire">
-              <i class="bi bi-trash"></i>
-            </button>
-          </div>
-        </li>
-      </ul>
-    </ng-container>
-
-    <!-- État vide -->
-    <ng-template #emptyState>
-      <div class="text-center text-muted py-4">
-        <i class="bi bi-chat-square-text fs-3 d-block mb-2"></i>
-        Soyez le premier à commenter.
-      </div>
-    </ng-template>
+<!-- Ajout d’un commentaire -->
+<div class="mb-3">
+  <textarea
+    [(ngModel)]="newComment"
+    class="form-control"
+    rows="3"
+    placeholder="Écrire un commentaire…"></textarea>
+  <div class="d-flex justify-content-end mt-2">
+    <button
+      class="btn btn-primary"
+      (click)="addComment(newComment)"
+      [disabled]="!newComment || !newComment.trim()">
+      <i class="bi bi-send me-1"></i> Publier
+    </button>
   </div>
 </div>
+
+<!-- Liste complète -->
+<ng-container *ngIf="comments?.length; else emptyState">
+  <ul class="list-group">
+    <li
+      *ngFor="let comment of comments"
+      class="list-group-item d-flex align-items-start justify-content-between">
+      <div class="d-flex">
+        <div class="rounded-circle bg-light border me-3 d-flex align-items-center justify-content-center"
+             style="width:40px;height:40px;">
+          <span class="text-muted fw-semibold">
+            {{ (comment.authorUsername || 'U') | slice:0:1 | uppercase }}
+          </span>
+        </div>
+        <div>
+          <div class="fw-semibold small">
+            {{ comment.authorUsername || 'Utilisateur' }}
+            <span class="text-muted ms-2">• {{ comment.createdAt | date:'short' }}</span>
+          </div>
+          <p class="mb-0 mt-1">{{ comment.content }}</p>
+        </div>
+      </div>
+
+      <div class="ms-3">
+        <button
+          *ngIf="canDeleteComment(comment)"
+          class="btn btn-outline-danger btn-sm"
+          type="button"
+          (click)="deleteComment(comment.id!)"
+          aria-label="Supprimer le commentaire">
+          <i class="bi bi-trash"></i>
+        </button>
+      </div>
+    </li>
+  </ul>
+</ng-container>
+
+<!-- État vide -->
+<ng-template #emptyState>
+  <div class="text-center text-muted py-3">
+    <i class="bi bi-chat-square-text fs-4 d-block mb-1"></i>
+    Aucun commentaire pour le moment.
+  </div>
+</ng-template>

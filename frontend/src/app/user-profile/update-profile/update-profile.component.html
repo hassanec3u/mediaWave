@@ -55,19 +55,14 @@
       <!-- Date de naissance -->
       <div class="mb-3">
         <label class="form-label">Date de naissance</label>
-        <div class="input-group">
-          <input
-            matInput
-            [matDatepicker]="picker"
-            class="form-control"
-            placeholder="JJ/MM/AAAA"
-            formControlName="birthday">
-          <button class="btn btn-outline-secondary" type="button" matSuffix>
-            <i class="bi bi-calendar-event"></i>
-          </button>
-        </div>
-        <mat-datepicker #picker></mat-datepicker>
-        <div class="form-text text-danger" *ngIf="form.get('birthday')?.dirty && form.get('birthday')?.hasError('required')">
+        <mat-form-field appearance="outline" class="w-100">
+          <input matInput [matDatepicker]="picker" placeholder="JJ/MM/AAAA" formControlName="birthday">
+          <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+          <mat-datepicker #picker></mat-datepicker>
+        </mat-form-field>
+
+        <div class="form-text text-danger"
+             *ngIf="form.get('birthday')?.dirty && form.get('birthday')?.hasError('required')">
           La date de naissance est <strong>requise</strong>
         </div>
       </div>

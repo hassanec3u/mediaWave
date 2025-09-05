@@ -1,0 +1,58 @@
+<div class="card shadow-sm border-0 mx-auto" [ngClass]="{'mt-0': isEditingPost, 'mt-5': !isEditingPost}" style="max-width: 700px;">
+  <div class="card-body">
+    <form [formGroup]="postForm" (ngSubmit)="onSubmit()" novalidate>
+
+      <!-- Titre -->
+      <div class="mb-3">
+        <label for="title" class="form-label fw-semibold">Titre</label>
+        <input
+          type="text"
+          id="title"
+          formControlName="title"
+          class="form-control"
+          placeholder="Entrez le titre">
+        <div class="invalid-feedback d-block" *ngIf="postForm.get('title')?.invalid && postForm.get('title')?.touched">
+          Le titre est requis.
+        </div>
+      </div>
+
+      <!-- Image -->
+      <div class="mb-3">
+        <label for="image" class="form-label fw-semibold">Image</label>
+        <input
+          type="file"
+          id="image"
+          (change)="onFileSelected($event)"
+          accept="image/*"
+          class="form-control">
+        <div class="text-danger small mt-1" *ngIf="imageError">
+          {{ imageError }}
+        </div>
+      </div>
+
+      <!-- Contenu -->
+      <div class="mb-3">
+        <label for="content" class="form-label fw-semibold">Contenu</label>
+        <textarea
+          id="content"
+          formControlName="content"
+          rows="5"
+          class="form-control"
+          placeholder="Écrivez votre texte ici..."></textarea>
+        <div class="invalid-feedback d-block" *ngIf="postForm.get('content')?.invalid && postForm.get('content')?.touched">
+          Le contenu est requis.
+        </div>
+      </div>
+
+      <!-- Bouton -->
+      <div class="d-flex justify-content-end">
+        <button
+          type="submit"
+          class="btn btn-primary"
+          [disabled]="postForm.invalid">
+          {{ isEditingPost ? 'Modifier' : 'Publier' }}
+        </button>
+      </div>
+    </form>
+  </div>
+</div>

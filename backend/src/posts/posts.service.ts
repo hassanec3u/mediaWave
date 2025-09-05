@@ -1,8 +1,7 @@
 import {Injectable, NotFoundException, UnprocessableEntityException} from '@nestjs/common';
 import {PostDao} from "./dao/PostDao";
 import {CreatePostDto} from "./dto/createPostDto";
-import {catchError, map, mergeMap, Observable, of, throwError} from "rxjs";
-import {Post} from "./schema/postSchema";
+import {catchError, mergeMap, Observable, of, throwError} from "rxjs";
 import {PostEntity} from "./entity/PostEntity";
 import {UserService} from "../user/user.service";
 

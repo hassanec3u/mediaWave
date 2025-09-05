@@ -1,28 +1,30 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
+import {environment} from '../../environments/environments';
 
 @Injectable({
   providedIn: 'root'
 })
 export class LikeService {
-  private apiUrl = 'http://localhost:3000/likes';
+
+  private readonly backendUrl = `${environment.backend.protocol}://${environment.backend.host}:${environment.backend.port}`;
 
   constructor(private http: HttpClient) {}
 
-  likePost(userId: string, postId: string): Observable<void> {
-    return this.http.post<void>(`${this.apiUrl}/${postId}/user/${userId}`, {});
+  likePost( postId: string): Observable<void> {
+    return this.http.post<void>(this.backendUrl + environment.backend.endpoints.posts.likes.like(postId), {});
   }
 
-  unlikePost(userId: string, postId: string): Observable<void> {
-    return this.http.delete<void>(`${this.apiUrl}/${postId}/user/${userId}`);
+  unlikePost( postId: string): Observable<void> {
+    return this.http.delete<void>(this.backendUrl + environment.backend.endpoints.posts.likes.unlike(postId));
   }
 
-  hasLikedPost(userId: string, postId: string): Observable<boolean> {
-    return this.http.get<boolean>(`${this.apiUrl}/${postId}/user/${userId}/has-liked`);
+  hasLikedPost( postId: string): Observable<boolean> {
+    return this.http.get<boolean>(this.backendUrl + environment.backend.endpoints.posts.likes.hasLiked(postId));
   }
 
   getNumberOfLikes(postId: string): Observable<number> {
-    return this.http.get<number>(`${this.apiUrl}/${postId}`);
+    return this.http.get<number>(this.backendUrl + environment.backend.endpoints.posts.likes.count(postId));
   }
 }

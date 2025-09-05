@@ -31,17 +31,16 @@ export class PostService {
     }
   }
 
-  updatePost(postId: string, updatedPost: Post, picturePost: File | null): Observable<Post> {
-    // updatedPost.publisher = this.userId;
+  updatePost( updatedPost: Post, picturePost: File | null): Observable<Post> {
     if (picturePost != null) {
       return this.picturesService.uploadPicture(picturePost).pipe(
         switchMap((response) => {
           updatedPost.postPicture = response.filePath;
-          return this.http.put<Post>(this.backendUrl + environment.backend.endpoints.posts.update(postId), updatedPost);
+          return this.http.put<Post>(this.backendUrl + environment.backend.endpoints.posts.update, updatedPost);
         })
       )
     } else {
-      return this.http.put<Post>(this.backendUrl + environment.backend.endpoints.posts.update(postId), updatedPost);
+      return this.http.put<Post>(this.backendUrl + environment.backend.endpoints.posts.update, updatedPost);
     }
   }
 
@@ -54,6 +53,6 @@ export class PostService {
   }
 
   getFriendsPosts(): Observable<Post[]> {
-    return this.http.get<Post[]>(`${this.backendUrl}${environment.backend.endpoints.posts.friends}`);
+    return this.http.get<Post[]>(`${this.backendUrl}${environment.backend.endpoints.posts.friendPost}`);
   }
 }

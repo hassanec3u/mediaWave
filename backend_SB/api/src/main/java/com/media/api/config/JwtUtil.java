@@ -67,7 +67,6 @@ public class JwtUtil {
             return (username.equals(userDetails.getUsername()) && !expiration.before(new Date()));
         } catch (JwtException | IllegalArgumentException e) {
             // TODO: Log the exception
-            // e.printStackTrace();
             return false;
         }
     }

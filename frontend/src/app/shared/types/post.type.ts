@@ -1,12 +1,10 @@
-import {Comment} from './comment.type';
-
 export type Post = {
   id: string;
   title: string;
   content: string;
   postPicture?: string;
   postDate: Date;
+  publisherId : string;
   publisherName : string;
   image?: string;
-  comments?: Comment[];
 }

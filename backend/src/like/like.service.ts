@@ -1,7 +1,5 @@
 import {Injectable} from '@nestjs/common';
 
-import {Like, LikeDocument} from './schema/likeSchema';
-import {UserService} from "../user/user.service";
 import {LikeDao} from "./dao/likeDao";
 import {Observable} from "rxjs";
 

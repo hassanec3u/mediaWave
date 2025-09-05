@@ -1,14 +1,12 @@
 package com.media.api.resources.user;
 
-import com.media.business.post.PostDto;
+import com.media.business.user.UserInfoDto;
+import com.media.business.user.UserServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import com.media.business.user.UserInfoDto;
-import com.media.business.user.UserServiceImpl;
 
 import java.util.List;
-import java.util.Optional;
 
 @RestController
 @RequestMapping("/user")
@@ -17,16 +15,11 @@ public class UserController {
     @Autowired
     private UserServiceImpl userService;
 
-   /* @Autowired
-    private  PostService postService;*/
 
+    @PutMapping("")
+    public ResponseEntity<UserInfoDto> updateInfo(@RequestBody UserInfoDto dto) {
 
-    @PutMapping("/{id}")
-    public ResponseEntity<UserInfoDto> updateInfo(@PathVariable String id, @RequestBody UserInfoDto dto) {
-
-        return this.userService.updateUser(dto)
-                .map(ResponseEntity::ok)
-                .orElse(ResponseEntity.notFound().build());
+        return ResponseEntity.ok(this.userService.updateUser(dto));
     }
 
     @GetMapping("/username/{username}")
@@ -40,13 +33,12 @@ public class UserController {
     @GetMapping()
     public ResponseEntity<UserInfoDto> getCurrentUser() {
 
-        return this.userService.getCurrentUser()
-                .map(ResponseEntity::ok)
-                .orElse(ResponseEntity.notFound().build());
+        return ResponseEntity.ok(this.userService.getCurrentUser());
+
     }
 
 
-    @PostMapping("/friends/{friendId}")
+    @PostMapping("/friend/{friendId}")
     public ResponseEntity<Void> sendFriendRequest(@PathVariable("friendId") String friendId) {
 
         return this.userService.sendFriendRequest(friendId)
@@ -54,7 +46,7 @@ public class UserController {
                 .orElse(ResponseEntity.notFound().build());
     }
 
-    @PostMapping("/friends/{friendId}/accept")
+    @PostMapping("/friend/{friendId}/accept")
     public ResponseEntity<Void> acceptFriend(@PathVariable("friendId") String friendId) {
 
         return this.userService.acceptFriendRequest(friendId)
@@ -63,7 +55,7 @@ public class UserController {
     }
 
 
-    @DeleteMapping("/friends/{friendId}/refuse")
+    @DeleteMapping("/friend/{friendId}/refuse")
     public ResponseEntity<Void> refuseFriend(@PathVariable("friendId") String friendId) {
 
         return this.userService.refuseFriendRequest(friendId)
@@ -71,7 +63,7 @@ public class UserController {
                 .orElse(ResponseEntity.notFound().build());
     }
 
-    @DeleteMapping("/friends/{friendId}")
+    @DeleteMapping("/friend/{friendId}")
     public ResponseEntity<Void> removeFriend(@PathVariable("friendId") String friendId) {
 
         return this.userService.removeFriend(friendId)
@@ -79,39 +71,26 @@ public class UserController {
                 .orElse(ResponseEntity.notFound().build());
     }
 
-    @GetMapping("/friends")
+    @GetMapping("/friend")
     public ResponseEntity<List<UserInfoDto>> getFriends() {
 
         return ResponseEntity.ok(this.userService.getFriends());
     }
 
-    @GetMapping("/friends/pending")
+    @GetMapping("/friend/pending")
     public ResponseEntity<List<UserInfoDto>> getFriendRequests() {
 
         return ResponseEntity.ok(this.userService.getPendingFriendRequests());
     }
 
 
-
-    @GetMapping("/search")
+    @GetMapping("/friend/search")
     public ResponseEntity<List<UserInfoDto>> searchUsers(@RequestParam("query") String query) {
+
         List<UserInfoDto> users = this.userService.searchUsers(query);
         if (users == null || users.isEmpty()) {
             return ResponseEntity.noContent().build();
         }
         return ResponseEntity.ok(users);
     }
-
-    /*
-
-    @PutMapping("/picture/{id}")
-    public ResponseEntity<UserInfoDto> updateProfilePicture(@PathVariable String id, @RequestBody ProfilePictureRequest body) {
-        return ResponseEntity.ok(userService.updateProfilePicture(id, body.getProfilePicture()));
-    }
-
-*/
-
-
-
-
 }

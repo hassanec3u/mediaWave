@@ -51,11 +51,17 @@ public class AuthController {
             );
 
             final UserDetails userDetails = this.userDetailsService.loadUserByUsername(request.getUsername());
+
+            User user = this.userRepository.findByUsername(request.getUsername()).orElseThrow(() -> new RuntimeException("User not found"));
+
             final String jwt = this.jwtUtil.generateToken(userDetails);
 
-            return ResponseEntity.ok(new AuthResponse(jwt));
+            AuthResponse authResponse = new AuthResponse();
+            authResponse.setToken(jwt);
+            authResponse.setUserId(user.getId());
+            return ResponseEntity.ok(authResponse);
         } catch (Exception e) {
-            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(new AuthResponse("Authentication failed: " + e.getMessage()));
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
         }
     }
 

@@ -16,8 +16,8 @@ interface LoginResponse {
   providedIn: 'root'
 })
 export class UserService {
-  private readonly apiBackendUrl = `${environment.backend.protocol}://${environment.backend.host}:${environment.backend.port}`;
-  private readonly apiUrl = 'http://localhost:8080/auth';
+
+  private readonly backendUrl = `${environment.backend.protocol}://${environment.backend.host}:${environment.backend.port}`;
 
   userSubject = new BehaviorSubject<User>({id: "0"});
   public user = this.userSubject.asObservable();
@@ -27,7 +27,7 @@ export class UserService {
 
 
   login(username: string, password: string): Observable<LoginResponse> {
-    return this.http.post<LoginResponse>(`${this.apiUrl}/login`, {username, password}).pipe(
+    return this.http.post<LoginResponse>(this.backendUrl + environment.backend.endpoints.auth.login, {username, password}).pipe(
       tap(response => {
         this.cookieService.set('access_token', response.token);
         this.cookieService.set('userId', response.userId);
@@ -47,7 +47,7 @@ export class UserService {
 
 
   register(username: string, email: string, password: string, passwordConfirm: string): Observable<LoginResponse> {
-    return this.http.post<any>(`${this.apiUrl}/register`, {username, email, password, passwordConfirm});
+    return this.http.post<any>(this.backendUrl + environment.backend.endpoints.auth.register, {username, email, password, passwordConfirm});
   }
 
   logout() {
@@ -57,44 +57,40 @@ export class UserService {
   }
 
   searchUsers(query: string): Observable<User[]> {
-    return this.http.get<User[]>(`${this.apiBackendUrl}/user/search`, {params: {query}});
+    return this.http.get<User[]>(this.backendUrl + environment.backend.endpoints.user.friends.search, {params: {query}});
   }
 
   sendFriendRequest( friendId: string): Observable<any> {
-    return this.http.post<any>(`${this.apiBackendUrl}/user/friends/${friendId}`, {});
+    return this.http.post<void>(this.backendUrl + environment.backend.endpoints.user.friends.add(friendId), {});
   }
 
   removeFriend( friendIdToRemove: string): Observable<void> {
-    return this.http.delete<any>(`${this.apiBackendUrl}/user/friends/${friendIdToRemove}`);
+    return this.http.delete<void>(this.backendUrl + environment.backend.endpoints.user.friends.remove(friendIdToRemove));
   }
 
-  getFriends(myId: string): Observable<User[]> {
-    return this.http.get<User[]>(`${this.apiBackendUrl}/user/friends`);
+  getFriends(): Observable<User[]> {
+    return this.http.get<User[]>(this.backendUrl + environment.backend.endpoints.user.friends.list);
   }
 
-  getPendingRequests(friendId: string): Observable<User[]> {
-    return this.http.get<User[]>(`${this.apiBackendUrl}/user/friends/pending`);
+  getPendingRequests(): Observable<User[]> {
+    return this.http.get<User[]>(this.backendUrl + environment.backend.endpoints.user.friends.pending);
   }
 
   acceptFriend( friendId: string) {
-    return this.http.post<any>(`${this.apiBackendUrl}/user/friends/${friendId}/accept`, {});
+    return this.http.post<void>(this.backendUrl + environment.backend.endpoints.user.friends.accept(friendId), {});
   }
 
   refuseFriend( friendId: string) {
-    return this.http.delete<any>(`${this.apiBackendUrl}/user/friends/${friendId}/refuse`);
+    return this.http.delete<void>(this.backendUrl + environment.backend.endpoints.user.friends.refuse(friendId));
   }
 
   getUserInfos(id: string): Observable<User> {
-    return this.http.get<User>(this.apiBackendUrl + environment.backend.endpoints.user.info);
-  }
-
-  getUserId(): string {
-    return this.cookieService.get('userId');
+    return this.http.get<User>(this.backendUrl + environment.backend.endpoints.user.info);
   }
 
   //Get current user
   getCurrentUser(): Observable<User> {
-    return this.http.get<User>(this.apiBackendUrl + environment.backend.endpoints.user.info).pipe(
+    return this.http.get<User>(this.backendUrl + environment.backend.endpoints.user.info).pipe(
       tap(user => {
         if (user.profilePicture) {
           this.getProfilePicture(user.profilePicture).subscribe(
@@ -112,7 +108,7 @@ export class UserService {
 
   updateUserInfos(id: string, userInfo: User): Observable<User> {
     console.log(userInfo);
-    return this.http.put<User>(this.apiBackendUrl + environment.backend.endpoints.user.update(id), userInfo).pipe(
+    return this.http.put<User>(this.backendUrl + environment.backend.endpoints.user.update(id), userInfo).pipe(
       tap((user) => {
         user.profilePicture = this.userSubject.value.profilePicture;
         this.userSubject.next(user)
@@ -123,7 +119,7 @@ export class UserService {
   uploadProfilePicture(id: string, profilePicture: File): Observable<User> {
     const formData = new FormData();
     formData.append('file', profilePicture);
-    return this.http.post<Picture>(this.apiBackendUrl + environment.backend.endpoints.upload, formData, {
+    return this.http.post<Picture>(this.backendUrl + environment.backend.endpoints.upload, formData, {
       headers: new HttpHeaders({'enctype': 'multipart/form-data'})
     }).pipe(
       switchMap((response) => this.updateProfilePicture(id, response.filePath))
@@ -133,13 +129,13 @@ export class UserService {
   updateProfilePicture(id: string, profilePicture: string): Observable<any> {
     console.log("Update profile picture");
     console.log(profilePicture);
-    return this.http.put(this.apiBackendUrl + environment.backend.endpoints.upload + id, {profilePicture});
+    return this.http.put(this.backendUrl + environment.backend.endpoints.upload + id, {profilePicture});
   }
 
   getProfilePicture(profilePicturePath: string | undefined): Observable<any> {
     console.log("GET PROFILE PICTURE");
     const params = new HttpParams().set('filePath', profilePicturePath + '');
-    return this.http.get<any>(this.apiBackendUrl + environment.backend.endpoints.upload, {
+    return this.http.get<any>(this.backendUrl + environment.backend.endpoints.upload, {
       params,
       responseType: 'blob' as 'json'
     });

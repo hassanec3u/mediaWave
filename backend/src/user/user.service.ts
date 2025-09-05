@@ -4,7 +4,6 @@ import {ConflictException, Injectable, NotFoundException, UnprocessableEntityExc
 import {UserEntity} from "./entity/UserEntity";
 import {UserDao} from "./dao/UserDao";
 import {UpdateUserInfoDto} from "./dto/UpdateUserInfoDto";
-import {User} from "./schema/userSchema";
 
 @Injectable()
 export class UserService {

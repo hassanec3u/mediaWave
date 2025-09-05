@@ -3,6 +3,7 @@ package com.media.domain.model;
 import org.springframework.data.mongodb.core.mapping.Document;
 
 import java.time.Instant;
+import java.util.List;
 
 
 @Document(collection = "post")
@@ -21,6 +22,8 @@ public class Post {
     private String publisherId;
 
     private String publisherName;
+
+    private List<String> likeUserIds;
 
 
     public String getId() {
@@ -91,5 +94,15 @@ public class Post {
     public void setPublisherId(String publisherId) {
 
         this.publisherId = publisherId;
+    }
+
+    public List<String> getLikeUserIds() {
+
+        return this.likeUserIds;
+    }
+
+    public void setLikeUserIds(List<String> likeUserIds) {
+
+        this.likeUserIds = likeUserIds;
     }
 }

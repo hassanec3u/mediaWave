@@ -14,10 +14,10 @@
     <!-- Collapsible content -->
     <div class="collapse navbar-collapse" id="mwNavbar">
       <!-- (Optionnel) Barre de recherche centrée -->
-      <form class="d-none d-lg-flex mx-auto w-50">
-        <input class="form-control form-control-sm" type="search" placeholder="Rechercher…" aria-label="Search">
-      </form>
-
+      <!-- <form class="d-none d-lg-flex mx-auto w-50">
+         <input class="form-control form-control-sm" type="search" placeholder="Rechercher…" aria-label="Search">
+       </form>
+ -->
       <ul class="navbar-nav ms-auto align-items-center">
         <!-- Si non authentifié -->
         <ng-container *ngIf="!isAuthenticated">
@@ -31,8 +31,8 @@
 
         <!-- Si authentifié -->
         <ng-container *ngIf="isAuthenticated">
+
           <!-- (Optionnel) icônes rapides -->
-          <!--
           <li class="nav-item me-2 d-none d-lg-inline">
             <a class="nav-link" (click)="navigateToConversations()" style="cursor:pointer">
               <i class="bi bi-chat-dots"></i>
@@ -43,7 +43,7 @@
               <i class="bi bi-people"></i>
             </a>
           </li>
-          -->
+
 
           <!-- Avatar + menu -->
           <li class="nav-item dropdown">
@@ -65,7 +65,9 @@
               <li>
                 <button class="dropdown-item" type="button" (click)="navigateToConversations()">Messages</button>
               </li>
-              <li><hr class="dropdown-divider"></li>
+              <li>
+                <hr class="dropdown-divider">
+              </li>
               <li>
                 <button class="dropdown-item text-danger" type="button" (click)="logout()">Se déconnecter</button>
               </li>

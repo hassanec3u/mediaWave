@@ -1,8 +1,10 @@
 package com.media.business.post;
 
 import com.media.business.authentification.CustomUserDetailsService;
-import com.media.domain.model.User;
+import com.media.business.comment.CommentAssembler;
 import com.media.domain.model.Post;
+import com.media.domain.model.User;
+import com.media.domain.repository.CommentRepository;
 import com.media.domain.repository.PostRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -21,9 +23,16 @@ public class PostService {
     private PostAssembler postAssembler;
 
     @Autowired
+    private CommentRepository commentRepository;
+
+    @Autowired
+    private CommentAssembler commentAssembler;
+
+    @Autowired
     private CustomUserDetailsService customUserDetailsService;
 
     public PostDto save(PostDto dto) {
+
         User currentUser = this.customUserDetailsService.getAuthenticatedUser();
 
         dto.setPublisherId(currentUser.getId());
@@ -41,10 +50,28 @@ public class PostService {
             dto.setPublisherName(currentUser.getUsername());
             dto.setPublisherId(currentUser.getId());
         }
-
         return this.postAssembler.toDto(this.postRepository.save(this.postAssembler.fromDto(dto)));
     }
 
+    //update post
+    public PostDto update(PostDto dto) {
+
+        Optional<Post> existingPostOpt = this.postRepository.findById(dto.getId());
+        if (existingPostOpt.isEmpty()) {
+            throw new RuntimeException("Post not found");
+        }
+
+        User currentUser = this.customUserDetailsService.getAuthenticatedUser();
+        Post existingPost = existingPostOpt.get();
+        if (!existingPost.getPublisherId().equals(currentUser.getId())) {
+            throw new RuntimeException("You are not the owner of this post");
+        }
+
+        dto.setPublisherName(existingPost.getPublisherName());
+        dto.setPublisherId(existingPost.getPublisherId());
+
+        return this.postAssembler.toDto(this.postRepository.save(this.postAssembler.fromDto(dto)));
+    }
 
 
     public List<PostDto> getMyPosts() {

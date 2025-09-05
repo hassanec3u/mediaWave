@@ -2,8 +2,6 @@ import {Injectable} from "@nestjs/common";
 import {InjectModel} from "@nestjs/mongoose";
 import {Model} from "mongoose";
 import {Post} from "../schema/postSchema";
-import {CreateUserDto} from "../../user/dto/createUserDto.";
-import {User} from "../../user/schema/userSchema";
 import {CreatePostDto} from "../dto/createPostDto";
 import {from, Observable} from "rxjs";
 import {PostEntity} from "../entity/PostEntity";

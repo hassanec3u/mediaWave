@@ -1,6 +1,7 @@
 import {Component, EventEmitter, OnInit, Output} from '@angular/core';
 import {ConversationService} from '../service/conversationService';
 import {CookieService} from 'ngx-cookie-service';
+import {User} from '../shared/types/user.type';
 
 @Component({
   selector: 'app-conversation',
@@ -13,7 +14,7 @@ export class ConversationListComponent implements OnInit {
   newParticipantName!: string;
   @Output() conversationSelected = new EventEmitter<any>();
 
-  constructor(private conversationService: ConversationService, private cookieService: CookieService) {
+  constructor(private readonly conversationService: ConversationService, private cookieService: CookieService) {
   }
 
   ngOnInit(): void {
@@ -32,7 +33,7 @@ export class ConversationListComponent implements OnInit {
 
   getOtherParticipant(participants: any[]): any {
     console.log('participants', participants);
-    const res = participants.find((participant) => participant._id !== this.userId);
+    const res = participants.find((participant) => participant.id !== this.userId);
     return res;
   }
 

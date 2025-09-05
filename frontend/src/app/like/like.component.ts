@@ -1,14 +1,16 @@
 import {Component, Input, OnInit} from '@angular/core';
-import { MatIconModule} from '@angular/material/icon';
+import {MatIconModule} from '@angular/material/icon';
 import {LikeService} from '../service/likeService';
-import {UserService} from '../service/userService';
+import {CookieService} from 'ngx-cookie-service';
+import {NgClass} from '@angular/common';
 
 @Component({
   selector: 'app-like',
   templateUrl: './like.component.html',
   standalone: true,
   imports: [
-    MatIconModule
+    MatIconModule,
+    NgClass
   ],
   styleUrls: ['./like.component.css']
 })
@@ -18,10 +20,11 @@ export class LikeComponent implements OnInit {
   liked!: boolean ;
   likes! : number ;
 
-  constructor(private likeService: LikeService,private userService : UserService) {}
+  constructor(private readonly likeService: LikeService,private readonly cookieService :CookieService) {
+  }
 
   ngOnInit() {
-    this.userId = this.userService.getUserId();
+    this.userId = this.cookieService.get('userId');
     this.updateLikes()
     this.checkIfLiked();
   }
@@ -33,19 +36,19 @@ export class LikeComponent implements OnInit {
   }
 
   checkIfLiked() {
-    this.likeService.hasLikedPost(this.userId, this.postId).subscribe(hasLiked => {
+    this.likeService.hasLikedPost( this.postId).subscribe(hasLiked => {
       this.liked = hasLiked;
     });
   }
 
   toggleLike() {
     if (this.liked) {
-      this.likeService.unlikePost(this.userId, this.postId).subscribe(() => {
+      this.likeService.unlikePost( this.postId).subscribe(() => {
         this.liked = false;
         this.likes = this.likes - 1;
       });
     } else {
-      this.likeService.likePost(this.userId, this.postId).subscribe(() => {
+      this.likeService.likePost( this.postId).subscribe(() => {
         this.liked = true;
         this.likes = this.likes + 1;
       });

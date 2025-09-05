@@ -2,7 +2,7 @@ import {Injectable, UnprocessableEntityException} from "@nestjs/common";
 import {Conversation} from "./schema/conversationSchema";
 import {ConversationDao} from "./dao/conversationDao";
 import {CreateConversationDto} from "./dto/createConversationDto";
-import {catchError, from, Observable, tap, throwError} from "rxjs";
+import {catchError, from, Observable, throwError} from "rxjs";
 
 
 @Injectable()
