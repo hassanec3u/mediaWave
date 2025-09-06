@@ -1,14 +1,19 @@
 package com.media.business.conversation;
 
 import com.media.business.common.Assembler;
+import com.media.business.user.UserAssembler;
 import com.media.domain.model.Conversation;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.HashSet;
 import java.util.List;
 
 @Service
 public class ConversationAssembler implements Assembler<Conversation, ConversationDto> {
 
+    @Autowired
+    private UserAssembler userAssembler;
 
     @Override
     public ConversationDto toDto(Conversation entity) {
@@ -18,10 +23,10 @@ public class ConversationAssembler implements Assembler<Conversation, Conversati
         }
         ConversationDto dto = new ConversationDto();
         dto.setId(entity.getId());
-        dto.setParticipantIds(entity.getParticipantIds());
         dto.setLastMessage(entity.getLastMessage());
         dto.setCreatedAt(entity.getCreatedAt());
         dto.setUpdatedAt(entity.getUpdatedAt());
+        dto.setMembers(new HashSet<>(this.userAssembler.toDtoList(entity.getMembers().stream().toList())));
         return dto;
     }
 
@@ -33,10 +38,10 @@ public class ConversationAssembler implements Assembler<Conversation, Conversati
         }
         Conversation conversation = new Conversation();
         conversation.setId(dto.getId());
-        conversation.setParticipantIds(dto.getParticipantIds());
         conversation.setLastMessage(dto.getLastMessage());
         conversation.setCreatedAt(dto.getCreatedAt());
         conversation.setUpdatedAt(dto.getUpdatedAt());
+        conversation.setMembers(new HashSet<>(this.userAssembler.fromDtoList(dto.getMembers().stream().toList())));
         return conversation;
     }
 
@@ -44,12 +49,19 @@ public class ConversationAssembler implements Assembler<Conversation, Conversati
     @Override
     public List<ConversationDto> toDtoList(List<Conversation> entities) {
 
-        return List.of();
+        if (entities == null) {
+            return List.of();
+        }
+        return entities.stream().map(this::toDto).toList();
     }
 
     @Override
     public List<Conversation> fromDtoList(List<ConversationDto> dtos) {
 
-        return List.of();
+        if (dtos == null) {
+            return List.of();
+        }
+        return dtos.stream().map(this::fromDto).toList();
+
     }
 }

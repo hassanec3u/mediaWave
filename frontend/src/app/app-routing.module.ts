@@ -8,7 +8,7 @@ import {AuthGuard} from './guard/auth.guard';
 import {HomeComponent} from './home/home.component';
 import {FriendSearchComponent} from './friend/friend-search.component';
 import {PostFormComponent} from "./posts/post-form/post-form.component";
-import {MessageComponent} from './message/message.component';
+import {MessageComponent} from './messagerie/message/message.component';
 import {MessagerieComponent} from './messagerie/messagerie.component';
 
 const routes: Routes = [

@@ -1,9 +1,9 @@
-import { Injectable } from '@angular/core';
-import { Subject } from 'rxjs';
-import { io, Socket } from 'socket.io-client';
+import {Injectable} from '@angular/core';
+import {Subject} from 'rxjs';
+import {io, Socket} from 'socket.io-client';
 import {HttpClient} from '@angular/common/http';
 import {environment} from "../../environments/environments";
-import {Message} from '../shared/types/message';
+import {ChatMessage} from '../shared/types/chatmessage.type';
 
 @Injectable({
   providedIn: 'root',
@@ -20,16 +20,16 @@ export class MessageService {
     this.socket = io(environment.backend);
   }
 
-  connect() {
+  connect() {/*
     this.socket = io(this.backendUrl);
 
     //Aficher l'adresse du serveur
     console.log('Connecté au serveur WebSocket:', this.backendUrl);
 
-    this.socket.on('message', (message: Message) => {
+    this.socket.on('message', (message: ChatMessage) => {
       console.log('Nouveau message reçu via WebSocket:', message);
       this.messageSubject.next(message);
-    });
+    });*/
   }
 
   // Déconnexion des WebSockets
@@ -42,7 +42,7 @@ export class MessageService {
 
 
 
-  sendMessage(message: any) {
+  sendMessage(message: ChatMessage) {
     return this.http.post(`${this.backendUrl}/message`, message);
   }
 
@@ -53,7 +53,7 @@ export class MessageService {
 
 
 
-  getMessageHistory = (senderId: string, recipientId: string) => {
-    return this.http.get<any[]>(`${this.backendUrl}/message/${senderId}/${recipientId}`);
+  getMessageHistory = (conversationId : string) => {
+    return this.http.get<any[]>(`${this.backendUrl}/message/history/${conversationId}`);
   }
 }

@@ -3,7 +3,7 @@
   <div class="card-header bg-white d-flex justify-content-between align-items-center">
     <div class="d-flex align-items-center">
       <i class="bi bi-person-circle text-primary me-2"></i>
-      <h5 class="mb-0">{{ getOtherParticipant(selectedConversation.participants).username }}</h5>
+      <h5 class="mb-0">{{ getOtherParticipant(selectedConversation.members).username }}</h5>
     </div>
   </div>
 
@@ -12,24 +12,32 @@
     <div class="flex-grow-1 overflow-auto pe-1">
       <div
         *ngFor="let message of messages"
-        class="mb-2 d-flex"
+        class="mb-3 d-flex flex-column"
         [ngClass]="{
-          'justify-content-end': message.senderId._id === senderId,
-          'justify-content-start': message.senderId._id !== senderId
-        }">
+    'align-items-end': message.receiverId !== senderId,
+    'align-items-start': message.receiverId === senderId
+  }">
+
+        <!-- bulle -->
         <div
           class="p-2 rounded shadow-sm"
           [ngClass]="{
-            'bg-primary text-white': message.senderId._id === senderId,
-            'bg-light': message.senderId._id !== senderId
-          }"
+      'bg-primary text-white': message.receiverId !== senderId,
+      'bg-light': message.receiverId === senderId
+    }"
           style="max-width: 75%;">
           {{ message.content }}
         </div>
+
+        <!-- heure -->
+        <small class="text-muted mt-1">
+          {{ message.createdAt | date:'shortTime' }}
+        </small>
       </div>
+
     </div>
 
-    <!-- Saisie -->
+ <!-- Saisie -->
     <div class="pt-2">
       <div class="input-group">
         <textarea

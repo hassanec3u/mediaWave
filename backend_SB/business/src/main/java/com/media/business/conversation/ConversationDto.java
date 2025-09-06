@@ -1,17 +1,20 @@
 package com.media.business.conversation;
 
 import com.media.business.common.SimpleDto;
+import com.media.business.user.UserInfoDto;
 
+import java.io.Serial;
 import java.time.Instant;
 import java.util.Set;
 
 public class ConversationDto implements SimpleDto {
 
+    @Serial
     private static final long serialVersionUID = 1L;
 
     private String id;
 
-    private Set<String> participantIds;
+    private Set<UserInfoDto> members;
 
     private Instant createdAt;
 
@@ -60,13 +63,15 @@ public class ConversationDto implements SimpleDto {
         this.updatedAt = updatedAt;
     }
 
-    public Set<String> getParticipantIds() {
+    public Set<UserInfoDto> getMembers() {
 
-        return this.participantIds;
+        return this.members;
     }
 
-    public void setParticipantIds(Set<String> participantIds) {
+    public void setMembers(Set<UserInfoDto> participants) {
 
-        this.participantIds = participantIds;
+        this.members = participants;
     }
+
+
 }

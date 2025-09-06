@@ -14,7 +14,7 @@ public class Conversation {
     private String id;
 
     @Indexed
-    private Set<String> participantIds ;
+    private Set<User> members;
 
     private String messages;
 
@@ -33,17 +33,6 @@ public class Conversation {
 
         this.id = id;
     }
-
-    public Set<String> getParticipantIds() {
-
-        return this.participantIds;
-    }
-
-    public void setParticipantIds(Set<String> participantIds) {
-
-        this.participantIds = participantIds;
-    }
-
 
     public Instant getCreatedAt() {
 
@@ -84,4 +73,15 @@ public class Conversation {
 
         this.lastMessage = lastMessage;
     }
+
+    public Set<User> getMembers() {
+
+        return this.members;
+    }
+
+    public void setMembers(Set<User> members) {
+
+        this.members = members;
+    }
+
 }

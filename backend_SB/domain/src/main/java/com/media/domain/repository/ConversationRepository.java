@@ -23,8 +23,9 @@ public interface ConversationRepository extends MongoRepository<Conversation, St
 
     /**
      * Find conversations by participant ID, ordered by update time descending.
-     * @param userId
+     * @param memberId
      * @return
      */
-    List<Conversation> findByParticipantIdsContainsOrderByUpdatedAtDesc(String userId);
+    @Query("{ 'members.id' : ?0 }")
+    List<Conversation> findByMembersIdOrderByUpdatedAtDesc(String memberId);
 }

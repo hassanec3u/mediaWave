@@ -18,7 +18,7 @@ export class MessagesGateway implements OnGatewayConnection, OnGatewayDisconnect
     // Méthode pour diffuser un message à tous les clients connectés
     sendMessageToClients(createMessageDto: Message): void {
         this.server.emit('message', createMessageDto);
-        console.log('Message envoyé à tous les clients connectés');
+        console.log('MessageType envoyé à tous les clients connectés');
         console.log(createMessageDto);
     }
 }

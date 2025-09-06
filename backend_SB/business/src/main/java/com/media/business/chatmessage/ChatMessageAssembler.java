@@ -23,6 +23,7 @@ public class ChatMessageAssembler implements Assembler<ChatMessage, ChatMessageD
         chatMessageDto.setSenderId(entity.getSenderId());
         chatMessageDto.setReceiverId(entity.getReceiverId());
         chatMessageDto.setConversationId(entity.getConversationId());
+        chatMessageDto.setCreatedAt(entity.getCreatedAt());
         return chatMessageDto;
     }
 
@@ -38,6 +39,7 @@ public class ChatMessageAssembler implements Assembler<ChatMessage, ChatMessageD
         chatMessage.setSenderId(dto.getSenderId());
         chatMessage.setReceiverId(dto.getReceiverId());
         chatMessage.setConversationId(dto.getConversationId());
+        chatMessage.setCreatedAt(dto.getCreatedAt());
         return chatMessage;
     }
 

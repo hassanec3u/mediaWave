@@ -9,6 +9,7 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
+import java.time.Instant;
 import java.util.List;
 
 @Service
@@ -23,14 +24,15 @@ public class ChatMessageService {
     @Autowired
     private ConversationService conversationService;
 
-    private ChatMessageDto save(ChatMessageDto chatMessage) {
+    public ChatMessageDto save(ChatMessageDto chatMessageDto) {
 
-        ChatMessageDto chatMessageDto = this.chatMessageAssembler.toDto(this.chatMessageRepository.save(this.chatMessageAssembler.fromDto(chatMessage)));
+        chatMessageDto.setCreatedAt(Instant.now());
+        ChatMessageDto result = this.chatMessageAssembler.toDto(this.chatMessageRepository.save(this.chatMessageAssembler.fromDto(chatMessageDto)));
         this.conversationService.updateLastMessage(chatMessageDto.getConversationId(), chatMessageDto.getContent());
-        return chatMessageDto;
+        return result;
     }
 
-    private List<ChatMessageDto> getAll(String conversationId) {
+    public List<ChatMessageDto> getAll(String conversationId) {
 
         Pageable pageable = PageRequest.of(0, 10);
         Page<ChatMessage> messages = this.chatMessageRepository

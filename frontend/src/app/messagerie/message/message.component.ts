@@ -1,8 +1,10 @@
 import {Component, Input, OnDestroy, OnInit} from '@angular/core';
 import {Subscription} from 'rxjs';
-import {MessageService} from '../service/message.service';
+import {MessageService} from '../../service/message.service';
 import {CookieService} from 'ngx-cookie-service';
-import {Message} from '../shared/types/message';
+import {ChatMessage} from '../../shared/types/chatmessage.type';
+import {User} from '../../shared/types/user.type';
+import {Conversation} from '../../shared/types/conversation.type';
 
 @Component({
   selector: 'app-message',
@@ -10,10 +12,15 @@ import {Message} from '../shared/types/message';
   styleUrl: './message.component.css'
 })
 export class MessageComponent implements OnInit, OnDestroy {
-  messages: Message[] = [];
+
+  messages: ChatMessage[] = [];
+
   newMessage: string = '';
+
   senderId: string = '';
-  @Input() selectedConversation: any;
+
+  @Input() selectedConversation!: Conversation;
+
   private messageSubscription: Subscription | undefined;
 
   constructor(private messageService: MessageService, private cookieService: CookieService) {
@@ -30,7 +37,7 @@ export class MessageComponent implements OnInit, OnDestroy {
       .getMessageObservable()
       .subscribe((message) => {
         if (message.receiverId._id === this.senderId || message.senderId._id === this.senderId) {
-        message = { ...message, senderName: message.senderId.username, receiverName: message.receiverId.username };
+          message = {...message, senderName: message.senderId.username, receiverName: message.receiverId.username};
           this.messages.push(message);
         }
       });
@@ -44,30 +51,31 @@ export class MessageComponent implements OnInit, OnDestroy {
 
   ngOnDestroy() {
     if (this.messageSubscription) {
+
       this.messageSubscription.unsubscribe();
       this.messageService.disconnect();
     }
   }
 
-  getOtherParticipant(participants: any[]): any {
-    return participants.find((participant) => participant._id !== this.senderId);
+  getOtherParticipant(participants: User[]): User {
+    return <User>participants.find((participant) => participant.id !== this.senderId);
   }
 
   sendMessage(content: string) {
-    if (content.trim() && this.selectedConversation) {
-      const receiver = this.getOtherParticipant(this.selectedConversation.participants);
 
-      const payload = {
-        senderId: this.senderId,
-        receiverId: receiver._id,
+    if (content.trim() && this.selectedConversation) {
+      const receiver = this.getOtherParticipant(this.selectedConversation.members);
+
+      const chatMessage: ChatMessage = {
+        receiverId: receiver.id,
         content: content.trim(),
-        conversationId: this.selectedConversation._id,
+        conversationId: this.selectedConversation.id,
       };
 
       // Envoyer le message via le service
-      this.messageService.sendMessage(payload).subscribe(
+      this.messageService.sendMessage(chatMessage).subscribe(
         (response) => {
-          console.log('Message envoyé avec succès :', response);
+          console.log('MessageType envoyé avec succès :', response);
           this.newMessage = '';
         },
         (error) => {
@@ -80,15 +88,9 @@ export class MessageComponent implements OnInit, OnDestroy {
 
   loadMessageHistory() {
     if (this.selectedConversation) {
-      const receiverId = this.getOtherParticipant(this.selectedConversation.participants)._id;
 
-      this.messageService.getMessageHistory(this.senderId, receiverId).subscribe((messages: Message[]) => {
-
-        this.messages = messages.map((message) => ({
-          ...message,
-          senderName: message.senderId.username,
-          receiverName: message.receiverId.username,
-        }));
+      this.messageService.getMessageHistory(this.selectedConversation.id).subscribe((messages: ChatMessage[]) => {
+        this.messages = messages;
       });
     }
   }

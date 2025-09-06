@@ -1,4 +1,5 @@
 import { Component } from '@angular/core';
+import {Conversation} from '../shared/types/conversation.type';
 
 @Component({
   selector: 'app-messagerie',
@@ -6,9 +7,9 @@ import { Component } from '@angular/core';
   styleUrl: './messagerie.component.css'
 })
 export class MessagerieComponent {
-  selectedConversation: any = null;
+  selectedConversation!: Conversation ;
 
-  onConversationSelected(conversation: any) {
+  onConversationSelected(conversation: Conversation) {
     this.selectedConversation = conversation;
   }
 }
