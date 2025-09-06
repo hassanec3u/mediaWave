@@ -1,5 +1,5 @@
 import {Injectable} from '@angular/core';
-import {Subject} from 'rxjs';
+import {Observable, Subject} from 'rxjs';
 import {io, Socket} from 'socket.io-client';
 import {HttpClient} from '@angular/common/http';
 import {environment} from "../../environments/environments";
@@ -11,49 +11,23 @@ import {ChatMessage} from '../shared/types/chatmessage.type';
 
 
 export class MessageService {
-  private socket: Socket;
-  private messageSubject = new Subject<any>();
-  private backendUrl = `${environment.backend.protocol}://${environment.backend.host}:${environment.backend.port}`;
+  private readonly socket: Socket;
+
+  private readonly messageSubject = new Subject<any>();
+
+  private readonly backendUrl = `${environment.backend.protocol}://${environment.backend.host}:${environment.backend.port}`;
 
 
-  constructor(private http: HttpClient,) {
+  constructor(private readonly http: HttpClient,) {
     this.socket = io(environment.backend);
   }
 
-  connect() {/*
-    this.socket = io(this.backendUrl);
 
-    //Aficher l'adresse du serveur
-    console.log('Connecté au serveur WebSocket:', this.backendUrl);
-
-    this.socket.on('message', (message: ChatMessage) => {
-      console.log('Nouveau message reçu via WebSocket:', message);
-      this.messageSubject.next(message);
-    });*/
+  sendMessage(message: ChatMessage):Observable<ChatMessage> {
+    return this.http.post<ChatMessage>(`${this.backendUrl}/message`, message);
   }
-
-  // Déconnexion des WebSockets
-  disconnect() {
-    if (this.socket) {
-      this.socket.disconnect();
-    }
-  }
-
-
-
-
-  sendMessage(message: ChatMessage) {
-    return this.http.post(`${this.backendUrl}/message`, message);
-  }
-
-  // Observable pour recevoir des messages
-  getMessageObservable() {
-    return this.messageSubject.asObservable();
-  }
-
-
 
   getMessageHistory = (conversationId : string) => {
-    return this.http.get<any[]>(`${this.backendUrl}/message/history/${conversationId}`);
+    return this.http.get<ChatMessage[]>(`${this.backendUrl}/message/history/${conversationId}`);
   }
 }

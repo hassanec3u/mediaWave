@@ -17,8 +17,9 @@ public interface ConversationRepository extends MongoRepository<Conversation, St
      * @param user2
      * @return
      */
-    @Query("{ $and: [ { 'participantIds': { $all: [?0, ?1] } }, { 'participantIds': { $size: 2 } } ] }")
+    @Query("{ $and: [ { 'members.id': { $all: [?0, ?1] } }, { 'members': { $size: 2 } } ] }")
     Optional<Conversation> findByParticipants(String user1, String user2);
+
 
 
     /**

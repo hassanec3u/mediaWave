@@ -1,4 +1,4 @@
-import {Component, Input, OnDestroy, OnInit} from '@angular/core';
+import {Component, ElementRef, Input, OnChanges, OnDestroy, OnInit, ViewChild} from '@angular/core';
 import {Subscription} from 'rxjs';
 import {MessageService} from '../../service/message.service';
 import {CookieService} from 'ngx-cookie-service';
@@ -11,7 +11,7 @@ import {Conversation} from '../../shared/types/conversation.type';
   templateUrl: './message.component.html',
   styleUrl: './message.component.css'
 })
-export class MessageComponent implements OnInit, OnDestroy {
+export class MessageComponent implements OnChanges, OnDestroy {
 
   messages: ChatMessage[] = [];
 
@@ -21,39 +21,21 @@ export class MessageComponent implements OnInit, OnDestroy {
 
   @Input() selectedConversation!: Conversation;
 
-  private messageSubscription: Subscription | undefined;
+  private readonly messageSubscription: Subscription | undefined;
 
-  constructor(private messageService: MessageService, private cookieService: CookieService) {
-  }
-
-  ngOnInit() {
-    this.senderId = this.cookieService.get('userId');
-
-    // Connecter le service WebSocket
-    this.messageService.connect();
-
-    // S'abonne aux messages en temps réel
-    this.messageSubscription = this.messageService
-      .getMessageObservable()
-      .subscribe((message) => {
-        if (message.receiverId._id === this.senderId || message.senderId._id === this.senderId) {
-          message = {...message, senderName: message.senderId.username, receiverName: message.receiverId.username};
-          this.messages.push(message);
-        }
-      });
+  constructor(private readonly messageService: MessageService, private readonly cookieService: CookieService) {
   }
 
   ngOnChanges() {
-    if (this.selectedConversation) {
-      this.loadMessageHistory();
-    }
+
+    this.senderId = this.cookieService.get('userId');
+    this.loadMessageHistory();
   }
+
 
   ngOnDestroy() {
     if (this.messageSubscription) {
-
       this.messageSubscription.unsubscribe();
-      this.messageService.disconnect();
     }
   }
 
@@ -73,13 +55,10 @@ export class MessageComponent implements OnInit, OnDestroy {
       };
 
       // Envoyer le message via le service
-      this.messageService.sendMessage(chatMessage).subscribe(
-        (response) => {
-          console.log('MessageType envoyé avec succès :', response);
+      this.messageService.sendMessage(chatMessage).subscribe((chatMessage) => {
+          console.log('MessageType envoyé avec succès :', chatMessage);
           this.newMessage = '';
-        },
-        (error) => {
-          console.error('Erreur lors de l\'envoi du message :', error);
+          this.messages.push(chatMessage);
         }
       );
     }
@@ -90,7 +69,8 @@ export class MessageComponent implements OnInit, OnDestroy {
     if (this.selectedConversation) {
 
       this.messageService.getMessageHistory(this.selectedConversation.id).subscribe((messages: ChatMessage[]) => {
-        this.messages = messages;
+        console.log("les msgs " + messages);
+        this.messages = messages.slice().reverse()
       });
     }
   }

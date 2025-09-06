@@ -21,7 +21,7 @@ public class ConversationController {
     @Autowired
     private ConversationService conversationService;
 
-    @PostMapping
+    @PostMapping("")
     public ResponseEntity<ConversationDto> save(@RequestBody CreateConversationDto dto) {
 
         LOG.info("save conversation {}", dto.getOtherMemberId());

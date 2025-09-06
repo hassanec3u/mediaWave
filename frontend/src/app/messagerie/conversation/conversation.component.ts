@@ -27,8 +27,8 @@ export class ConversationListComponent implements OnInit {
   @Output() conversationSelected = new EventEmitter<Conversation>();
 
   constructor(private readonly conversationService: ConversationService,
-              private cookieService: CookieService,
-              private userService: UserService) {
+              private readonly cookieService: CookieService,
+              private readonly userService: UserService) {
   }
 
   ngOnInit(): void {
@@ -95,7 +95,7 @@ export class ConversationListComponent implements OnInit {
 
   startNewConversation() {
     if (this.newParticipantName) {
-      this.conversationService.createConversation(this.selectedFriendId).subscribe(
+      this.conversationService.createConversation( this.selectedFriendId).subscribe(
         (newConversation) => {
           this.conversations.push(newConversation);
           this.newParticipantName = '';
