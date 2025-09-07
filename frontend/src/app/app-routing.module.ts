@@ -11,7 +11,7 @@ import {PostFormComponent} from "./posts/post-form/post-form.component";
 import {MessageComponent} from './messagerie/message/message.component';
 import {MessagerieComponent} from './messagerie/messagerie.component';
 
-const routes: Routes = [
+export const routes: Routes = [
   { path: '', component: HomeComponent ,canActivate: [AuthGuard]},
   { path: 'register', component: RegisterComponent },
   { path: 'logout', component: LogoutComponent },

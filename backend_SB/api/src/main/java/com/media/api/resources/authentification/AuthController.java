@@ -44,7 +44,6 @@ public class AuthController {
     public ResponseEntity<AuthResponse> login(@RequestBody AuthRequest request) {
 
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
-        System.out.println("Auth dans /status: " + auth);
         try {
             auth = this.authManager.authenticate(
                     new UsernamePasswordAuthenticationToken(request.getUsername(), request.getPassword())

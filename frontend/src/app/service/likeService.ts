@@ -10,7 +10,7 @@ export class LikeService {
 
   private readonly backendUrl = `${environment.backend.protocol}://${environment.backend.host}:${environment.backend.port}`;
 
-  constructor(private http: HttpClient) {}
+  constructor(private readonly http: HttpClient) {}
 
   likePost( postId: string): Observable<void> {
     return this.http.post<void>(this.backendUrl + environment.backend.endpoints.posts.likes.like(postId), {});

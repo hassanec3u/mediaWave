@@ -12,7 +12,7 @@ export class CommentService {
 
   private readonly backendUrl = `${environment.backend.protocol}://${environment.backend.host}:${environment.backend.port}`;
 
-  constructor(private http: HttpClient) {
+  constructor(private readonly http: HttpClient) {
   }
 
   addComment(comment: Comment): Observable<Comment> {

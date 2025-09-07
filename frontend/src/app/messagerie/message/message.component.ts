@@ -1,4 +1,4 @@
-import {Component, ElementRef, Input, OnChanges, OnDestroy, OnInit, ViewChild} from '@angular/core';
+import {Component, Input, OnChanges, OnDestroy} from '@angular/core';
 import {Subscription} from 'rxjs';
 import {MessageService} from '../../service/message.service';
 import {CookieService} from 'ngx-cookie-service';
@@ -21,21 +21,41 @@ export class MessageComponent implements OnChanges, OnDestroy {
 
   @Input() selectedConversation!: Conversation;
 
+  private messageSub?: Subscription;
+
   private readonly messageSubscription: Subscription | undefined;
 
   constructor(private readonly messageService: MessageService, private readonly cookieService: CookieService) {
   }
 
   ngOnChanges() {
+    if (!this.selectedConversation) return;
 
     this.senderId = this.cookieService.get('userId');
+
+    // Charger l’historique REST
     this.loadMessageHistory();
+
+    // Se connecter au broker WS et s’abonner
+    this.messageService.connect();
+    this.messageService.subscribeConversation(this.selectedConversation.id);
+
+    // Se réabonner au flux
+    this.messageSub?.unsubscribe();
+    this.messageSub = this.messageService.getMessageObservable().subscribe((msg) => {
+      if (msg && msg.conversationId === this.selectedConversation.id) {
+        this.messages.push(msg);
+      }
+      //log message
+      console.log('Received message via WebSocket:', msg);
+    });
   }
 
 
   ngOnDestroy() {
     if (this.messageSubscription) {
       this.messageSubscription.unsubscribe();
+      this.messageService.disconnect();
     }
   }
 
@@ -56,9 +76,7 @@ export class MessageComponent implements OnChanges, OnDestroy {
 
       // Envoyer le message via le service
       this.messageService.sendMessage(chatMessage).subscribe((chatMessage) => {
-          console.log('MessageType envoyé avec succès :', chatMessage);
           this.newMessage = '';
-          this.messages.push(chatMessage);
         }
       );
     }
@@ -69,7 +87,6 @@ export class MessageComponent implements OnChanges, OnDestroy {
     if (this.selectedConversation) {
 
       this.messageService.getMessageHistory(this.selectedConversation.id).subscribe((messages: ChatMessage[]) => {
-        console.log("les msgs " + messages);
         this.messages = messages.slice().reverse()
       });
     }

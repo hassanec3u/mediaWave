@@ -7,9 +7,9 @@ import {Conversation} from '../shared/types/conversation.type';
   providedIn: 'root'
 })
 export class ConversationService {
-  private apiUrl = 'http://localhost:8080/conversation';
+  private readonly apiUrl = 'http://localhost:8080/conversation';
 
-  constructor(private http: HttpClient) {
+  constructor(private readonly http: HttpClient) {
   }
 
   getUserConversations(userId: string): Observable<any> {

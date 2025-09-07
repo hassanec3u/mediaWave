@@ -6,27 +6,29 @@ import {HttpClient, HttpHeaders, HttpParams} from "@angular/common/http";
 
 
 @Injectable({
-    providedIn: 'root'
+  providedIn: 'root'
 })
 export class PicturesService {
-    private backendUrl = `${environment.backend.protocol}://${environment.backend.host}:${environment.backend.port}`;
-    constructor(private http: HttpClient) {
-    }
+  private readonly backendUrl = `${environment.backend.protocol}://${environment.backend.host}:${environment.backend.port}`;
 
-    uploadPicture(profilePicture: File): Observable<Picture> {
-        const formData = new FormData();
-        formData.append('file', profilePicture);
-        return this.http.post<Picture>(this.backendUrl+environment.backend.endpoints.upload, formData,
-            {
-            headers: new HttpHeaders({'enctype': 'multipart/form-data'})});
-    }
+  constructor(private readonly http: HttpClient) {
+  }
 
-    getPicture(profilePicturePath: string | undefined): Observable<any> {
-        console.log("GET PROFILE PICTURE");
-        const params = new HttpParams().set('filePath', profilePicturePath+'');
-        return this.http.get<any>(this.backendUrl+environment.backend.endpoints.upload, {
-            params,
-            responseType: 'blob' as 'json'
-        });
-    }
+  uploadPicture(profilePicture: File): Observable<Picture> {
+    const formData = new FormData();
+    formData.append('file', profilePicture);
+    return this.http.post<Picture>(this.backendUrl + environment.backend.endpoints.upload, formData,
+      {
+        headers: new HttpHeaders({'enctype': 'multipart/form-data'})
+      });
+  }
+
+  getPicture(profilePicturePath: string | undefined): Observable<any> {
+    console.log("GET PROFILE PICTURE");
+    const params = new HttpParams().set('filePath', profilePicturePath + '');
+    return this.http.get<any>(this.backendUrl + environment.backend.endpoints.upload, {
+      params,
+      responseType: 'blob' as 'json'
+    });
+  }
 }

@@ -28,16 +28,15 @@ export class UserProfileComponent implements OnInit{
   private id!: string;
   userPosts!: Post[]
 
-  constructor(private userService: UserService,
-              private route: ActivatedRoute,
-              private postService: PostService,
-              private pictureService: PicturesService) {
+  constructor(private readonly userService: UserService,
+              private readonly route: ActivatedRoute,
+              private readonly postService: PostService,
+              private readonly pictureService: PicturesService) {
   }
 
   ngOnInit(): void {
     this.id = this.route.snapshot.params['id'];
-    this.getUserInfo(this.id);
-    //this.userService.refreshRequest.subscribe((res) => this.getUserInfo(this.id));
+    this.getUserInfo();
     this.getUserPosts();
   }
 
@@ -45,7 +44,7 @@ export class UserProfileComponent implements OnInit{
     return this._user;
   }
 
-  getUserInfo(id: string) {
+  getUserInfo() {
       this.userService.loadUserInfo();
       this.userService.user.subscribe((res) => this._user = res);
   }
