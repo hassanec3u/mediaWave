@@ -1,11 +1,14 @@
 package com.media.api.resources.user;
 
+import com.media.business.filestorage.FileStorageService;
 import com.media.business.user.UserInfoDto;
 import com.media.business.user.UserServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
+import java.io.IOException;
 import java.util.List;
 
 @RestController
@@ -16,10 +19,22 @@ public class UserController {
     private UserServiceImpl userService;
 
 
+    @Autowired
+    private FileStorageService fileStorageService;
+
     @PutMapping("")
     public ResponseEntity<UserInfoDto> updateInfo(@RequestBody UserInfoDto dto) {
 
         return ResponseEntity.ok(this.userService.updateUser(dto));
+    }
+
+    @PostMapping("/picture")
+    public ResponseEntity<String> uploadProfilePicture(
+            @RequestParam("file") MultipartFile file) throws IOException {
+
+        String imageUrl = this.fileStorageService.uploadFile( file);
+
+        return ResponseEntity.ok(imageUrl);
     }
 
     @GetMapping("/username/{username}")

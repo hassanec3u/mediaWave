@@ -21,6 +21,8 @@ public class PostDto implements SimpleDto {
 
     private String publisherId;
 
+    private String publisherProfilePicture;
+
     private String publisherName;
 
     private Instant postDate;
@@ -106,5 +108,15 @@ public class PostDto implements SimpleDto {
     public void setLikeUserIds(List<String> likeUserIds) {
 
         this.likeUserIds = likeUserIds;
+    }
+
+    public String getPublisherProfilePicture() {
+
+        return this.publisherProfilePicture;
+    }
+
+    public void setPublisherProfilePicture(String publisherProfilePicture) {
+
+        this.publisherProfilePicture = publisherProfilePicture;
     }
 }

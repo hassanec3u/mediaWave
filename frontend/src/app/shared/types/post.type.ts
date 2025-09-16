@@ -6,5 +6,6 @@ export type Post = {
   postDate: Date;
   publisherId : string;
   publisherName : string;
+  publisherProfilePicture : string;
   image?: string;
 }

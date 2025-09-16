@@ -69,17 +69,6 @@ export class AsideProfileComponent {
 
   uploadProfileImage(file: File) {
     this.userService.uploadProfilePicture(this._userInfo.id, file).subscribe(
-      response => {
-        console.log("UPLOAD IMAGE!")
-        console.log(response);
-        this.userService.getProfilePicture(response.profilePicture).subscribe(
-          (res) => {
-            response.profilePicture = URL.createObjectURL(res)
-            this._userInfo = response
-            this.userService.userSubject.next(this._userInfo)
-          });
-      },
-      error => console.log(error)
     );
   }
 }

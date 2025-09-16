@@ -4,7 +4,6 @@ import {BehaviorSubject, Observable, switchMap, tap} from 'rxjs';
 import {CookieService} from 'ngx-cookie-service';
 import {environment} from "../../environments/environments";
 import {User} from "../shared/types/user.type";
-import {Picture} from "../shared/types/Picture.type";
 
 
 interface LoginResponse {
@@ -92,16 +91,8 @@ export class UserService {
   getCurrentUser(): Observable<User> {
     return this.http.get<User>(this.backendUrl + environment.backend.endpoints.user.info).pipe(
       tap(user => {
-        if (user.profilePicture) {
-          this.getProfilePicture(user.profilePicture).subscribe(
-            picture => {
-              user.profilePicture = URL.createObjectURL(picture);
-              this.userSubject.next(user);
-            }
-          );
-        } else {
           this.userSubject.next(user);
-        }
+        
       })
     );
   }
@@ -119,41 +110,25 @@ export class UserService {
   uploadProfilePicture(id: string, profilePicture: File): Observable<User> {
     const formData = new FormData();
     formData.append('file', profilePicture);
-    return this.http.post<Picture>(this.backendUrl + environment.backend.endpoints.upload, formData, {
+    return this.http.post<string>(this.backendUrl + environment.backend.endpoints.user.uploadProfilePicture, formData, {
       headers: new HttpHeaders({'enctype': 'multipart/form-data'})
     }).pipe(
-      switchMap((response) => this.updateProfilePicture(id, response.filePath))
+      switchMap((response) => this.updateProfilePicture(id, response))
     );
   }
 
   updateProfilePicture(id: string, profilePicture: string): Observable<any> {
     console.log("Update profile picture");
     console.log(profilePicture);
-    return this.http.put(this.backendUrl + environment.backend.endpoints.upload + id, {profilePicture});
-  }
-
-  getProfilePicture(profilePicturePath: string | undefined): Observable<any> {
-    console.log("GET PROFILE PICTURE");
-    const params = new HttpParams().set('filePath', profilePicturePath + '');
-    return this.http.get<any>(this.backendUrl + environment.backend.endpoints.upload, {
-      params,
-      responseType: 'blob' as 'json'
-    });
+    return this.http.put(this.backendUrl + environment.backend.endpoints.user.uploadProfilePicture + id, {profilePicture});
   }
 
 
   loadUserInfo() {
     this.getCurrentUser().subscribe(user => {
-      if (user.profilePicture) {
-        this.getProfilePicture(user.profilePicture).subscribe(
-          picture => {
-            user.profilePicture = URL.createObjectURL(picture);
-            this.userSubject.next(user);
-          }
-        );
-      } else {
+      
         this.userSubject.next(user);
-      }
+      
     });
   }
 }

@@ -3,7 +3,6 @@ import {Router} from '@angular/router';
 import {UserService} from '../../service/userService';
 import {CommonModule} from '@angular/common';
 import {User} from "../types/user.type";
-import {PicturesService} from "../../service/picturesService";
 import {environment} from "../../../environments/environments";
 import {CookieService} from 'ngx-cookie-service'; // Import CommonModule
 
@@ -21,7 +20,7 @@ export class HeaderComponent implements OnInit {
   user!: User | undefined;
   defaultImage: string = environment.defaultImageProfile;
 
-  constructor(private readonly router: Router, private readonly userService: UserService, private readonly pictureService: PicturesService,
+  constructor(private readonly router: Router, private readonly userService: UserService,
               private readonly cookieService: CookieService) {
   }
 

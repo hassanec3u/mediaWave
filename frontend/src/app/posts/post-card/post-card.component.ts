@@ -6,7 +6,6 @@ import {ConfirmDialogComponent} from "../../shared/dialog/confirm-dialog/confirm
 import {PostService} from "../../service/postService";
 import {catchError, of} from "rxjs";
 import {PostFormComponent} from "../post-form/post-form.component";
-import {PicturesService} from "../../service/picturesService";
 import {CommentListComponent} from '../../comment/comment-list/comment-list.component';
 import {environment} from "../../../environments/environments";
 import {LikeComponent} from '../../like/like.component';
@@ -48,8 +47,7 @@ export class PostCardComponent {
 
 
   constructor(private readonly dialog: MatDialog,
-              private readonly postService: PostService,
-              private readonly picturesService: PicturesService) {
+              private readonly postService: PostService) {
     this.onPostDeleted = new EventEmitter<string>();
     this.onPostEdited = new EventEmitter<Post>();
   }
@@ -79,22 +77,13 @@ export class PostCardComponent {
     });
   }
 
-  editPost() {
+   editPost() {
     const editDialogRef = this.dialog.open(PostFormComponent, {
       width: '500px',
       data: this._post
     });
     editDialogRef.afterClosed().subscribe((result) => {
       if (result) {
-        console.log(result.postPicture)
-        this.picturesService.getPicture(result.postPicture).subscribe(
-          res => result.postPicture = URL.createObjectURL(res),
-          catchError(error => {
-            console.error(`Erreur pour le post ${result._id}:`, error);
-            return of(result);
-          })
-        )
-        console.log(result.postPicture)
         this.onPostEdited.emit(result);
       }
     });

@@ -31,26 +31,26 @@ public class PostService {
     @Autowired
     private CustomUserDetailsService customUserDetailsService;
 
-    public PostDto save(PostDto dto) {
+    public PostDto save(PostDto postDto) {
 
         User currentUser = this.customUserDetailsService.getAuthenticatedUser();
 
-        dto.setPublisherId(currentUser.getId());
+        postDto.setPublisherId(currentUser.getId());
 
-        if (dto.getId() != null) {
-            Optional<Post> existingPost = this.postRepository.findById(dto.getId());
+        if (postDto.getId() != null) {
+            Optional<Post> existingPost = this.postRepository.findById(postDto.getId());
             if (existingPost.isPresent()) {
-                dto.setPublisherName(existingPost.get().getPublisherName());
-                dto.setPublisherId(existingPost.get().getPublisherId());
+                postDto.setPublisherName(existingPost.get().getPublisherName());
+                postDto.setPublisherId(existingPost.get().getPublisherId());
             } else {
-                dto.setPublisherName(currentUser.getUsername());
-                dto.setPublisherId(currentUser.getId());
+                postDto.setPublisherName(currentUser.getUsername());
+                postDto.setPublisherId(currentUser.getId());
             }
         } else {
-            dto.setPublisherName(currentUser.getUsername());
-            dto.setPublisherId(currentUser.getId());
+            postDto.setPublisherName(currentUser.getUsername());
+            postDto.setPublisherId(currentUser.getId());
         }
-        return this.postAssembler.toDto(this.postRepository.save(this.postAssembler.fromDto(dto)));
+        return this.postAssembler.toDto(this.postRepository.save(this.postAssembler.fromDto(postDto)));
     }
 
     //update post
@@ -75,23 +75,27 @@ public class PostService {
 
 
     public List<PostDto> getMyPosts() {
-
         User currentUser = this.customUserDetailsService.getAuthenticatedUser();
 
         List<Post> posts = this.postRepository.findByPublisherIdOrderByPostDateDesc(currentUser.getId());
-        return this.postAssembler.toDtoList(posts);
+        List<PostDto> postDtos = this.postAssembler.toDtoList(posts);
 
+        attachPublisherProfilePictures(postDtos);
+        return postDtos;
     }
 
     public List<PostDto> getFriendsPosts() {
-
         User currentUser = this.customUserDetailsService.getAuthenticatedUser();
 
-        List<User> friend = currentUser.getFriends();
-        List<String> friendIds = friend.stream().map(User::getId).toList();
-        List<Post> posts = this.postRepository.findByPublisherIdInOrderByPostDateDesc(friendIds);
+        List<String> friendIds = currentUser.getFriends().stream()
+                .map(User::getId)
+                .toList();
 
-        return this.postAssembler.toDtoList(posts);
+        List<Post> posts = this.postRepository.findByPublisherIdInOrderByPostDateDesc(friendIds);
+        List<PostDto> postDtos = this.postAssembler.toDtoList(posts);
+
+        attachPublisherProfilePictures(postDtos);
+        return postDtos;
     }
 
 
@@ -104,5 +108,13 @@ public class PostService {
 
         return this.postRepository.findById(postId);
     }
+
+    private void attachPublisherProfilePictures(List<PostDto> postDtos) {
+        for (PostDto dto : postDtos) {
+            Optional<User> publisherOpt = this.customUserDetailsService.findById(dto.getPublisherId());
+            publisherOpt.ifPresent(user -> dto.setPublisherProfilePicture(user.getProfilePicture()));
+        }
+    }
+
 
 }

@@ -15,7 +15,7 @@ export const environment = {
         base: '/user',
         info: '/user',
         update: (id: string) => `/user/${id}`,
-        picture: (id: string) => `/user/picture/${id}`,
+        uploadProfilePicture: '/user/picture',
         friends: {
           list: '/user/friend',
           search: '/user/friend/search',
@@ -46,7 +46,6 @@ export const environment = {
           hasLiked: (postId: string) => `/post/${postId}/like/has-liked`,
         },
       },
-      upload: '/upload',
     },
   },
 

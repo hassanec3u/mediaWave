@@ -9,7 +9,6 @@ import {Post} from "../../shared/types/post.type";
 import {PostService} from "../../service/postService";
 import {NgForOf} from "@angular/common";
 import {catchError, forkJoin, map, of, switchMap} from "rxjs";
-import {PicturesService} from "../../service/picturesService";
 
 @Component({
   selector: 'app-user-profile',
@@ -30,8 +29,7 @@ export class UserProfileComponent implements OnInit{
 
   constructor(private readonly userService: UserService,
               private readonly route: ActivatedRoute,
-              private readonly postService: PostService,
-              private readonly pictureService: PicturesService) {
+              private readonly postService: PostService) {
   }
 
   ngOnInit(): void {
@@ -49,25 +47,12 @@ export class UserProfileComponent implements OnInit{
       this.userService.user.subscribe((res) => this._user = res);
   }
 
-  getUserPosts() {
-    this.postService.getUserPosts().pipe(
-        switchMap(posts => {
-          const postsWithImages$ = posts.map(post =>
-              this.pictureService.getPicture(post.postPicture).pipe(
-                  map(image => ({...post, postPicture: URL.createObjectURL(image)})),
-                  catchError(error => {
-                    console.error(`Erreur pour le post ${post.id}:`, error);
-                    return of(post);
-                  })
-              )
-          );
-          return forkJoin(postsWithImages$);
-        })).subscribe(
-        response => this.userPosts = response,
+getUserPosts() {
+    this.postService.getUserPosts().subscribe(
+        posts => this.userPosts = posts,
         error => console.log(error)
-    )
-  }
-
+    );
+}
   onPostDeleted(postId: string) {
       this.userPosts = this.userPosts.filter(post => post.id !== postId);
   }
