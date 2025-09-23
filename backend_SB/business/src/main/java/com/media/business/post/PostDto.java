@@ -1,7 +1,9 @@
 package com.media.business.post;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
+import com.media.business.comment.CommentDto;
 import com.media.business.common.SimpleDto;
+
 
 import java.time.Instant;
 import java.util.List;
@@ -28,6 +30,9 @@ public class PostDto implements SimpleDto {
     private Instant postDate;
 
     private List<String> likeUserIds;
+
+    private CommentDto lastComment;
+
 
 
     public String getTitle() {
@@ -118,5 +123,15 @@ public class PostDto implements SimpleDto {
     public void setPublisherProfilePicture(String publisherProfilePicture) {
 
         this.publisherProfilePicture = publisherProfilePicture;
+    }
+
+    public CommentDto getLastComment() {
+
+        return this.lastComment;
+    }
+
+    public void setLastComment(CommentDto lastComment) {
+
+        this.lastComment = lastComment;
     }
 }

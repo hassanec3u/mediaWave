@@ -18,10 +18,13 @@ export class UserService {
 
   private readonly backendUrl = `${environment.backend.protocol}://${environment.backend.host}:${environment.backend.port}`;
 
-  userSubject = new BehaviorSubject<User>({id: "0"});
-  public user = this.userSubject.asObservable();
+  private _user$ = new BehaviorSubject<User | null>(null);
 
-  constructor(private readonly http: HttpClient, private readonly cookieService: CookieService) {
+  // Expose the user$ observable
+  user$ = this._user$.asObservable();
+
+  constructor(private readonly http: HttpClient,
+     private readonly cookieService: CookieService) {
   }
 
 
@@ -91,44 +94,41 @@ export class UserService {
   getCurrentUser(): Observable<User> {
     return this.http.get<User>(this.backendUrl + environment.backend.endpoints.user.info).pipe(
       tap(user => {
-          this.userSubject.next(user);
+          this._user$.next(user);
         
       })
     );
   }
 
-  updateUserInfos(id: string, userInfo: User): Observable<User> {
+  updateUserInfos(userInfo: User): Observable<User> {
     console.log(userInfo);
-    return this.http.put<User>(this.backendUrl + environment.backend.endpoints.user.update(id), userInfo).pipe(
+    return this.http.put<User>(this.backendUrl + environment.backend.endpoints.user.update, userInfo).pipe(
       tap((user) => {
-        user.profilePicture = this.userSubject.value.profilePicture;
-        this.userSubject.next(user)
+        this._user$.next(user)
       })
     );
   }
 
+  loadUserInfo(): void {
+    this.http.get<User>(this.backendUrl + environment.backend.endpoints.user.info)
+      .subscribe(user => this._user$.next(user));
+  }
+
   uploadProfilePicture(id: string, profilePicture: File): Observable<User> {
-    const formData = new FormData();
-    formData.append('file', profilePicture);
-    return this.http.post<string>(this.backendUrl + environment.backend.endpoints.user.uploadProfilePicture, formData, {
-      headers: new HttpHeaders({'enctype': 'multipart/form-data'})
-    }).pipe(
-      switchMap((response) => this.updateProfilePicture(id, response))
-    );
-  }
+  const formData = new FormData();
+  formData.append('file', profilePicture);
 
-  updateProfilePicture(id: string, profilePicture: string): Observable<any> {
-    console.log("Update profile picture");
-    console.log(profilePicture);
-    return this.http.put(this.backendUrl + environment.backend.endpoints.user.uploadProfilePicture + id, {profilePicture});
-  }
+  console.log('[uploadProfilePicture] FormData created:', formData.get('file'));
 
+  return this.http.post<User>(
+    this.backendUrl + environment.backend.endpoints.user.uploadProfilePicture,
+    formData,
+    { headers: new HttpHeaders({ 'enctype': 'multipart/form-data' }) }
+  ).pipe(
+    tap((updatedUser) => {
+      this._user$.next(updatedUser); 
+    })
+  );
+}
 
-  loadUserInfo() {
-    this.getCurrentUser().subscribe(user => {
-      
-        this.userSubject.next(user);
-      
-    });
-  }
 }

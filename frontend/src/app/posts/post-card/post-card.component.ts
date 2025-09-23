@@ -1,6 +1,6 @@
 import {Component, EventEmitter, Input, Output} from '@angular/core';
 import {Post} from "../../shared/types/post.type";
-import {DatePipe, NgIf} from "@angular/common";
+import {DatePipe, NgIf,SlicePipe} from "@angular/common";
 import {MatDialog} from "@angular/material/dialog";
 import {ConfirmDialogComponent} from "../../shared/dialog/confirm-dialog/confirm-dialog.component";
 import {PostService} from "../../service/postService";
@@ -20,6 +20,7 @@ import {FormsModule} from '@angular/forms';
     CommentListComponent,
     LikeComponent,
     FormsModule,
+    SlicePipe
 
 
   ],

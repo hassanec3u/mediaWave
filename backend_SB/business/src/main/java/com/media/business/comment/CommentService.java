@@ -34,6 +34,11 @@ public class CommentService {
         dto.setAuthorId(currentUser.getId());
         dto.setCreatedAt(Instant.now());
         dto.setAuthorUsername(currentUser.getUsername());
+
+        Post post = this.postRepository.findById(dto.getPostId()).orElseThrow(() -> new RuntimeException("Post not found"));
+        post.setLastComment(this.commentAssembler.fromDto(dto));
+        this.postRepository.save(post);
+
         return this.commentAssembler.toDto(this.commentRepository.save(this.commentAssembler.fromDto(dto)));
     }
 

@@ -1,14 +1,19 @@
 package com.media.business.post;
 
 
+import com.media.business.comment.CommentAssembler;
 import com.media.business.common.Assembler;
 import com.media.domain.model.Post;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 
 @Service
 public class PostAssembler implements Assembler<Post, PostDto> {
+
+    @Autowired
+    private CommentAssembler commentAssembler;
 
     /**
      * {@inheritDoc}
@@ -28,6 +33,7 @@ public class PostAssembler implements Assembler<Post, PostDto> {
         dto.setPublisherId(entity.getPublisherId());
         dto.setPublisherName(entity.getPublisherName());
         dto.setLikeUserIds(entity.getLikeUserIds() != null ? entity.getLikeUserIds() : List.of());
+        dto.setLastComment(this.commentAssembler.toDto(entity.getLastComment()));
         return dto;
 
     }
@@ -50,6 +56,7 @@ public class PostAssembler implements Assembler<Post, PostDto> {
         entitie.setPublisherId(dto.getPublisherId());
         entitie.setPublisherName(dto.getPublisherName());
         entitie.setLikeUserIds(dto.getLikeUserIds() != null ? dto.getLikeUserIds() : List.of());
+        entitie.setLastComment(this.commentAssembler.fromDto(dto.getLastComment()));
         return entitie;
     }
 

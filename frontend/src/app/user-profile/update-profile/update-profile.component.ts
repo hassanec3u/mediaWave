@@ -67,7 +67,7 @@ export class UpdateProfileComponent implements OnInit {
 
   onSubmit() {
     if (this._form.valid) {
-      this.userService.updateUserInfos(this._user.id, this._form.value).subscribe(
+      this.userService.updateUserInfos(this._form.value).subscribe(
         updatedUser => {
           this.onCancel();
         },

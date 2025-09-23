@@ -7,7 +7,7 @@ import {ActivatedRoute} from "@angular/router";
 import {User} from "../../shared/types/user.type";
 import {Post} from "../../shared/types/post.type";
 import {PostService} from "../../service/postService";
-import {NgForOf} from "@angular/common";
+import {NgForOf,NgIf} from "@angular/common";
 import {catchError, forkJoin, map, of, switchMap} from "rxjs";
 
 @Component({
@@ -17,7 +17,7 @@ import {catchError, forkJoin, map, of, switchMap} from "rxjs";
     HeaderComponent,
     PostCardComponent,
     AsideProfileComponent,
-    NgForOf
+    NgForOf,NgIf
   ],
   templateUrl: './user-profile.component.html',
   styleUrl: './user-profile.component.css'
@@ -32,11 +32,19 @@ export class UserProfileComponent implements OnInit{
               private readonly postService: PostService) {
   }
 
-  ngOnInit(): void {
-    this.id = this.route.snapshot.params['id'];
-    this.getUserInfo();
-    this.getUserPosts();
-  }
+ngOnInit(): void {
+  this.id = this.route.snapshot.params['id'];
+
+  this.userService.user$.subscribe(user => {
+    if (user) {
+      this._user = user;
+    }
+  });
+
+  this.userService.loadUserInfo();
+  this.getUserPosts();
+}
+
 
   get user(): User {
     return this._user;
@@ -44,7 +52,11 @@ export class UserProfileComponent implements OnInit{
 
   getUserInfo() {
       this.userService.loadUserInfo();
-      this.userService.user.subscribe((res) => this._user = res);
+      this.userService.user$.subscribe((res) => {
+        if (res) {
+          this._user = res;
+        }
+      });
   }
 
 getUserPosts() {

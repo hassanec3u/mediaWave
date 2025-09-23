@@ -52,25 +52,28 @@ export class PostFormComponent {
   }
 
   onSubmit(): void {
-    if (!this.postForm.valid) return;
+  if (!this.postForm.valid) return;
 
-    const payload = {
-      ...this.postForm.value,
-      id: this.post?.id
-    };    if (this.isEditingPost && this.post) {
-      this.postService.updatePost( payload, this.selectedImage).subscribe(
-        updatedPost => this.dialogRef?.close(updatedPost),
-        error => console.error(error)
-      );
-    } else {
-      this.postService.addPost(payload, this.selectedImage).subscribe(
-        () => {
-          this.postForm.reset();
-          this.selectedImage = null;
-          alert("Post ajouté avec succès ! Vous pouvez le voir dans votre profil.");
-        },
-        error => console.error(error)
-      );
-    }
+  const payload: Post = {
+    ...this.postForm.value,
+    id: this.post?.id
+  };
+
+  if (this.isEditingPost && this.post) {
+    this.postService.updatePost(payload, this.selectedImage).subscribe(
+      updatedPost => this.dialogRef?.close(updatedPost),
+      error => console.error(error)
+    );
+  } else {
+    this.postService.addPost(payload, this.selectedImage).subscribe(
+      () => {
+        this.postForm.reset();
+        this.selectedImage = null;
+        alert("Post ajouté avec succès ! Vous pouvez le voir dans votre profil.");
+      },
+      error => console.error(error)
+    );
   }
+}
+
 }

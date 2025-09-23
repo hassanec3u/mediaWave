@@ -1,3 +1,5 @@
+import { Comment } from "./comment.type";
+
 export type Post = {
   id: string;
   title: string;
@@ -7,5 +9,7 @@ export type Post = {
   publisherId : string;
   publisherName : string;
   publisherProfilePicture : string;
+  lastComment? : Comment;
+
   image?: string;
 }

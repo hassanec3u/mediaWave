@@ -14,7 +14,7 @@ export const environment = {
       user: {
         base: '/user',
         info: '/user',
-        update: (id: string) => `/user/${id}`,
+        update:  "/user",
         uploadProfilePicture: '/user/picture',
         friends: {
           list: '/user/friend',

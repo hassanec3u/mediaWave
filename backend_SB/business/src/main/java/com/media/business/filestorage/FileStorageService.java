@@ -55,7 +55,10 @@ public class FileStorageService {
                 .build();
     }
 
-    public String uploadFile(MultipartFile file) throws IOException {
+    /**
+     * Upload d’une image de profil
+     */
+    public String uploadProfilePicture(MultipartFile file) throws IOException {
         User currentUser = this.customUserDetailsService.getAuthenticatedUser();
         String userId = currentUser.getId();
 
@@ -71,10 +74,30 @@ public class FileStorageService {
         );
 
         String imageUrl = this.publicDomain + "/" + key;
-
         currentUser.setProfilePicture(imageUrl);
         this.userRepository.save(currentUser);
 
+        return imageUrl;
+    }
+
+    /**
+     * Upload d’une image pour un post
+     */
+    public String uploadPostImage(String publisherId, MultipartFile file) throws IOException {
+
+
+        String key = "posts/" + publisherId + "/" + UUID.randomUUID() + "-" + file.getOriginalFilename();
+
+        this.s3Client.putObject(
+                PutObjectRequest.builder()
+                        .bucket(this.bucketName)
+                        .key(key)
+                        .contentType(file.getContentType())
+                        .build(),
+                RequestBody.fromBytes(file.getBytes())
+        );
+
+        String imageUrl = this.publicDomain + "/" + key;
         return imageUrl;
     }
 

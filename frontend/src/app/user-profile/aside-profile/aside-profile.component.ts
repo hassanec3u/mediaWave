@@ -19,6 +19,7 @@ import {CookieService} from 'ngx-cookie-service';
 export class AsideProfileComponent {
 
   private _userInfo!: User;
+  
   @ViewChild('fileInput') fileInput!: ElementRef;
   defaultImage: string = environment.defaultImageProfile;
 
@@ -67,8 +68,7 @@ export class AsideProfileComponent {
     }
   }
 
-  uploadProfileImage(file: File) {
-    this.userService.uploadProfilePicture(this._userInfo.id, file).subscribe(
-    );
-  }
+uploadProfileImage(file: File) {
+  this.userService.uploadProfilePicture(this._userInfo.id, file).subscribe();
+}
 }

@@ -23,6 +23,8 @@ public class Post {
 
     private String publisherName;
 
+    private Comment lastComment;
+
     private List<String> likeUserIds;
 
 
@@ -104,5 +106,15 @@ public class Post {
     public void setLikeUserIds(List<String> likeUserIds) {
 
         this.likeUserIds = likeUserIds;
+    }
+
+    public Comment getLastComment() {
+
+        return this.lastComment;
+    }
+
+    public void setLastComment(Comment lastComment) {
+
+        this.lastComment = lastComment;
     }
 }

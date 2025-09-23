@@ -8,6 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
 
@@ -21,10 +22,12 @@ public class PostController {
     private PostService postService;
 
     @PostMapping("")
-    public ResponseEntity<PostDto> save(@RequestBody PostDto dto) {
+    public ResponseEntity<PostDto> save(
+            @RequestPart("post") PostDto postDto,
+            @RequestPart(value = "file", required = false) MultipartFile file) {
 
-        LOG.info("Request to save a new post: {}", dto);
-        PostDto savedPost = this.postService.save(dto);
+        LOG.info("Request to save a new post: {}", postDto);
+        PostDto savedPost = this.postService.save(postDto, file);
         LOG.debug("Post saved successfully with ID: {}", savedPost.getId());
         return ResponseEntity.status(HttpStatus.CREATED).body(savedPost);
     }

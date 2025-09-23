@@ -2,13 +2,17 @@ package com.media.business.user;
 
 
 import com.media.business.authentification.CustomUserDetailsService;
+import com.media.business.filestorage.FileStorageService;
 import com.media.domain.model.User;
 import com.media.domain.repository.UserRepository;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
 
+import java.io.File;
+import java.io.IOException;
 import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
@@ -23,6 +27,9 @@ public class UserServiceImpl {
 
     @Autowired
     private CustomUserDetailsService customUserDetailsService;
+
+    @Autowired
+    private FileStorageService fileStorageService;
 
     @Autowired
     private UserAssembler userAssembler;
@@ -43,6 +50,22 @@ public class UserServiceImpl {
         return this.userAssembler.toDto(saved);
 
     }
+
+    public UserInfoDto uploadUserProfilPicture(MultipartFile file) {
+
+        try {
+            this.fileStorageService.uploadProfilePicture(file);
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+
+       User currentUser = this.customUserDetailsService.getAuthenticatedUser();
+
+        return  this.userAssembler.toDto(currentUser);
+    }
+
+
+
 
 
     public UserInfoDto getCurrentUser() {

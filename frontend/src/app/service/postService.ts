@@ -13,16 +13,42 @@ export class PostService {
   constructor(private readonly http: HttpClient) {
   }
 
-  addPost(newPost: Post, picturePost: File | null): Observable<Post> {
-    //log the newPost object
-    console.log("New Post: ", newPost);
-      return this.http.post<Post>(this.backendUrl + environment.backend.endpoints.posts.add, newPost);
-    
+ addPost(newPost: Post, picturePost: File | null): Observable<Post> {
+  const formData = new FormData();
+
+  formData.append(
+    'post',
+    new Blob([JSON.stringify(newPost)], { type: 'application/json' })
+  );
+
+  // Ajouter le fichier s’il existe
+  if (picturePost) {
+    formData.append('file', picturePost);
   }
 
-  updatePost( updatedPost: Post, picturePost: File | null): Observable<Post> {
-      return this.http.put<Post>(this.backendUrl + environment.backend.endpoints.posts.update, updatedPost);
+  return this.http.post<Post>(
+    this.backendUrl + environment.backend.endpoints.posts.add,
+    formData
+  );
+}
+
+updatePost(post: Post, picturePost: File | null): Observable<Post> {
+  const formData = new FormData();
+
+  formData.append(
+    'post',
+    new Blob([JSON.stringify(post)], { type: 'application/json' })
+  );
+
+  if (picturePost) {
+    formData.append('file', picturePost);
   }
+
+  return this.http.put<Post>(
+    this.backendUrl + environment.backend.endpoints.posts.update,
+    formData
+  );
+}
 
   deletePost(postId: string): Observable<any> {
     return this.http.delete(this.backendUrl + environment.backend.endpoints.posts.delete(postId));

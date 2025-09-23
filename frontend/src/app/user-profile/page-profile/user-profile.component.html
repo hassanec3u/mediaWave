@@ -3,29 +3,27 @@
 <div class="container-fluid bg-light min-vh-100">
   <div class="row">
     <!-- Aside profil (desktop) -->
-    <aside class="col-lg-3 d-none d-lg-block">
-      <div class="position-sticky" style="top: 5rem;">
-        <app-aside-profile [userInfo]="user"></app-aside-profile>
-      </div>
-    </aside>
+  <aside class="col-lg-3 d-none d-lg-block" *ngIf="user">
+  <div class="position-sticky" style="top: 5rem;">
+    <app-aside-profile [userInfo]="user"></app-aside-profile>
+  </div>
+</aside>
 
-    <!-- Contenu principal -->
-    <section class="col-lg-9 pt-4">
-      <div class="container">
-        <div
-          *ngFor="let post of userPosts"
-          class="row justify-content-center mb-4">
-          <div class="col-12 col-md-10 col-lg-8">
-            <app-post-form
-              [userProfilePicture]="user.profilePicture"
-              [post]="post"
-              [enableEdit]="true"
-              (onPostDeleted)="onPostDeleted($event)"
-              (onPostEdited)="onPostUpdated($event)">
-            </app-post-form>
-          </div>
-        </div>
+<section class="col-lg-9 pt-4">
+  <div class="container">
+    <div *ngFor="let post of userPosts" class="row justify-content-center mb-4">
+      <div class="col-12 col-md-10 col-lg-8">
+        <app-post-form
+          [userProfilePicture]="user?.profilePicture"
+          [post]="post"
+          [enableEdit]="true"
+          (onPostDeleted)="onPostDeleted($event)"
+          (onPostEdited)="onPostUpdated($event)">
+        </app-post-form>
       </div>
-    </section>
+    </div>
+  </div>
+</section>
+
   </div>
 </div>
