@@ -31,3 +31,13 @@ build/
 
 ### VS Code ###
 .vscode/
+
+### Local env files ###
+# Ignore local .env at repo root
+.env
+
+# Ignore local Spring Boot properties used for development (contain secrets)
+# Specific file for the API module
+api/src/main/resources/application-local.properties
+# Also ignore any other application-local.properties placed for local development
+**/application-local.properties
