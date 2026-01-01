@@ -1,37 +1,48 @@
-Listes fonctionnalités prioritaires
 
+# MediaWave
 
-1. Authentification et gestion des utilisateurs
-  Création de comptes (inscription)
-  Connexion/déconnexion
-  Gestion des rôles (utilisateur, administrateur)
-  Gestion des profils utilisateurs (photo, bio, informations de contact)
-2. Publications (posts)
-  Création de publications (texte, image)
-  Modification et suppression des publications
-3. Commentaires et interactions
-  Ajouter, modifier, supprimer des commentaires
-  Réactions aux publications (like, love, etc.)
-  Réactions aux commentaires
-6. Recherche et gestion des amis
-  Recherche d’utilisateurs par nom 
-  Ajout/suppression d’amis
-  Suivi des demandes d’amis (en attente, acceptées, refusées)
+MediaWave est une application web de partage multimédia composée d'un backend Spring Boot et d'un frontend Angular.
 
+## Aperçu
 
+- Backend : API REST, logique métier et domaine (dossier `backend_SB/`).
+- Frontend : application Angular (dossier `frontend/`).
 
+## Prérequis
 
+- Java 11+ (17 recommandé) et Maven (ou utiliser `mvnw`/`mvnw.cmd`).
+- Node.js 16+ et npm.
 
+## Démarrage rapide
 
+1. Depuis la racine, construire les modules Maven :
 
-Listes fonctionnalités  secondaire si le temps nous permet: 
-  Réinitialisation de mot de passe
-  Gstion des profils utilisateurs (photo, bio, informations de contact)
-  Gestion des publications publiques/privées (paramètres de visibilité)
-  Notifications pour les interactions (nouveaux commentaires, réactions)
-  Système de messagerie instantanée
-  Notifications pour les nouveaux messages
+```
+.\mvnw clean install
+```
 
+2. Lancer le backend (API) :
 
+```
+.\mvnw -pl backend_SB/api spring-boot:run
+```
 
-  
+3. Lancer le frontend :
+
+```
+cd frontend
+npm install
+npm start
+```
+
+## Liens utiles
+
+- README Backend : backend_SB/README.md
+- README Frontend : frontend/README.md
+
+## Configuration
+
+- Backend : `backend_SB/api/src/main/resources/application.properties` ou `root/src/main/resources/application.properties`.
+- Frontend : `frontend/src/environments/environments.ts`.
+
+Pour des informations détaillées sur la construction, l'exécution et la configuration, consultez les README spécifiques au backend et au frontend.
