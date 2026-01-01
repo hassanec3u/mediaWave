@@ -1,27 +1,58 @@
-# Frontend
+# Frontend — MediaWave (Angular)
 
-This project was generated with [Angular CLI](https://github.com/angular/angular-cli) version 18.2.10.
+Application frontend développée avec Angular.
 
-## Development server
+## Prérequis
 
-Run `ng serve` for a dev server. Navigate to `http://localhost:4200/`. The application will automatically reload if you change any of the source files.
+- Node.js 16+ et npm
+- (Optionnel) Angular CLI
 
-## Code scaffolding
+## Installation
 
-Run `ng generate component component-name` to generate a new component. You can also use `ng generate directive|pipe|service|class|guard|interface|enum|module`.
+```
+cd frontend
+npm install
+```
 
-## Build
+## Démarrage (développement)
 
-Run `ng build` to build the project. The build artifacts will be stored in the `dist/` directory.
+```
+npm start
+# ou
+ng serve
+```
 
-## Running unit tests
+L'application sera disponible sur `http://localhost:4200/`.
 
-Run `ng test` to execute the unit tests via [Karma](https://karma-runner.github.io).
+## Compilation (production)
 
-## Running end-to-end tests
+```
+npm run build
+```
 
-Run `ng e2e` to execute the end-to-end tests via a platform of your choice. To use this command, you need to first add a package that implements end-to-end testing capabilities.
+Les fichiers compilés seront dans `dist/`.
 
-## Further help
+## Tests
 
-To get more help on the Angular CLI use `ng help` or go check out the [Angular CLI Overview and Command Reference](https://angular.dev/tools/cli) page.
+Unitaires :
+
+```
+npm test
+```
+
+E2E :
+
+```
+npm run e2e
+```
+
+## Configuration
+
+Modifier l'URL de l'API dans `src/environments/environments.ts` selon l'environnement (dev/prod).
+
+## Astuces
+
+- Si vous utilisez le backend local, assurez-vous qu'il est disponible sur `http://localhost:8080` ou adaptez `environments.ts`.
+- Pour générer une nouvelle ressource Angular : `ng generate component my-component`.
+
+Pour plus d'informations, consultez la documentation Angular : https://angular.io/.

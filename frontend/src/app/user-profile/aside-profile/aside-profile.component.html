@@ -1,34 +1,54 @@
-<aside class="bg-white rounded-lg h-dvh pt-10">
-    <div class="mx-auto my-5 ml-5 p-4 shadow-lg h-full">
-        <div class="flex items-center mb-4">
-            <img [src]="userInfo.profilePicture || defaultImage" alt="profile-image"
-                 class="w-16 h-16 object-cover cursor-pointer rounded-full mr-4" (click)="onProfileImageClick()">
-                <input type="file" #fileInput class="hidden" (change)="onFileSelected($event)" accept="image/*">
-            <div>
-                <span class="text-blue-500 text-lg block">{{ userInfo.username }}</span>
-                <div class="flex">
-                    <mat-icon class="text-sm text-blue-500">email</mat-icon>
-                    <span class="text-gray-700 text-sm">{{ userInfo.email }}</span>
-                </div>
-                <div class="flex">
-                    <mat-icon class="text-sm text-blue-500">cake</mat-icon>
-                    <span class="text-gray-700 text-sm">{{birthdate}}</span>
-                </div>
-                <div class="flex">
-                    <mat-icon class="text-blue-500 text-sm">place</mat-icon>
-                    <span class="text-gray-700 text-sm">{{pays}}</span>
-                </div>
-            </div>
+<div class="card shadow-sm border-0">
+  <div class="card-body">
+    <div class="d-flex align-items-center mb-3">
+      <div class="position-relative">
+        <img
+          [src]="userInfo.profilePicture || defaultImage"
+          alt="photo de profil"
+          class="rounded-circle me-3"
+          style="width:72px;height:72px;object-fit:cover;cursor:pointer;"
+          (click)="onProfileImageClick()">
+        <input
+          type="file"
+          #fileInput
+          class="d-none"
+          (change)="onFileSelected($event)"
+          accept="image/*">
+      </div>
+
+      <div class="flex-grow-1">
+        <h5 class="mb-1 text-primary">{{ userInfo.username }}</h5>
+        <div class="text-muted small d-flex align-items-center">
+          <i class="bi bi-envelope me-2"></i>
+          <span>{{ userInfo.email }}</span>
         </div>
-        <div class="mb-4">
-            <span>BIO :</span>
-            <p class="text-justify font-extralight">
-                {{userInfo.bio}}
-            </p>
+        <div class="text-muted small d-flex align-items-center mt-1">
+          <i class="bi bi-cake2 me-2"></i>
+          <span>{{ birthdate }}</span>
         </div>
-        <button
-          *ngIf="isMyProfile()"
-          class="px-4 py-2 bg-blue-600 text-white text-sm rounded-md hover:bg-blue-500"
-                (click)="openFormUpdate()">Modifier</button>
+        <div class="text-muted small d-flex align-items-center mt-1">
+          <i class="bi bi-geo-alt me-2"></i>
+          <span>{{ pays }}</span>
+        </div>
+      </div>
     </div>
-</aside>
+
+    <hr class="text-muted">
+
+    <div class="mb-3">
+      <div class="text-uppercase small text-muted mb-1">Bio</div>
+      <p class="mb-0">{{ userInfo.bio || 'Aucune bio pour le moment.' }}</p>
+    </div>
+
+    <div class="d-grid">
+      <button
+        *ngIf="isMyProfile()"
+        class="btn btn-primary"
+        type="button"
+        (click)="openFormUpdate()">
+        <i class="bi bi-pencil-square me-1"></i>
+        Modifier le profil
+      </button>
+    </div>
+  </div>
+</div>

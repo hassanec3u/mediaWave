@@ -1,27 +1,80 @@
-<header class="fixed bg-blue-500 top-0 left-0 right-0 flex justify-between items-center shadow-md z-10">
-  <mat-toolbar-row>
-    <span class="ml-5 text-white cursor-pointer" (click)="navigateHome()">MediaWave</span>
-  </mat-toolbar-row>
+<nav class="navbar navbar-expand-lg navbar-dark bg-primary fixed-top shadow-sm">
+  <div class="container-fluid">
+    <!-- Brand -->
+    <a class="navbar-brand fw-semibold" style="cursor:pointer" (click)="navigateHome()">
+      MediaWave
+    </a>
 
-  <!-- Menu pour utilisateur authentifié -->
-  <div *ngIf="isAuthenticated">
-    <button mat-icon-button [matMenuTriggerFor]="menuHeader">
-      <img [src]="user?.profilePicture || defaultImage" alt="profile-image"
-           class="w-8 h-8 object-cover rounded-full mr-4">
+    <!-- Toggler (mobile) -->
+    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#mwNavbar"
+            aria-controls="mwNavbar" aria-expanded="false" aria-label="Toggle navigation">
+      <span class="navbar-toggler-icon"></span>
     </button>
-    <mat-menu #menuHeader="matMenu" class="cursor-pointer bg-white">
-      <button mat-menu-item (click)="navigateToProfile()">Profil</button>
-      <button mat-menu-item (click)="navigateToFriend()">Amis</button>
-      <button mat-menu-item (click)="navigateToConversations()">Messages</button>
-      <button mat-menu-item (click)="logout()">Se Déconnecter</button>
 
-    </mat-menu>
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="mwNavbar">
+      <!-- (Optionnel) Barre de recherche centrée -->
+      <!-- <form class="d-none d-lg-flex mx-auto w-50">
+         <input class="form-control form-control-sm" type="search" placeholder="Rechercher…" aria-label="Search">
+       </form>
+ -->
+      <ul class="navbar-nav ms-auto align-items-center">
+        <!-- Si non authentifié -->
+        <ng-container *ngIf="!isAuthenticated">
+          <li class="nav-item me-2">
+            <button class="btn btn-outline-light btn-sm" type="button" (click)="login()">Se connecter</button>
+          </li>
+          <li class="nav-item">
+            <button class="btn btn-light btn-sm text-primary" type="button" (click)="register()">S'inscrire</button>
+          </li>
+        </ng-container>
+
+        <!-- Si authentifié -->
+        <ng-container *ngIf="isAuthenticated">
+
+          <!-- (Optionnel) icônes rapides -->
+          <li class="nav-item me-2 d-none d-lg-inline">
+            <a class="nav-link" (click)="navigateToConversations()" style="cursor:pointer">
+              <i class="bi bi-chat-dots"></i>
+            </a>
+          </li>
+          <li class="nav-item me-2 d-none d-lg-inline">
+            <a class="nav-link" (click)="navigateToFriend()" style="cursor:pointer">
+              <i class="bi bi-people"></i>
+            </a>
+          </li>
+
+
+          <!-- Avatar + menu -->
+          <li class="nav-item dropdown">
+            <a class="nav-link dropdown-toggle d-flex align-items-center" href="#" id="userMenu" role="button"
+               data-bs-toggle="dropdown" aria-expanded="false">
+              <img [src]="user?.profilePicture || defaultImage"
+                   alt="Profil"
+                   class="rounded-circle me-2"
+                   style="width:32px;height:32px;object-fit:cover;">
+              <span class="d-none d-sm-inline">{{ user?.username || 'Mon compte' }}</span>
+            </a>
+            <ul class="dropdown-menu dropdown-menu-end shadow-sm" aria-labelledby="userMenu">
+              <li>
+                <button class="dropdown-item" type="button" (click)="navigateToProfile()">Profil</button>
+              </li>
+              <li>
+                <button class="dropdown-item" type="button" (click)="navigateToFriend()">Amis</button>
+              </li>
+              <li>
+                <button class="dropdown-item" type="button" (click)="navigateToConversations()">Messages</button>
+              </li>
+              <li>
+                <hr class="dropdown-divider">
+              </li>
+              <li>
+                <button class="dropdown-item text-danger" type="button" (click)="logout()">Se déconnecter</button>
+              </li>
+            </ul>
+          </li>
+        </ng-container>
+      </ul>
+    </div>
   </div>
-
-  <!-- Boutons pour utilisateur non authentifié -->
-  <div class="auth-buttons" *ngIf="!isAuthenticated">
-    <span class="text-white mr-5 cursor-pointer" (click)="login()">Se connecter</span>
-    <span class="text-white mr-5 cursor-pointer" (click)="register()">S'inscrire</span>
-  </div>
-
-</header>
+</nav>

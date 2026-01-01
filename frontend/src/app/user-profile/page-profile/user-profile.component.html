@@ -1,9 +1,29 @@
-<app-header/>
-<div class="flex bg-blue-50">
-    <app-aside-profile [userInfo]="user" class="fixed w-1/4"></app-aside-profile>
-    <section class="flex-1 ml-[25%] pt-12 justify-center">
-        <div *ngFor="let post of userPosts" class="w-1/2 mx-auto">
-            <app-card-post [userProfilePicture]="user.profilePicture" [post]="post" (onPostDeleted)="onPostDeleted($event)" (onPostEdited)="onPostUpdated($event)" [enableEdit]="true"></app-card-post>
-        </div>
-    </section>
+<app-header></app-header>
+
+<div class="container-fluid bg-light min-vh-100">
+  <div class="row">
+    <!-- Aside profil (desktop) -->
+  <aside class="col-lg-3 d-none d-lg-block" *ngIf="user">
+  <div class="position-sticky" style="top: 5rem;">
+    <app-aside-profile [userInfo]="user"></app-aside-profile>
+  </div>
+</aside>
+
+<section class="col-lg-9 pt-4">
+  <div class="container">
+    <div *ngFor="let post of userPosts" class="row justify-content-center mb-4">
+      <div class="col-12 col-md-10 col-lg-8">
+        <app-post-form
+          [userProfilePicture]="user?.profilePicture"
+          [post]="post"
+          [enableEdit]="true"
+          (onPostDeleted)="onPostDeleted($event)"
+          (onPostEdited)="onPostUpdated($event)">
+        </app-post-form>
+      </div>
+    </div>
+  </div>
+</section>
+
+  </div>
 </div>

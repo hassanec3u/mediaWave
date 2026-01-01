@@ -1,0 +1,96 @@
+<!-- Carte post -->
+<div class="card shadow border-0 mb-4">
+  <!-- En-tête -->
+  <div class="card-header bg-white border-0 pb-0">
+    <div class="d-flex justify-content-between align-items-start">
+      <div class="d-flex align-items-center">
+        <img
+          [src]="post.publisherProfilePicture || defaultImage"
+          alt="Photo de profil"
+          class="rounded-circle me-2"
+          style="width:40px;height:40px;object-fit:cover;">
+        <div>
+          <div class="fw-semibold">{{ post.publisherName }}</div>
+          <div class="text-muted small">{{ post.postDate | date:'dd-MM-yyyy' }}</div>
+        </div>
+      </div>
+
+      <!-- Menu d’actions (édition/suppression) -->
+      <div *ngIf="enableEdit" class="dropdown">
+        <button class="btn btn-light btn-sm" type="button" data-bs-toggle="dropdown" aria-expanded="false">
+          <i class="bi bi-three-dots"></i>
+        </button>
+        <ul class="dropdown-menu dropdown-menu-end">
+          <li>
+            <button class="dropdown-item" (click)="editPost()">
+              <i class="bi bi-pencil-square me-2"></i>Modifier
+            </button>
+          </li>
+          <li>
+            <button class="dropdown-item text-danger" (click)="openDeleteDialog(post.id)">
+              <i class="bi bi-trash me-2"></i>Supprimer
+            </button>
+          </li>
+        </ul>
+      </div>
+    </div>
+  </div>
+
+  <!-- Corps -->
+  <div class="card-body">
+    <h5 class="card-title mb-2">{{ post.title }}</h5>
+    <p class="card-text">{{ post.content }}</p>
+
+    <!-- Image avec hover zoom -->
+    <img
+      *ngIf="post.postPicture"
+      [src]="post.postPicture"
+      alt="Image du post"
+      class="img-fluid rounded mb-3 post-image"
+      style="max-height:380px; object-fit:cover; width:100%;">
+
+    <!-- Actions principales -->
+    <div class="d-flex align-items-center gap-3 mb-2">
+      <!-- Like component -->
+      <app-like [postId]="post.id!"></app-like>
+
+      <!-- Bouton commenter -->
+      <button
+        class="btn btn-link text-secondary p-0 d-flex align-items-center"
+        type="button"
+        data-bs-toggle="collapse"
+        [attr.data-bs-target]="'#comments-'+post.id"
+        aria-expanded="false"
+        [attr.aria-controls]="'comments-'+post.id">
+        <i class="bi bi-chat me-1"></i> Commenter
+      </button>
+    </div>
+
+
+    <!-- Aperçu du dernier commentaire -->
+    <div *ngIf="post.lastComment" class="border-top pt-2 mt-2">
+      <div class="fw-semibold small">
+        {{ post.lastComment.authorUsername }}
+        <span class="text-muted ms-2">• {{ post.lastComment.createdAt | date:'short' }}</span>
+      </div>
+      <p class="text-muted small fst-italic mb-0">
+        {{ post.lastComment.content | slice:0:80 }}...
+      </p>
+    </div>
+
+    <!-- Collapse : liste complète des commentaires -->
+    <div class="collapse mt-3" [id]="'comments-'+post.id">
+      <app-comment-list
+        [postOwnerId]="post.publisherId"
+        [postId]="post.id!">
+      </app-comment-list>
+    </div>
+
+    <!-- Actions secondaires (partage, favoris, signaler) -->
+    <div class="d-flex justify-content-end gap-2 mt-3">
+      <button class="btn btn-light btn-sm"><i class="bi bi-share"></i></button>
+      <button class="btn btn-light btn-sm"><i class="bi bi-bookmark"></i></button>
+      <button class="btn btn-light btn-sm text-danger"><i class="bi bi-flag"></i></button>
+    </div>
+  </div>
+</div>

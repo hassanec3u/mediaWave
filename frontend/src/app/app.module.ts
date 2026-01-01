@@ -19,8 +19,8 @@ import {HeaderComponent} from './shared/header/header.component';
 import {HomeComponent} from './home/home.component';
 import {FriendSearchComponent} from './friend/friend-search.component';
 import {AuthInterceptor} from './Interceptor/AuthInterceptor';
-import {MessageComponent} from './message/message.component';
-import {ConversationListComponent} from './conversation/conversation.component';
+import {MessageComponent} from './messagerie/message/message.component';
+import {ConversationListComponent} from './messagerie/conversation/conversation.component';
 import {MessagerieComponent} from './messagerie/messagerie.component';
 
 

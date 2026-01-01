@@ -1,6 +1,15 @@
-<mat-icon
-  [class.text-red-500]="liked"
-  [class.text-gray-800]="!liked"
+<button
+  class="btn btn-link p-0 border-0 d-flex align-items-center"
   (click)="toggleLike()"
-  class="cursor-pointer">favorite</mat-icon>
-<span class="ml-1">{{ likes }}</span>
+  [attr.aria-pressed]="liked"
+  style="text-decoration: none;">
+
+  <!-- Icône cœur -->
+  <i
+    class="bi"
+    [ngClass]="liked ? 'bi-heart-fill text-danger' : 'bi-heart text-secondary'">
+  </i>
+
+  <!-- Compteur -->
+  <span class="ms-2 large fw-semibold">{{ likes }}</span>
+</button>

@@ -1,25 +1,16 @@
 import {Component, OnInit} from '@angular/core';
-import {MatButton, MatIconButton} from "@angular/material/button";
-import {MatMenu, MatMenuItem, MatMenuTrigger} from "@angular/material/menu";
-import {MatToolbarRow} from "@angular/material/toolbar";
 import {Router} from '@angular/router';
 import {UserService} from '../../service/userService';
 import {CommonModule} from '@angular/common';
 import {User} from "../types/user.type";
-import {PicturesService} from "../../service/picturesService";
-import {environment} from "../../../environments/environments"; // Import CommonModule
+import {environment} from "../../../environments/environments";
+import {CookieService} from 'ngx-cookie-service'; // Import CommonModule
 
 @Component({
   selector: 'app-header',
   standalone: true,
   imports: [
-    MatIconButton,
-    MatMenu,
-    MatMenuItem,
-    MatToolbarRow,
-    MatMenuTrigger,
-    CommonModule,
-    MatButton
+    CommonModule
   ],
   templateUrl: './header.component.html',
   styleUrl: './header.component.css'
@@ -29,13 +20,16 @@ export class HeaderComponent implements OnInit {
   user!: User | undefined;
   defaultImage: string = environment.defaultImageProfile;
 
-  constructor(private router: Router, private userService: UserService, private pictureService: PicturesService) {
+  constructor(private readonly router: Router, private readonly userService: UserService,
+              private readonly cookieService: CookieService) {
   }
 
   ngOnInit(): void {
     this.isAuthenticated = this.userService.isAuthenticated(); // Check authentication status
     this.userService.loadUserInfo();
-    this.userService.user.subscribe((user) => this.user = user);
+    this.userService.user$.subscribe((user) => {
+      this.user = user ? user : undefined;
+    });
   }
 
 
@@ -53,7 +47,7 @@ export class HeaderComponent implements OnInit {
   }
 
   navigateToProfile() {
-    const userId = this.userService.getUserId();
+    const userId = this.cookieService.get('userId');
     console.log('User ID:', userId);
     if (userId) {
       this.router.navigate([`/profile/${userId}`]);

@@ -1,30 +1,39 @@
 <app-header></app-header>
-<div class="flex flex-col items-center min-h-screen bg-blue-50 px-6">
-  <!-- Logo ou Titre principal -->
-  <!--<h1 class="text-4xl font-bold text-primary mb-4">Bienvenue sur MediaWave</h1>
-  <p class="text-lg text-gray-700 max-w-lg mb-8">
-    Gérez vos publications et suivez les dernières tendances avec simplicité.
-  </p>
 
-  <div class="flex space-x-4">
-    <ng-container *ngIf="!isAuthenticated(); else profileButton">
-      <button mat-raised-button  class="custom-button" color="primary" (click)="navigateToLogin()">
-        Se connecter
-      </button>
-      <button mat-raised-button class="custom-button" color="accent" (click)="navigateToRegister()">
-        S'inscrire
-      </button>
-    </ng-container>
-    <ng-template #profileButton>
-      <button mat-raised-button class="custom-button" color="primary" (click)="navigateToProfile()">
-       Mon  Profil
-      </button>
-    </ng-template>
-  </div>-->
-    <div class="w-1/2">
-        <app-posts />
+<!-- Layout principal -->
+<div class="container py-4">
+  <div class="row justify-content-center">
+
+    <!-- Colonne centrale (composer + feed) -->
+    <div class="col-12 col-lg-8 col-xl-6">
+
+      <!-- Composer (créer un post) -->
+      <div class="mb-4">
+        <app-post-card></app-post-card>
+      </div>
+
+      <!-- Fil d’actualité -->
+      <ng-container *ngIf="friendsPosts?.length; else emptyFeed">
+        <div class="d-flex flex-column gap-4">
+          <div *ngFor="let post of friendsPosts">
+            <app-post-form
+              [post]="post"
+              [enableEdit]="false">
+            </app-post-form>
+          </div>
+        </div>
+      </ng-container>
+
+      <!-- État vide -->
+      <ng-template #emptyFeed>
+        <div class="card border-0 shadow-sm">
+          <div class="card-body text-center text-muted py-5">
+            <i class="bi bi-people fs-2 d-block mb-2"></i>
+            Pas encore de publications de vos amis.
+          </div>
+        </div>
+      </ng-template>
+
     </div>
-    <div *ngFor="let post of friendsPosts" class="w-1/2">
-        <app-card-post [post]="post" [enableEdit]="false"/>
-    </div>
+  </div>
 </div>

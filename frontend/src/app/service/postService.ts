@@ -1,63 +1,64 @@
 import {HttpClient} from "@angular/common/http";
-import {CookieService} from "ngx-cookie-service";
 import {environment} from "../../environments/environments";
 import {Observable, switchMap} from "rxjs";
 import {Post} from "../shared/types/post.type";
-import {PicturesService} from "./picturesService";
 import {Injectable} from "@angular/core";
 
 @Injectable({
-    providedIn: 'root'
+  providedIn: 'root'
 })
 export class PostService {
-    private userId: string;
-    private backendUrl = `${environment.backend.protocol}://${environment.backend.host}:${environment.backend.port}`;
+  private readonly backendUrl = `${environment.backend.protocol}://${environment.backend.host}:${environment.backend.port}`;
 
-    constructor(private http: HttpClient,
-                private cookieService: CookieService,
-                private picturesService: PicturesService) {
-        this.userId = this.cookieService.get('userId');
-    }
+  constructor(private readonly http: HttpClient) {
+  }
 
-    addPost(newPost: Post, picturePost: File | null): Observable<Post> {
-        console.log("Service method add new post")
-        newPost.publisher = this.userId;
-        if (picturePost != null) {
-            console.log("post with photo")
-            return this.picturesService.uploadPicture(picturePost).pipe(
-                switchMap((response) => {
-                    newPost.postPicture = response.filePath;
-                    return this.http.post<Post>(this.backendUrl + environment.backend.endpoints.addPost, newPost);
-                }));
-        } else {
-            console.log("post without photo")
-            return this.http.post<Post>(this.backendUrl + environment.backend.endpoints.addPost, newPost);
-        }
-    }
+ addPost(newPost: Post, picturePost: File | null): Observable<Post> {
+  const formData = new FormData();
 
-    updatePost(postId: string | undefined, updatedPost: Post, picturePost: File | null): Observable<Post> {
-        updatedPost.publisher = this.userId;
-        if(picturePost != null) {
-            return this.picturesService.uploadPicture(picturePost).pipe(
-                switchMap((response) => {
-                    updatedPost.postPicture = response.filePath;
-                    return this.http.put<Post>(this.backendUrl + environment.backend.endpoints.updatePost+postId, updatedPost);
-                })
-            )
-        } else {
-            return this.http.put<Post>(this.backendUrl + environment.backend.endpoints.updatePost+postId, updatedPost);
-        }
-    }
+  formData.append(
+    'post',
+    new Blob([JSON.stringify(newPost)], { type: 'application/json' })
+  );
 
-    deletePost(postId: string | undefined): Observable<any> {
-        return this.http.delete(this.backendUrl + environment.backend.endpoints.deletePost + postId);
-    }
+  // Ajouter le fichier s’il existe
+  if (picturePost) {
+    formData.append('file', picturePost);
+  }
 
-    getUserPosts(): Observable<Post[]> {
-        return this.http.get<Post[]>(`${this.backendUrl}/user/${this.userId}/posts`);
-    }
+  return this.http.post<Post>(
+    this.backendUrl + environment.backend.endpoints.posts.add,
+    formData
+  );
+}
 
-    getFriendsPosts(): Observable<Post[]> {
-        return this.http.get<Post[]>(`${this.backendUrl}/user/${this.userId}${environment.backend.endpoints.friendsPosts}`);
-    }
+updatePost(post: Post, picturePost: File | null): Observable<Post> {
+  const formData = new FormData();
+
+  formData.append(
+    'post',
+    new Blob([JSON.stringify(post)], { type: 'application/json' })
+  );
+
+  if (picturePost) {
+    formData.append('file', picturePost);
+  }
+
+  return this.http.put<Post>(
+    this.backendUrl + environment.backend.endpoints.posts.update,
+    formData
+  );
+}
+
+  deletePost(postId: string): Observable<any> {
+    return this.http.delete(this.backendUrl + environment.backend.endpoints.posts.delete(postId));
+  }
+
+  getUserPosts(): Observable<Post[]> {
+    return this.http.get<Post[]>(this.backendUrl + environment.backend.endpoints.posts.myPosts);
+  }
+
+  getFriendsPosts(): Observable<Post[]> {
+    return this.http.get<Post[]>(`${this.backendUrl}${environment.backend.endpoints.posts.friendPost}`);
+  }
 }

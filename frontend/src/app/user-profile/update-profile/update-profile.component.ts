@@ -1,12 +1,11 @@
 import {ChangeDetectionStrategy, Component, Inject, OnInit, Optional} from '@angular/core';
 import {MAT_DIALOG_DATA, MatDialogActions, MatDialogContent, MatDialogRef} from "@angular/material/dialog";
-import {MatFormField, MatError, MatFormFieldModule} from "@angular/material/form-field";
+import {MatFormFieldModule} from "@angular/material/form-field";
 import {MatInput, MatInputModule} from "@angular/material/input";
 import {User} from "../../shared/types/user.type";
 import {FormControl, FormGroup, FormsModule, ReactiveFormsModule, Validators} from "@angular/forms";
 import {NgIf} from "@angular/common";
 import {UserService} from "../../service/userService";
-import {Subject} from "rxjs";
 import {provideNativeDateAdapter} from '@angular/material/core';
 import {MatDatepickerModule} from '@angular/material/datepicker';
 
@@ -15,13 +14,12 @@ import {MatDatepickerModule} from '@angular/material/datepicker';
   standalone: true,
   imports: [
     MatDialogContent,
-    MatFormField,
     MatInput,
     MatDialogActions,
     ReactiveFormsModule,
     FormsModule,
     NgIf,
-    MatError,MatFormFieldModule, MatInputModule, MatDatepickerModule
+    MatFormFieldModule, MatInputModule, MatDatepickerModule
   ],
   templateUrl: './update-profile.component.html',
   styleUrl: './update-profile.component.css',
@@ -31,12 +29,12 @@ import {MatDatepickerModule} from '@angular/material/datepicker';
 
 })
 export class UpdateProfileComponent implements OnInit {
-  private _open!: boolean;
-  private _form: FormGroup;
+  private readonly _open!: boolean;
+  private readonly _form: FormGroup;
 
-  constructor(private _dialogRef: MatDialogRef<UpdateProfileComponent, User>,
-              private userService: UserService,
-              @Optional() @Inject(MAT_DIALOG_DATA) private _user: User) {
+  constructor(private readonly _dialogRef: MatDialogRef<UpdateProfileComponent, User>,
+              private readonly userService: UserService,
+              @Optional() @Inject(MAT_DIALOG_DATA) private readonly _user: User) {
     this._open = false;
     this._form = this.buildUpdateForm();
   }
@@ -68,12 +66,12 @@ export class UpdateProfileComponent implements OnInit {
   }
 
   onSubmit() {
-    if(this._form.valid) {
-      this.userService.updateUserInfos(this._user._id, this._form.value).subscribe(
-          updatedUser => {
-            this.onCancel();
-          },
-          error => console.log(error)
+    if (this._form.valid) {
+      this.userService.updateUserInfos(this._form.value).subscribe(
+        updatedUser => {
+          this.onCancel();
+        },
+        error => console.log(error)
       )
     }
   }

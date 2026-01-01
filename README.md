@@ -1,53 +1,48 @@
-## 1. Option Docker
-   Avant de commencer, assurez-vous d'avoir les éléments suivants installés sur votre machine :
 
-- [Docker](https://www.docker.com/get-started)
-- [Docker Compose](https://docs.docker.com/compose/install/)
-- Git
-   Pour commencer, vous devez basculer vers la branche contenant les modifications pour la conteneurisation de l'application. Suivez les étapes ci-dessous :
+# MediaWave
 
-1. **Accédez à la branche** :
-   Exécutez la commande suivante dans votre terminal pour vous déplacer vers la branche :
+MediaWave est une application web de partage multimédia composée d'un backend Spring Boot et d'un frontend Angular.
 
-   ```bash
-   git checkout feature/conteneuriser-app
-2. **Exécuter la commande de docker compose** :
+## Aperçu
 
-   ```bash
-   docker compose up
-3. **Accés à l'application** :
-   http://localhost:4200
-## 2. Option manuelle
-Prérequis
-- MongoDB : Assurez-vous que MongoDB est installé sur votre machine. Configurez le root, le login, et le mot de passe dans le fichier app.module.ts du dossier backend. Par défaut, aucun login ou mot de passe n’est configuré.
-- NestJS et Angular : Ces frameworks doivent être installés sur votre machine pour le backend et le frontend de l’application.
+- Backend : API REST, logique métier et domaine (dossier `backend_SB/`).
+- Frontend : application Angular (dossier `frontend/`).
 
-Lancer l'application
-1. Méthode manuelle
-   
-    Backend :
-    - Ouvrez le dossier backend.
-    - éxecutez npm install pour installer les dépendances.
-    - Démarrez le serveur avec npm run start:dev. Le backend sera accessible par défaut sur http://localhost:3000.
-  
-    Frontend :
-    - Ouvrez le dossier frontEnd.
-    - Exécutez npm install pour installer les dépendances.
-    - Démarrez le serveur Angular avec ng serve. Le frontend sera accessible par défaut sur http://localhost:4200.
+## Prérequis
 
+- Java 11+ (17 recommandé) et Maven (ou utiliser `mvnw`/`mvnw.cmd`).
+- Node.js 16+ et npm.
 
-## Liste des fonctionnalités implémentées dans la V1.0
-1. Authentification et gestion des utilisateurs
-  Création de comptes (inscription)
-  Connexion/déconnexion
-  Gestion des profils utilisateurs (photo, bio, informations de contact)
-2. Publications (posts)
-  Création de publications (texte, image)
-  Modification et suppression des publications
-3. Commentaires et interactions
-  Ajouter, modifier, supprimer des commentaires
-  liker aux publications
-6. Recherche et gestion des amis
-  Recherche d’utilisateurs par nom 
-  Ajout/suppression d’amis
-  Suivi des demandes d’amis (en attente, acceptées, refusées)
+## Démarrage rapide
+
+1. Depuis la racine, construire les modules Maven :
+
+```
+.\mvnw clean install
+```
+
+2. Lancer le backend (API) :
+
+```
+.\mvnw -pl backend_SB/api spring-boot:run
+```
+
+3. Lancer le frontend :
+
+```
+cd frontend
+npm install
+npm start
+```
+
+## Liens utiles
+
+- README Backend : backend_SB/README.md
+- README Frontend : frontend/README.md
+
+## Configuration
+
+- Backend : `backend_SB/api/src/main/resources/application.properties` ou `root/src/main/resources/application.properties`.
+- Frontend : `frontend/src/environments/environments.ts`.
+
+Pour des informations détaillées sur la construction, l'exécution et la configuration, consultez les README spécifiques au backend et au frontend.

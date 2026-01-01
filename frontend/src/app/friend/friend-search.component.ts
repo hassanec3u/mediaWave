@@ -1,6 +1,7 @@
-import { Component, OnInit } from '@angular/core';
-import { UserService } from '../service/userService';
-import { User } from '../shared/types/user.type';
+import {Component, OnInit} from '@angular/core';
+import {UserService} from '../service/userService';
+import {User} from '../shared/types/user.type';
+import {CookieService} from 'ngx-cookie-service';
 
 @Component({
   selector: 'app-friend',
@@ -13,23 +14,25 @@ export class FriendSearchComponent implements OnInit {
   friends: User[] = [];
   pendingRequests: User[] = [];
 
-  constructor(private userService: UserService) {}
+  constructor(private readonly userService: UserService,
+              private readonly cookieService: CookieService) {
+  }
 
   ngOnInit(): void {
-    this.myId = this.userService.getUserId();
+    this.myId = this.cookieService.get('userId');
     this.loadFriends();
     this.loadPendingRequests();
   }
 
   search(query: string): void {
     this.userService.searchUsers(query).subscribe(users => {
-      this.searchResults = users.filter(user =>
-        user._id !== this.myId && !this.friends.some(friend => friend._id === user._id)
-      );
+      this.searchResults = users
+      console.log(users);
     });
   }
-  sendFriendRequest(userId: string): void {
-    this.userService.sendFriendRequest(this.myId,userId).subscribe(() => {
+
+  sendFriendRequest(friendId: string): void {
+    this.userService.sendFriendRequest(friendId).subscribe(() => {
       this.loadFriends();
       this.loadPendingRequests();
       alert("Demande d'ami envoyée");
@@ -38,37 +41,42 @@ export class FriendSearchComponent implements OnInit {
     });
   }
 
-  acceptFriend(userId: string): void {
-    this.userService.acceptFriend(this.myId, userId).subscribe(() => {
+  acceptFriend(friendId: string): void {
+    this.userService.acceptFriend(friendId).subscribe(() => {
       this.loadFriends();
       this.loadPendingRequests();
     });
   }
 
-  refuseFriend(userId: string): void {
-    this.userService.refuseFriend(this.myId, userId).subscribe(() => {
+  refuseFriend(friendId: string): void {
+    this.userService.refuseFriend(friendId).subscribe(() => {
       this.loadFriends();
       this.loadPendingRequests();
     });
   }
 
-  removeFriend(friendIdToRemove: string ): void {
-    this.userService.removeFriend(this.myId,friendIdToRemove).subscribe(() => {
+  removeFriend(friendId: string): void {
+    this.userService.removeFriend(friendId).subscribe(() => {
       this.loadFriends();
       this.loadPendingRequests();
     });
   }
 
   private loadFriends(): void {
-    this.userService.getFriends(this.myId).subscribe(friends => {
+    this.userService.getFriends().subscribe(friends => {
       this.friends = friends;
     });
   }
 
-  private loadPendingRequests(): void { // Nouvelle méthode
-    this.userService.getPendingRequests(this.myId).subscribe(requests => {
+  private loadPendingRequests(): void {
+    this.userService.getPendingRequests().subscribe(requests => {
       this.pendingRequests = requests;
     });
   }
+
+  isFriend(userId: string): boolean {
+    return this.friends.some(friend => friend.id === userId);
+  }
+
 
 }

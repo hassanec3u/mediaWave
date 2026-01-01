@@ -1,11 +1,15 @@
-import {User} from "./user.type";
+import { Comment } from "./comment.type";
 
 export type Post = {
-    _id?: string;
-    title?: string;
-    content?: string;
-    postDate?: Date;
-    publisher?: any;
-    postPicture?: string;
-    image?: string;
+  id: string;
+  title: string;
+  content: string;
+  postPicture?: string;
+  postDate: Date;
+  publisherId : string;
+  publisherName : string;
+  publisherProfilePicture : string;
+  lastComment? : Comment;
+
+  image?: string;
 }
